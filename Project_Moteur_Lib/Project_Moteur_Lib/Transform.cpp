@@ -13,26 +13,33 @@ Transform::Transform()
 }
 void Transform::SetvPos(D3DXVECTOR3 NewPos)
 {
-
-	vPosition = NewPos;
-	D3DXMatrixTranslation(&mPos, vPosition.x, vPosition.y, vPosition.z);
+	D3DXMatrixTranslation(&mPos, NewPos.x, NewPos.y, NewPos.z);
 	UpdateRendu();
 }
 
 void Transform::SetvScale(D3DXVECTOR3 NewScale)
 {
-
-	vScale = NewScale;
-	D3DXMatrixScaling(&mScale, vScale.x, vScale.y, vScale.z);
+	D3DXMatrixScaling(&mScale, NewScale.x, NewScale.y, NewScale.z);
 	UpdateRendu();
 }
 
-void Transform::SetRotation(float NewRoll, float NewPitch, float NewYaw)
+void Transform::CreateRotation(float NewRoll, float NewPitch, float NewYaw, bool isRadian = false)
 {
-	Roll = DegToRad(NewRoll);
-	Pitch = DegToRad(NewPitch);
-	Yaw = DegToRad(NewYaw);
 
+	//TODO init quatRot
+
+
+	if (isRadian) {
+		Roll = NewRoll;
+		Pitch = NewPitch;
+		Yaw = NewYaw;
+	}
+	else {
+		//Converting All to rad
+		Roll = DegToRad(NewRoll);
+		Pitch = DegToRad(NewPitch);
+		Yaw = DegToRad(NewYaw);
+	}
 
 
 	D3DXQUATERNION quat;
@@ -42,15 +49,31 @@ void Transform::SetRotation(float NewRoll, float NewPitch, float NewYaw)
 	quatRot *= quat;
 	D3DXQuaternionRotationAxis(&quat, &vUp, Yaw);
 	quatRot *= quat;
-
-
-	D3DXMatrixRotationQuaternion(&mRot, &quatRot);
-
 }
+
+
+
+void Transform::SetRotation(float NewRoll, float NewPitch, float NewYaw, bool isRadian = false)
+{
+	
+	CreateRotation(NewRoll, NewPitch, NewYaw, isRadian);
+	D3DXMatrixRotationQuaternion(&mRot,&quatRot);
+
+	UpdateRendu();
+}
+//TODO add Rotation
+//TODO set Just roll
+//TODO set Just pitch
+//TODO set Just yaw
+//TODO add roll
+//TODO add pitch
+//TODO add yaw
+
+
 
 void Transform::UpdateRendu()
 {
-	//Point de Pivot a Mettre
+	//TODO Point de Pivot a Mettre
 	mRendu = mScale;
 	mRendu *= mRot;
 	mRendu *= mPos;

@@ -11,6 +11,7 @@ private:
 	const static int maxComponent = 20;
 	Transform transform_;
 	AbstractComponent* componentList[maxComponent];
+	int componentIndex = 0;
 
 public:
 	Transform transform()			{ return transform_; }
