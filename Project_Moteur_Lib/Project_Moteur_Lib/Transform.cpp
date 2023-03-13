@@ -12,16 +12,8 @@ Transform::Transform()
 	D3DXMatrixIdentity(&mRot);
 }
 
-void Transform::SetvPos(D3DXVECTOR3 NewPos)
-{
-	D3DXMatrixTranslation(&mPos, NewPos.x, NewPos.y, NewPos.z);
-	UpdateRendu();
-}
-void Transform::SetvScale(D3DXVECTOR3 NewScale)
-{
-	D3DXMatrixScaling(&mScale, NewScale.x, NewScale.y, NewScale.z);
-	UpdateRendu();
-}
+
+#pragma region rotation
 
 void Transform::CreateRotation(float NewRoll, float NewPitch, float NewYaw, bool isRadian)
 {
@@ -152,30 +144,17 @@ void Transform::AddYaw(float Angle, bool isRadian)
 	quatRot *= quat;
 	UpdateRendu();
 }
-
-void Transform::UpdateRendu()
+#pragma endregion
+#pragma region position
+void Transform::SetvPos(D3DXVECTOR3 NewPos)
 {
-	//TODO Point de Pivot a Mettre
-	mRendu = mScale;
-	mRendu *= mRot;
-	mRendu *= mPos;
-
+	D3DXMatrixTranslation(&mPos, NewPos.x, NewPos.y, NewPos.z);
+	UpdateRendu();
 }
 
-D3DXVECTOR3 Transform::GetvScale()
-{
-	return vScale;
-}
 D3DXVECTOR3 Transform::GetvPos()
 {
 	return vPosition;
-}
-D3DXVECTOR3 Transform::GetvRot()
-{
-	D3DXQUATERNION getRot;
-	D3DXQuaternionRotationMatrix (&getRot, &mRot);
-	D3DXVECTOR3(DegToRad(getRot.x), DegToRad(getRot.y), DegToRad(getRot.z));
-	return ;
 }
 
 float Transform::GetvPosX()
@@ -190,6 +169,52 @@ float Transform::GetvPosZ()
 {
 	return vPosition.z;
 }
+#pragma endregion
+
+#pragma region MyRegion
+void Transform::SetvScale(D3DXVECTOR3 NewScale)
+{
+	D3DXMatrixScaling(&mScale, NewScale.x, NewScale.y, NewScale.z);
+	UpdateRendu();
+}
+D3DXVECTOR3 Transform::GetvScale()
+{
+	return vScale;
+}
+float Transform::GetvScaleX()
+{
+	return vScale.x;
+}
+float Transform::GetvScaleY()
+{
+	return vScale.y;
+}
+float Transform::GetvScaleZ()
+{
+	return vScale.z;
+}
+
+#pragma endregion
+
+
+void Transform::UpdateRendu()
+{
+	//TODO Point de Pivot a Mettre
+	mRendu = mScale;
+	mRendu *= mRot;
+	mRendu *= mPos;
+
+}
+
+D3DXVECTOR3 Transform::GetvRot()
+{
+	D3DXQUATERNION getRot;
+	D3DXQuaternionRotationMatrix (&getRot, &mRot);
+	D3DXVECTOR3(DegToRad(getRot.x), DegToRad(getRot.y), DegToRad(getRot.z));
+	return ;
+}
+
+
 
 D3DXMATRIX Transform::GetRendu()
 {

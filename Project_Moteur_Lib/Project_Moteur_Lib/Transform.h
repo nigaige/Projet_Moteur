@@ -41,6 +41,10 @@ public:
 	float GetvPosY();
 	float GetvPosZ();
 
+	float GetvScaleX();
+	float GetvScaleY();
+	float GetvScaleZ();
+
 	void SetvScale(D3DXVECTOR3 NewScale);
 	D3DXVECTOR3 GetvScale();
 
