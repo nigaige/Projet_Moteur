@@ -12,7 +12,6 @@ Transform::Transform()
 	D3DXMatrixIdentity(&mRot);
 }
 
-
 #pragma region rotation
 
 void Transform::CreateRotation(float NewRoll, float NewPitch, float NewYaw, bool isRadian)
@@ -144,11 +143,36 @@ void Transform::AddYaw(float Angle, bool isRadian)
 	quatRot *= quat;
 	UpdateRendu();
 }
+
+D3DXVECTOR3 Transform::GetvRot()
+{
+	D3DXQUATERNION getRot;
+	D3DXQuaternionRotationMatrix(&getRot, &mRot);
+	D3DXVECTOR3(DegToRad(getRot.x), DegToRad(getRot.y), DegToRad(getRot.z));
+	return;
+}
+
 #pragma endregion
 #pragma region position
 void Transform::SetvPos(D3DXVECTOR3 NewPos)
 {
 	D3DXMatrixTranslation(&mPos, NewPos.x, NewPos.y, NewPos.z);
+	UpdateRendu();
+}
+
+void Transform::SetvPosX(float NewPos)
+{
+	D3DXMatrixTranslation(&mPos, NewPos ,0.0f, 0.0f);
+	UpdateRendu();
+}
+void Transform::SetvPosY(float NewPos)
+{
+	D3DXMatrixTranslation(&mPos, 0.0f, NewPos, 0.0f);
+	UpdateRendu();
+}
+void Transform::SetvPosZ(float NewPos)
+{
+	D3DXMatrixTranslation(&mPos, 0.0f, 0.0f, NewPos);
 	UpdateRendu();
 }
 
@@ -170,13 +194,30 @@ float Transform::GetvPosZ()
 	return vPosition.z;
 }
 #pragma endregion
+#pragma region scaling
 
-#pragma region MyRegion
 void Transform::SetvScale(D3DXVECTOR3 NewScale)
 {
 	D3DXMatrixScaling(&mScale, NewScale.x, NewScale.y, NewScale.z);
 	UpdateRendu();
 }
+void Transform::SetvScaleX(float NewScale)
+{
+	D3DXMatrixScaling(&mScale, NewScale, 0.0f, 0.0f);
+	UpdateRendu();
+}
+void Transform::SetvScaleY(float NewScale)
+{
+	D3DXMatrixScaling(&mScale, 0.0f, NewScale, 0.0f);
+	UpdateRendu();
+}
+void Transform::SetvScaleZ(float NewScale)
+{
+	D3DXMatrixScaling(&mScale, 0.0f, 0.0f, NewScale);
+	UpdateRendu();
+}
+
+
 D3DXVECTOR3 Transform::GetvScale()
 {
 	return vScale;
@@ -196,7 +237,6 @@ float Transform::GetvScaleZ()
 
 #pragma endregion
 
-
 void Transform::UpdateRendu()
 {
 	//TODO Point de Pivot a Mettre
@@ -205,16 +245,6 @@ void Transform::UpdateRendu()
 	mRendu *= mPos;
 
 }
-
-D3DXVECTOR3 Transform::GetvRot()
-{
-	D3DXQUATERNION getRot;
-	D3DXQuaternionRotationMatrix (&getRot, &mRot);
-	D3DXVECTOR3(DegToRad(getRot.x), DegToRad(getRot.y), DegToRad(getRot.z));
-	return ;
-}
-
-
 
 D3DXMATRIX Transform::GetRendu()
 {

@@ -60,6 +60,14 @@ public:
 	D3DXMATRIX GetRendu();
 	void addRotation(float NewYaw, float NewPitch, float NewRoll, bool isRadian = false);
 
+	void SetvPosX(float NewPos);
+	void SetvPosY(float NewPos);
+	void SetvPosZ(float NewPos);
+
+	void SetvScaleX(float newscale);
+	void SetvScaleY(float newscale);
+	void SetvScaleZ(float newscale);
+
 	void SetRoll(float Angle, bool isRadian = false);
 	void SetYaw(float Angle, bool isRadian = false);
 	void SetPitch(float Angle, bool isRadian = false);
