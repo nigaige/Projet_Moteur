@@ -1,10 +1,21 @@
 #include "Transform.h"
 
 
+Transform::Transform()
+{
+
+	Roll = 0.0f;
+	Pitch = 0.0f;
+	Yaw = 0.0f;
+	D3DXMatrixIdentity(&mScale);
+	D3DXMatrixIdentity(&mPos);
+	D3DXMatrixIdentity(&mRot);
+}
 void Transform::SetvPos(D3DXVECTOR3 NewPos)
 {
 
 	vPosition = NewPos;
+	D3DXMatrixTranslation(&mPos, vPosition.x, vPosition.y, vPosition.z);
 	UpdateRendu();
 }
 
@@ -12,16 +23,37 @@ void Transform::SetvScale(D3DXVECTOR3 NewScale)
 {
 
 	vScale = NewScale;
+	D3DXMatrixScaling(&mScale, vScale.x, vScale.y, vScale.z);
 	UpdateRendu();
 }
 
+void Transform::SetRotation(float NewRoll, float NewPitch, float NewYaw)
+{
+	Roll = DegToRad(NewRoll);
+	Pitch = DegToRad(NewPitch);
+	Yaw = DegToRad(NewYaw);
 
 
 
+	D3DXQUATERNION quat;
+	D3DXQuaternionRotationAxis(&quat, &vDir, Roll);
+	quatRot *= quat;
+	D3DXQuaternionRotationAxis(&quat, &vRight, Pitch);
+	quatRot *= quat;
+	D3DXQuaternionRotationAxis(&quat, &vUp, Yaw);
+	quatRot *= quat;
+
+
+	D3DXMatrixRotationQuaternion(&mRot, &quatRot);
+
+}
 
 void Transform::UpdateRendu()
 {
-
+	//Point de Pivot a Mettre
+	mRendu = mScale;
+	mRendu *= mRot;
+	mRendu *= mPos;
 
 }
 
@@ -41,22 +73,7 @@ D3DXMATRIX Transform::GetRendu()
 	return mRendu;
 }
 
-void Transform::Rotate(float NewRoll,float NewPitch,float NewYaw )
-{
-	Roll = DegToRad(NewRoll);
-	Pitch = DegToRad(NewPitch);
-	Yaw = DegToRad(NewYaw);
 
-
-
-	
-	D3DXQuaternionRotationAxis(&quat, m_vDir, Roll);
-	quatRot *= quat;
-	D3DXQuaternionRotationAxis(&quat, m_vRight, Pitch);
-	quatRot *= quat;
-	D3DXQuaternionRotationAxis(&quat, m_vUp, Yaw);
-	quatRot *= quat;
-}
 
 
 float Transform::DegToRad(float Angle)
