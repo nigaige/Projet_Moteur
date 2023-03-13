@@ -37,15 +37,20 @@ public:
 	~Transform();
 	void SetvPos(D3DXVECTOR3 NewPos);
 	D3DXVECTOR3 GetvPos();
+	float GetvPosX();
+	float GetvPosY();
+	float GetvPosZ();
 
 	void SetvScale(D3DXVECTOR3 NewScale);
 	D3DXVECTOR3 GetvScale();
 
 	void SetRotation(float NewYaw, float NewPitch, float NewRoll, bool isRadian = false);
 	void CreateRotation(float NewRoll, float NewPitch, float NewYaw, bool isRadian = false);
-	float DegToRad(float Angle);
-	//TODO GetRotation
 
+	float DegToRad(float Angle);
+	float RadToDeg(float Rad);
+	
+	D3DXVECTOR3 GetvRot();
 	
 	void UpdateRendu();
 	D3DXMATRIX GetRendu();
