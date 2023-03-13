@@ -50,7 +50,7 @@ void Transform::Rotate(float NewRoll,float NewPitch,float NewYaw )
 
 
 	
-	D3DXQuaternionRotationAxis(&quat, m_vDir, Roll);
+	D3DXQuaternionRotationAxis(&quat, vDir, Roll);
 	quatRot *= quat;
 	D3DXQuaternionRotationAxis(&quat, m_vRight, Pitch);
 	quatRot *= quat;
