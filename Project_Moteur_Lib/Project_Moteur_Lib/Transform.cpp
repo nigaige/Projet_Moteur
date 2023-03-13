@@ -11,19 +11,19 @@ Transform::Transform()
 	D3DXMatrixIdentity(&mPos);
 	D3DXMatrixIdentity(&mRot);
 }
+
 void Transform::SetvPos(D3DXVECTOR3 NewPos)
 {
 	D3DXMatrixTranslation(&mPos, NewPos.x, NewPos.y, NewPos.z);
 	UpdateRendu();
 }
-
 void Transform::SetvScale(D3DXVECTOR3 NewScale)
 {
 	D3DXMatrixScaling(&mScale, NewScale.x, NewScale.y, NewScale.z);
 	UpdateRendu();
 }
 
-void Transform::CreateRotation(float NewRoll, float NewPitch, float NewYaw, bool isRadian = false)
+void Transform::CreateRotation(float NewRoll, float NewPitch, float NewYaw, bool isRadian)
 {
 
 	//TODO init quatRot
@@ -42,7 +42,7 @@ void Transform::CreateRotation(float NewRoll, float NewPitch, float NewYaw, bool
 	}
 
 
-	D3DXQUATERNION quat;
+	
 	D3DXQuaternionRotationAxis(&quat, &vDir, Roll);
 	quatRot *= quat;
 	D3DXQuaternionRotationAxis(&quat, &vRight, Pitch);
@@ -51,25 +51,113 @@ void Transform::CreateRotation(float NewRoll, float NewPitch, float NewYaw, bool
 	quatRot *= quat;
 }
 
-
-
-void Transform::SetRotation(float NewRoll, float NewPitch, float NewYaw, bool isRadian = false)
+void Transform::SetPitch(float Angle, bool isRadian)
 {
-	
+	if (isRadian) {
+		Pitch = Angle;
+	}
+	else {
+		//Converting to rad
+		Pitch = DegToRad(Angle);
+	}
+	D3DXQuaternionRotationAxis(&quat, &vRight, Pitch);
+	quatRot *= quat;
+	UpdateRendu();
+}
+void Transform::SetRoll(float Angle, bool isRadian)
+{
+	if (isRadian) {
+		Roll = Angle;
+	}
+	else {
+		//Converting to rad
+		Roll = DegToRad(Angle);
+	}
+	D3DXQuaternionRotationAxis(&quat, &vDir, Roll);
+	quatRot *= quat;
+	UpdateRendu();
+}
+void Transform::SetYaw(float Angle, bool isRadian)
+{
+	if (isRadian) {
+		Yaw = Angle;
+	}
+	else {
+		//Converting to rad
+		Yaw = DegToRad(Angle);
+	}
+	D3DXQuaternionRotationAxis(&quat, &vUp, Yaw);
+	quatRot *= quat;
+	UpdateRendu();
+}
+
+
+void Transform::AddPitch(float Angle, bool isRadian)
+{
+	float newPitch;
+	if (isRadian) {
+		 newPitch = Angle;
+	}
+	else {
+		//Converting to rad
+		newPitch = DegToRad(Angle);
+	}
+	Pitch += newPitch;
+	D3DXQuaternionRotationAxis(&quat, &vRight, Pitch);
+	quatRot *= quat;
+	UpdateRendu();
+}
+void Transform::AddRoll(float Angle, bool isRadian)
+{
+	float newRoll;
+	if (isRadian) {
+		newRoll = Angle;
+	}
+	else {
+		//Converting to rad
+		newRoll = DegToRad(Angle);
+	}
+	Roll += newRoll;
+	D3DXQuaternionRotationAxis(&quat, &vDir, Roll);
+	quatRot *= quat;
+	UpdateRendu();
+}
+void Transform::AddYaw(float Angle, bool isRadian)
+{
+	float newYaw;
+	if (isRadian) {
+		newYaw = Angle;
+	}
+	else {
+		//Converting to rad
+		newYaw = DegToRad(Angle);
+	}
+	Yaw += newYaw;
+	D3DXQuaternionRotationAxis(&quat, &vUp, Yaw);
+	quatRot *= quat;
+	UpdateRendu();
+}
+
+
+void Transform::SetRotation(float NewRoll, float NewPitch, float NewYaw, bool isRadian)
+{
 	CreateRotation(NewRoll, NewPitch, NewYaw, isRadian);
 	D3DXMatrixRotationQuaternion(&mRot,&quatRot);
 
 	UpdateRendu();
 }
-//TODO add Rotation
-//TODO set Just roll
-//TODO set Just pitch
-//TODO set Just yaw
-//TODO add roll
-//TODO add pitch
-//TODO add yaw
 
+void Transform::addRotation(float NewYaw, float NewPitch, float NewRoll, bool isRadian)
+{
+	D3DXQUATERNION Qa;
+	CreateRotation(NewRoll, NewPitch, NewYaw, isRadian);
+	D3DXQuaternionRotationMatrix(&Qa, &mRot);
+	quatRot *= Qa;
+	D3DXMatrixRotationQuaternion(&mRot, &quatRot);
 
+	UpdateRendu();
+
+}
 
 void Transform::UpdateRendu()
 {
@@ -85,12 +173,10 @@ D3DXVECTOR3 Transform::GetvScale()
 {
 	return vScale;
 }
-
 D3DXVECTOR3 Transform::GetvPos()
 {
 	return vPosition;
 }
-
 D3DXMATRIX Transform::GetRendu()
 {
 	return mRendu;
@@ -99,7 +185,10 @@ D3DXMATRIX Transform::GetRendu()
 
 
 
+
+
 float Transform::DegToRad(float Angle)
 {
 	return Angle * (M_PI /180);
 }
+

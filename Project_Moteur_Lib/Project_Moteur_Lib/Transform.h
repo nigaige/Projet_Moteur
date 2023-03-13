@@ -22,9 +22,14 @@ private :
 	float Roll, Yaw, Pitch;
 
 	D3DXQUATERNION quatRot;
+
+	D3DXQUATERNION quat;
+
 	D3DXVECTOR3 vDir = D3DXVECTOR3(1.0f,0.0f,0.0f);
 	D3DXVECTOR3 vRight = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	D3DXVECTOR3 vUp = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+
+	
 
 	D3DXMATRIX mRendu;//Final Value
 public:
@@ -44,6 +49,14 @@ public:
 	
 	void UpdateRendu();
 	D3DXMATRIX GetRendu();
+	void addRotation(float NewYaw, float NewPitch, float NewRoll, bool isRadian = false);
 
+	void SetRoll(float Angle, bool isRadian = false);
+	void SetYaw(float Angle, bool isRadian = false);
+	void SetPitch(float Angle, bool isRadian = false);
+
+	void AddRoll(float Angle, bool isRadian = false);
+	void AddPitch(float Angle, bool isRadian = false);
+	void AddYaw(float Angle, bool isRadian = false);
 };
 
