@@ -18,8 +18,7 @@ private :
 	D3DXMATRIX mRot;
 	D3DXMATRIX mScale;
 	D3DXMATRIX mPos ;
-	D3DXMATRIX mRendu;
-
+	
 	float Roll, Yaw, Pitch;
 
 	D3DXQUATERNION quatRot;
@@ -27,24 +26,24 @@ private :
 	D3DXVECTOR3 vRight = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	D3DXVECTOR3 vUp = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
 
+	D3DXMATRIX mRendu;//Final Value
 public:
 	Transform();
 	~Transform();
 	void SetvPos(D3DXVECTOR3 NewPos);
-	void SetvScale(D3DXVECTOR3 NewScale);
-
 	D3DXVECTOR3 GetvPos();
+
+	void SetvScale(D3DXVECTOR3 NewScale);
 	D3DXVECTOR3 GetvScale();
 
-	void UpdateRendu();
-	D3DXMATRIX GetRendu();
-
-
-
-	void SetRotation(float NewYaw, float NewPitch, float NewRoll );
+	void SetRotation(float NewYaw, float NewPitch, float NewRoll, bool isRadian = false);
+	void CreateRotation(float NewRoll, float NewPitch, float NewYaw, bool isRadian = false);
 	float DegToRad(float Angle);
+	//TODO GetRotation
 
 	
+	void UpdateRendu();
+	D3DXMATRIX GetRendu();
 
 };
 
