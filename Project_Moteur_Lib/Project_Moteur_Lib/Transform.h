@@ -3,6 +3,11 @@
 #include <windowsx.h>
 #include <d3d9.h>
 #include <d3dx9.h>
+#define _USE_MATH_DEFINES
+
+#include <cmath>
+#include <iostream>
+using namespace std;
 class Transform
 {
 
@@ -15,7 +20,9 @@ private :
 	float Roll, Yaw, Pitch;
 
 	D3DXQUATERNION quat;
-		
+	D3DXVECTOR3 vDir = D3DXVECTOR3(1.0f,0.0f,0.0f);
+	D3DXVECTOR3 vRight = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+	D3DXVECTOR3 vUp = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
 
 public:
 	void SetvPos(D3DXVECTOR3 NewPos);
@@ -30,6 +37,7 @@ public:
 
 
 	void Rotate(float NewYaw, float NewPitch, float NewRoll );
+	float DegToRad(float Angle);
 
 
 

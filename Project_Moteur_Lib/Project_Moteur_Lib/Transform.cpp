@@ -1,5 +1,6 @@
 #include "Transform.h"
 
+
 void Transform::SetvPos(D3DXVECTOR3 NewPos)
 {
 
@@ -40,10 +41,25 @@ D3DXMATRIX Transform::GetRendu()
 	return mRendu;
 }
 
-void Transform::Rotate(float NewYaw, float NewPitch, float NewRoll)
+void Transform::Rotate(float NewRoll,float NewPitch,float NewYaw )
 {
-	Yaw = NewYaw;
-	Pitch = NewPitch;
-	Roll = NewRoll;
+	Roll = DegToRad(NewRoll);
+	Pitch = DegToRad(NewPitch);
+	Yaw = DegToRad(NewYaw);
 
+
+
+	
+	D3DXQuaternionRotationAxis(&quat, m_vDir, Roll);
+	quatRot *= quat;
+	D3DXQuaternionRotationAxis(&quat, m_vRight, Pitch);
+	quatRot *= quat;
+	D3DXQuaternionRotationAxis(&quat, m_vUp, Yaw);
+	quatRot *= quat;
+}
+
+
+float Transform::DegToRad(float Angle)
+{
+	return Angle * (M_PI /180);
 }
