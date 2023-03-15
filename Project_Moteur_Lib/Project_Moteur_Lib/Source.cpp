@@ -1,13 +1,10 @@
 // include the basic windows header files and the Direct3D header file
-#define _CRT_SECURE_NO_WARNINGS
 
 // include the basic windows header files and the Direct3D header file
 #include <windows.h>
 #include <windowsx.h>
 #include <d3d9.h>
 #include <d3dx9.h>
-#include <iostream>
-#include <fstream>
 #include "Utils.h"
 
 // define the screen resolution
@@ -51,18 +48,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
     HWND hWnd;
     WNDCLASSEX wc;
 
-    std::string stringVar = "fde";
-    int intvar = 758;
-
-    // Print string var
-    Utils::DebugLogMessage("Test");
-    Utils::DebugLogMessage(&stringVar);
-
-    // Print int var
-    Utils::DebugLogMessage(&intvar);
-    Utils::DebugLogMessage(653);
-
-
+    
 
     ZeroMemory(&wc, sizeof(WNDCLASSEX));
 
@@ -222,6 +208,7 @@ void render_frame(void)
     d3ddev->SetIndices(i_buffer);
 
     // draw the pyramid
+    
 
     d3ddev->SetTransform(D3DTS_WORLD, &temp);
 

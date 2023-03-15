@@ -61,5 +61,5 @@ void Transform::Rotate(float NewRoll,float NewPitch,float NewYaw )
 
 float Transform::DegToRad(float Angle)
 {
-	return Angle * (M_PI /180);
+	return Angle * (M_PI /180.0f);
 }
