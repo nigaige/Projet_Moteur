@@ -14,12 +14,11 @@
 class Shader
 {
 private:
-	LPD3DXBUFFER shaderContent;
-	LPDIRECT3DDEVICE9 _d3ddev;
+	IDirect3DVertexShader9** _ppShader;
 
 public:
 
-	Shader(LPDIRECT3DDEVICE9 d3ddev);
+	Shader(IDirect3DVertexShader9** ppShader);
 	~Shader();
 
 	//Charge le shader grâce à un contenu.

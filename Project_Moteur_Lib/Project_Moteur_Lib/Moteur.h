@@ -7,6 +7,11 @@
 #include "Vertice.h"
 #include "GameObject.h"
 
+#include <iostream>
+#include <fstream>
+
+#include "Shader.h"
+
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 
@@ -53,7 +58,6 @@ public:
 
     void addMeshToscene(Vertice verti);
 
-
-
+    Shader LoadShader(std::string* shaderPath);
 };
 
