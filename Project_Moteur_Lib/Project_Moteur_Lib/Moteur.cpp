@@ -62,7 +62,7 @@ void Moteur::initD3D(HWND hWnd)
 
 }
 
-void Moteur::render(vector<GameObject*> gameObjectList, int size) 
+void Moteur::render(int size) 
 {
 
 
@@ -90,8 +90,8 @@ void Moteur::render(vector<GameObject*> gameObjectList, int size)
             // select the vertex and index buffers to use
 
             //TODO MERGE
-            //d3ddev->SetStreamSource(0, vertToDisaply->getVBuffer, 0, sizeof(CUSTOMVERTEX));
-            //d3ddev->SetIndices(vertToDisaply->getIBuffer);
+            //d3ddev->SetStreamSource(0, vertToDisaply->GetVBuffer, 0, sizeof(CUSTOMVERTEX));
+            //d3ddev->SetIndices(vertToDisaply->GetIBuffer);
 
 
 
@@ -141,6 +141,11 @@ void Moteur::setUpRenderCamera() {
     d3ddev->SetTransform(D3DTS_PROJECTION, &matProjection);     // set the projection
 
 
+}
+
+void Moteur::addGameObject(GameObject* GO)
+{
+    gameObjectList.push_back(GO);
 }
 
 

@@ -30,7 +30,7 @@ private:
     HWND hWnd;
     WNDCLASSEX wc;
 
-
+    vector<GameObject*> gameObjectList;
 
 
 public:
@@ -44,10 +44,11 @@ public:
 
 
     void initD3D(HWND hWnd);    // sets up and initializes Direct3D
-    void render(vector<GameObject*> gameObjectList, int size);    // renders a single frame
+    void render(int size);    // renders a single frame
     void cleanD3D(void);    // closes Direct3D and releases memory
     void init_light(void);    // sets up the light and the material
     void setUpRenderCamera();
+    void addGameObject(GameObject* GO);
 
     void addMeshToscene(Vertice verti);
 
