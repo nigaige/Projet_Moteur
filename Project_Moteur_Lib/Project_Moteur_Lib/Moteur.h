@@ -4,8 +4,8 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 
-#include "GameObject.h"
 #include "Vertice.h"
+#include "GameObject.h"
 
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
@@ -31,6 +31,7 @@ private:
     WNDCLASSEX wc;
 
     vector<GameObject*> gameObjectList;
+    int goLisSize;
 
 
 public:
@@ -44,7 +45,7 @@ public:
 
 
     void initD3D(HWND hWnd);    // sets up and initializes Direct3D
-    void render(int size);    // renders a single frame
+    void render(void);    // renders a single frame
     void cleanD3D(void);    // closes Direct3D and releases memory
     void init_light(void);    // sets up the light and the material
     void setUpRenderCamera();

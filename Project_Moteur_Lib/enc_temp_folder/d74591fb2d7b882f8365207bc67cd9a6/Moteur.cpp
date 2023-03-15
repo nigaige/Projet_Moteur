@@ -85,7 +85,7 @@ void Moteur::render(void)
 
             //Vertice* vertToDisplay =  gameObjectList[i]->findComponent<Vertice>();
             
-            //Vertice* vertToDisplay = nullptr;
+            Vertice* vertToDisplay = nullptr;
             if (vertToDisplay == nullptr)  continue;
 
             //TODO material

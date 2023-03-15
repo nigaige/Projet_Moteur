@@ -32,7 +32,7 @@ public:
 	LPDIRECT3DINDEXBUFFER9 GetIBuffer();
 	void SetVBuffer(LPDIRECT3DVERTEXBUFFER9 v_buffer);
 
-	int GetPrimitvMethode();
+	D3DPRIMITIVETYPE GetPrimitvMethode();
 	int GetNbPrimitives();
 	int GetNbVertex();
 };

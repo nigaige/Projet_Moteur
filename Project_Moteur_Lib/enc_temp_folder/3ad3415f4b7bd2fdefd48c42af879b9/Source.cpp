@@ -28,6 +28,7 @@
 
 
 
+    GameObject* obj;
 
 
 // the entry point for any Windows program
@@ -37,6 +38,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
     int nCmdShow)
 {
 
+    obj = new GameObject();
+    obj->addComponent(new Vertice());
 
 
 
@@ -47,11 +50,6 @@ int WINAPI WinMain(HINSTANCE hInstance,
         nCmdShow,
         SCREEN_HEIGHT,
         SCREEN_WIDTH);
-
-
-    //INIT SCENE
-
-
 
     // enter the main loop:
 

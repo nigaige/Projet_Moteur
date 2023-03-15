@@ -91,7 +91,7 @@ void Vertice::SetVBuffer(LPDIRECT3DVERTEXBUFFER9 newv_buffer)
     v_buffer = newv_buffer;
 }
 
-int Vertice::GetPrimitvMethode()
+D3DPRIMITIVETYPE Vertice::GetPrimitvMethode()
 {
     return primitivMethode_;
 }
