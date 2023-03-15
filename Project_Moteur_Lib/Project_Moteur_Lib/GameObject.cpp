@@ -11,12 +11,12 @@ GameObject::GameObject(Transform* T)
 	transform_ = T;
 }
 
-void GameObject::addComponent(AbstractComponent* comp)
+void GameObject::addComponent(Component* comp)
 {
 	componentList.push_back(comp);
 }
 
-void GameObject::rmComponent(AbstractComponent* comp)
+void GameObject::rmComponent(Component* comp)
 {
 
 	for (int i = 0; i < maxComponent; i++) {
@@ -28,7 +28,7 @@ void GameObject::rmComponent(AbstractComponent* comp)
 	throw "Component doesn't exis or belong to this Gameobject";
 }
 
-AbstractComponent* GameObject::getComponent(int index)
+Component* GameObject::getComponent(int index)
 {
 	return componentList[index];
 }
@@ -36,23 +36,6 @@ AbstractComponent* GameObject::getComponent(int index)
 void GameObject::rmComponent(int index)
 {
 	delete componentList[index];
-	componentList[index] = new AbstractComponent;
+	componentList[index] = new Component;
 }
 
-template<typename T>
-inline T* GameObject::findComponent()
-{
-	/*
-	Call with:
-	gameobject.findcomponent<type>()
-	*/
-
-	for (Component comp : componentList)
-	{
-		if (typeid(*comp) == typeid(T)) {
-			return static_cast<T*>(comp);
-		}
-	}
-
-	return nullptr;
-}

@@ -10,7 +10,7 @@ private:
 	//MAKE CUSTOMIZABLE?
 	const static int maxComponent = 20;
 	Transform* transform_;
-	std::vector<AbstractComponent*> componentList;
+	std::vector<Component*> componentList;
 	int componentIndex = 0;
 	bool toDisplay_;
 
@@ -29,9 +29,9 @@ public:
 	 
 
 	
-	void addComponent(AbstractComponent* comp);
-	void rmComponent(AbstractComponent* comp);
-	AbstractComponent* getComponent(int index);
+	void addComponent(Component* comp);
+	void rmComponent(Component* comp);
+	Component* getComponent(int index);
 	void rmComponent(int index);
 	//void rmComponent(TYPE);
 
@@ -46,3 +46,22 @@ public:
 
 };
 
+
+
+/*
+Call with:
+gameobject.findcomponent<type>()
+*/
+
+template<typename T>
+inline T* GameObject::findComponent()
+{
+	for (Component* comp : componentList)
+	{
+		if (typeid(*comp) == typeid(T)) {
+			return static_cast<T*>(comp);
+		}
+	}
+
+	return nullptr;
+}

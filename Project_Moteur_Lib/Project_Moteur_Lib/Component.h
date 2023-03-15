@@ -1,9 +1,6 @@
 #pragma once
 
-class AbstractComponent {
-};
-
-class Component: public AbstractComponent
+class Component
 {
 private:
 	bool active;

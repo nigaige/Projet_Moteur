@@ -83,7 +83,7 @@ void Moteur::render(void)
     for (int i = 0; i < goLisSize; i++) {
         if (gameObjectList[i]->toDisplay()) {
 
-            //Vertice* vertToDisplay =  gameObjectList[i]->findComponent<Vertice>();
+            Vertice* vertToDisplay =  gameObjectList[i]->findComponent<Vertice>();
             
             //Vertice* vertToDisplay = nullptr;
             if (vertToDisplay == nullptr)  continue;
