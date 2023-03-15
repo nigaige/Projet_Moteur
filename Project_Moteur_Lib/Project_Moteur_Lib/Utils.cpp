@@ -16,7 +16,7 @@ void Utils::DebugLogMessage(std::string* message)
 void Utils::DebugLogMessage(int* message)
 {
     char msgd[10];
-    sprintf_s(msgd, "%d\n", &message);
+    sprintf_s(msgd, "%d\n", *message);
     OutputDebugStringA(msgd);
 }
 
