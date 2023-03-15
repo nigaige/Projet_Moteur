@@ -66,7 +66,7 @@ void Moteur::render(vector<GameObject*> gameObjectList, int size)
 {
 
 
-    // -------------------------TODO change gameobjectLIST location
+    // -------------------------TODO change gameobjectLIST location-------------------------------
 
     //TODO opti variable input
     d3ddev->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
