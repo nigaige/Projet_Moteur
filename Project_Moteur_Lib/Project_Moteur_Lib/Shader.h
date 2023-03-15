@@ -3,7 +3,6 @@
 #include <string>
 #include <d3dx9.h>
 #include <WinNT.h>
-#include <experimental/filesystem>
 
 class Shader
 {

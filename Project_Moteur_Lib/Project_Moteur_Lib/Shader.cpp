@@ -16,7 +16,8 @@ void Shader::LoadShader(LPD3DXBUFFER shaderContent_)
 void Shader::LoadShader(std::string* shaderPath)
 {
 
-	LPCSTR text = &shaderPath;
+
+	//LPCSTR text = &shaderPath;
 	/*LPTSTR text = L"";
 	HWND hEdit = GetDlgItem(hWnd, EDIT_MAIN);
 	int len = GetWindowTextLengthA(hEdit);
@@ -32,5 +33,8 @@ void Shader::LoadShader(std::string* shaderPath)
 	char c = 'W', t2[10];
 
 	auto my_path = std::experimental::filesystem::path(R"(C:\mon fichier.exe)").concat;*/
+	//std::string content = std::experimental::filesystem::path(R"(C:\mon fichier.exe)").;
+
+
 }
 
