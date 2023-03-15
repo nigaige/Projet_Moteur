@@ -1,53 +1,20 @@
 #include "Vertice.h"
 
-Vertice::Vertice()
+Vertice::Vertice(CUSTOMVERTEX* vertex, D3DPRIMITIVETYPE primitivMethode,LPDIRECT3DINDEXBUFFER9 ibuffer = NULL)
 {
-    struct CUSTOMVERTEX { FLOAT X, Y, Z; D3DVECTOR NORMAL; };
+    vertex_ = vertex;
+ 
 
-}
+    verticeSize_ = sizeof(vertex);
 
-void Vertice::init_graphics(LPDIRECT3DDEVICE9 d3ddev, D3DPRIMITIVETYPE primitivMethode , CUSTOMVERTEX vertices[], short indices[] = NULL)
-{
-
-    nbPrimitives = DeduceTriangle(vertices);
-    nbVertex = sizeof(vertices) / sizeof(CUSTOMVERTEX);
+    nbPrimitives = DeduceTriangle(vertex_);
+    nbVertex = sizeof(vertex_) / sizeof(CUSTOMVERTEX);
     primitivMethode_ = primitivMethode;
+    
+    i_buffer = ibuffer;
 
-    // create a vertex buffer interface called v_buffer
-        d3ddev->CreateVertexBuffer(24 * sizeof(CUSTOMVERTEX),
-            0,
-            CUSTOMFVF,
-            D3DPOOL_MANAGED,
-            &v_buffer,
-            NULL);
-
-        VOID* pVoid;    // a void pointer
-
-        // lock v_buffer and load the vertices into it
-        v_buffer->Lock(0, 0, (void**)&pVoid, 0);
-        memcpy(pVoid, &vertices, sizeof(vertices));
-        v_buffer->Unlock();
-
-
-
-        if (indices != NULL) {
-
-            // create an index buffer interface called i_buffer
-            d3ddev->CreateIndexBuffer(  sizeof(indices),  
-                                        0,
-                                        D3DFMT_INDEX16,
-                                        D3DPOOL_MANAGED,
-                                        &i_buffer,
-                                        NULL);
-
-            // lock i_buffer and load the indices into it
-            i_buffer->Lock(0, 0, (void**)&pVoid, 0);
-            memcpy(pVoid, &indices, sizeof(indices));
-            i_buffer->Unlock();
-
-        }
-        
 }
+
 
 
 int Vertice::DeduceTriangle(CUSTOMVERTEX vertices[]){
@@ -105,5 +72,6 @@ int Vertice::GetNbVertex()
 {
     return nbVertex;
 }
+
 
 

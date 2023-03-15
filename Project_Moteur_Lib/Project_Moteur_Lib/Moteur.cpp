@@ -92,19 +92,20 @@ void Moteur::render(void)
 
             // select the vertex and index buffers to use
 
-            //TODO MERGE
+
             d3ddev->SetStreamSource(0, vertToDisplay->GetVBuffer(), 0, sizeof(CUSTOMVERTEX));
-            d3ddev->SetIndices(vertToDisplay->GetIBuffer());
 
+            d3ddev->SetTransform(D3DTS_WORLD, gameObjectList[i]->transform()->GetRendu());
 
-
-            d3ddev->SetTransform(D3DTS_WORLD,gameObjectList[i]->transform()->GetRendu());
-
-            d3ddev->DrawIndexedPrimitive(vertToDisplay->GetPrimitvMethode(), 0, 0, vertToDisplay->GetNbVertex(), 0, vertToDisplay->GetNbPrimitives());
-
+            LPDIRECT3DINDEXBUFFER9 indices = vertToDisplay->GetIBuffer();
+            if (indices == NULL) {
+                d3ddev->DrawPrimitive(vertToDisplay->GetPrimitvMethode(), 0, vertToDisplay->GetNbPrimitives());
+            }
+            else {
+                d3ddev->SetIndices(indices);
+                d3ddev->DrawIndexedPrimitive(vertToDisplay->GetPrimitvMethode(), 0, 0, vertToDisplay->GetNbVertex(), 0, vertToDisplay->GetNbPrimitives());
+            }
         }
-
-
     }
 
     d3ddev->EndScene();
@@ -181,22 +182,12 @@ void Moteur::init_light(void)
     d3ddev->SetMaterial(&material);    // set the globably-used material to &material
 }
 
-void Moteur::addMeshToscene(Vertice verti)
+void Moteur::addMeshToscene(Vertice* verti)
 {
-    //TODO MERGE
-    //CUSTOMVERTEX vertices[] vertiverti.getVertex()
 
 
-    // create the vertices using the CUSTOMVERTEX struct
-    CUSTOMVERTEX vertices[] =
-    {
-        { 3.0f, -3.0f, 0.0f, D3DCOLOR_XRGB(0, 0, 255), },
-        { 0.0f, 3.0f, 0.0f, D3DCOLOR_XRGB(0, 255, 0), },
-        { -3.0f, -3.0f, 0.0f, D3DCOLOR_XRGB(255, 0, 0), },
-    };
-
-    // create a vertex buffer interface called v_buffer
-    d3ddev->CreateVertexBuffer(3 * sizeof(CUSTOMVERTEX),
+    //----------------VBUFFER
+    d3ddev->CreateVertexBuffer(verti->verticeSize(),
         0,
         CUSTOMFVF,
         D3DPOOL_MANAGED,
@@ -207,11 +198,24 @@ void Moteur::addMeshToscene(Vertice verti)
 
     // lock v_buffer and load the vertices into it
     v_buffer->Lock(0, 0, (void**)&pVoid, 0);
-    memcpy(pVoid, vertices, sizeof(vertices));
+    memcpy(pVoid, verti->vertex(), verti->verticeSize());
     v_buffer->Unlock();
     
-    //TODO MERGE
-    //verti.setVbuffer(v_buffer)
+    verti->SetVBuffer(v_buffer);
 
+
+    //----------------IBUFFER
+    d3ddev->CreateIndexBuffer(sizeof(indices),
+        0,
+        D3DFMT_INDEX16,
+        D3DPOOL_MANAGED,
+        &i_buffer,
+        NULL);
+
+
+    // lock v_buffer and load the vertices into it
+    v_buffer->Lock(0, 0, (void**)&pVoid, 0);
+    memcpy(pVoid, verti->indice(), indices);
+    v_buffer->Unlock();
 
 }

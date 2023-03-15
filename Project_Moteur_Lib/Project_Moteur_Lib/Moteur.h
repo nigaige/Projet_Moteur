@@ -12,6 +12,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 
 class Moteur
 {
+
 private:
 
     LPDIRECT3D9 d3d;    // the pointer to our Direct3D interface
@@ -21,7 +22,7 @@ private:
 
     struct CUSTOMVERTEX { FLOAT X, Y, Z; D3DVECTOR NORMAL; };
 
-    #define CUSTOMFVF (D3DFVF_XYZ | D3DFVF_NORMAL)
+#define CUSTOMFVF (D3DFVF_XYZ | D3DFVF_NORMAL)
 
     //SCREEN size
     int SWidth;
@@ -51,9 +52,8 @@ public:
     void setUpRenderCamera();
     void addGameObject(GameObject* GO);
 
-    void addMeshToscene(Vertice verti);
+    void addMeshToscene(Vertice* verti);
 
 
 
 };
-
