@@ -19,7 +19,6 @@ public:
 	
 	void addComponent(AbstractComponent* comp);
 	void rmComponent(AbstractComponent* comp);
-	AbstractComponent* getComponent(int index);
 	void rmComponent(int index);
 	//void rmComponent(TYPE);
 	//void findComponent(TYPE);

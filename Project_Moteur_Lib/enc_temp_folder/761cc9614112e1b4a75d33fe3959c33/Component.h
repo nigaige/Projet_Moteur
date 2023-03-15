@@ -3,7 +3,7 @@
 class AbstractComponent {
 };
 
-//template <class T> //TODO FIX
+template <class T>
 class Component: public AbstractComponent
 {
 private:

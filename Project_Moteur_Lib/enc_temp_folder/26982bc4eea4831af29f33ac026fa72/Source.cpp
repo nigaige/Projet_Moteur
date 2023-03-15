@@ -1,50 +1,37 @@
 // include the basic windows header files and the Direct3D header file
+#include <windows.h>
+#include <windowsx.h>
+#include <d3d9.h>
+#include <d3dx9.h>
 
-#pragma region Include and define
-    #include <windows.h>
-    #include <windowsx.h>
-    #include <d3d9.h>
-    #include <d3dx9.h>
+// define the screen resolution
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 600
 
-#include "GameObject.h"
-#include "Vertice.h"
+// include the Direct3D Library files
+#pragma comment (lib, "d3d9.lib")
+#pragma comment (lib, "d3dx9.lib")
 
-    // define the screen resolution
-    #define SCREEN_WIDTH 800
-    #define SCREEN_HEIGHT 600
-
-    // include the Direct3D Library files
-    #pragma comment (lib, "d3d9.lib")
-    #pragma comment (lib, "d3dx9.lib")
-
-    // global declarations
-    LPDIRECT3D9 d3d;    // the pointer to our Direct3D interface
-    LPDIRECT3DDEVICE9 d3ddev;    // the pointer to the device class
-    LPDIRECT3DVERTEXBUFFER9 v_buffer = NULL;    // the pointer to the vertex buffer
-    LPDIRECT3DINDEXBUFFER9 i_buffer = NULL;
+// global declarations
+LPDIRECT3D9 d3d;    // the pointer to our Direct3D interface
+LPDIRECT3DDEVICE9 d3ddev;    // the pointer to the device class
+LPDIRECT3DVERTEXBUFFER9 v_buffer = NULL;    // the pointer to the vertex buffer
+LPDIRECT3DINDEXBUFFER9 i_buffer = NULL;
 
 
-    // function prototypes
-    void initD3D(HWND hWnd);    // sets up and initializes Direct3D
-    void render_frame(void);    // renders a single frame
-    void cleanD3D(void);    // closes Direct3D and releases memory
-    void init_graphics(void);    // 3D declarations
-    void init_light(void);    // sets up the light and the material
+// function prototypes
+void initD3D(HWND hWnd);    // sets up and initializes Direct3D
+void render_frame(void);    // renders a single frame
+void cleanD3D(void);    // closes Direct3D and releases memory
+void init_graphics(void);    // 3D declarations
+void init_light(void);    // sets up the light and the material
 
 
-    struct CUSTOMVERTEX { FLOAT X, Y, Z; D3DVECTOR NORMAL; };
-    #define CUSTOMFVF (D3DFVF_XYZ | D3DFVF_NORMAL)
+struct CUSTOMVERTEX { FLOAT X, Y, Z; D3DVECTOR NORMAL; };
+#define CUSTOMFVF (D3DFVF_XYZ | D3DFVF_NORMAL)
 
-    // the WindowProc function prototype
-    LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-
-
-#pragma endregion
-
-
-
-
-    GameObject* obj;
+// the WindowProc function prototype
+LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 
 // the entry point for any Windows program
@@ -53,12 +40,6 @@ int WINAPI WinMain(HINSTANCE hInstance,
     LPSTR lpCmdLine,
     int nCmdShow)
 {
-
-    //TODO fiw drawing
-    obj = new GameObject();
-    obj->addComponent(new Vertice());
-    (Vertice) (obj->getComponent(0));
-        //.Draw();
 
 
     HWND hWnd;
@@ -243,105 +224,88 @@ void cleanD3D(void)
 }
 
 
-
-void init_graphic(void) {
-
-
-
-
-}
-
-#pragma region init_graphic
-/*
-    // this is the function that puts the 3D models into video RAM
-    void init_graphics(void)
+// this is the function that puts the 3D models into video RAM
+void init_graphics(void)
+{
+    // create the vertices using the CUSTOMVERTEX struct
+    CUSTOMVERTEX vertices[] =
     {
-        // create the vertices using the CUSTOMVERTEX struct
-        CUSTOMVERTEX vertices[] =
-        {
-            { -3.0f, -3.0f, 3.0f, 0.0f, 0.0f, 1.0f, },    // side 1
-            { 3.0f, -3.0f, 3.0f, 0.0f, 0.0f, 1.0f, },
-            { -3.0f, 3.0f, 3.0f, 0.0f, 0.0f, 1.0f, },
-            { 3.0f, 3.0f, 3.0f, 0.0f, 0.0f, 1.0f, },
+        { -3.0f, -3.0f, 3.0f, 0.0f, 0.0f, 1.0f, },    // side 1
+        { 3.0f, -3.0f, 3.0f, 0.0f, 0.0f, 1.0f, },
+        { -3.0f, 3.0f, 3.0f, 0.0f, 0.0f, 1.0f, },
+        { 3.0f, 3.0f, 3.0f, 0.0f, 0.0f, 1.0f, },
 
-            { -3.0f, -3.0f, -3.0f, 0.0f, 0.0f, -1.0f, },    // side 2
-            { -3.0f, 3.0f, -3.0f, 0.0f, 0.0f, -1.0f, },
-            { 3.0f, -3.0f, -3.0f, 0.0f, 0.0f, -1.0f, },
-            { 3.0f, 3.0f, -3.0f, 0.0f, 0.0f, -1.0f, },
+        { -3.0f, -3.0f, -3.0f, 0.0f, 0.0f, -1.0f, },    // side 2
+        { -3.0f, 3.0f, -3.0f, 0.0f, 0.0f, -1.0f, },
+        { 3.0f, -3.0f, -3.0f, 0.0f, 0.0f, -1.0f, },
+        { 3.0f, 3.0f, -3.0f, 0.0f, 0.0f, -1.0f, },
 
-            { -3.0f, 3.0f, -3.0f, 0.0f, 1.0f, 0.0f, },    // side 3
-            { -3.0f, 3.0f, 3.0f, 0.0f, 1.0f, 0.0f, },
-            { 3.0f, 3.0f, -3.0f, 0.0f, 1.0f, 0.0f, },
-            { 3.0f, 3.0f, 3.0f, 0.0f, 1.0f, 0.0f, },
+        { -3.0f, 3.0f, -3.0f, 0.0f, 1.0f, 0.0f, },    // side 3
+        { -3.0f, 3.0f, 3.0f, 0.0f, 1.0f, 0.0f, },
+        { 3.0f, 3.0f, -3.0f, 0.0f, 1.0f, 0.0f, },
+        { 3.0f, 3.0f, 3.0f, 0.0f, 1.0f, 0.0f, },
 
-            { -3.0f, -3.0f, -3.0f, 0.0f, -1.0f, 0.0f, },    // side 4
-            { 3.0f, -3.0f, -3.0f, 0.0f, -1.0f, 0.0f, },
-            { -3.0f, -3.0f, 3.0f, 0.0f, -1.0f, 0.0f, },
-            { 3.0f, -3.0f, 3.0f, 0.0f, -1.0f, 0.0f, },
+        { -3.0f, -3.0f, -3.0f, 0.0f, -1.0f, 0.0f, },    // side 4
+        { 3.0f, -3.0f, -3.0f, 0.0f, -1.0f, 0.0f, },
+        { -3.0f, -3.0f, 3.0f, 0.0f, -1.0f, 0.0f, },
+        { 3.0f, -3.0f, 3.0f, 0.0f, -1.0f, 0.0f, },
 
-            { 3.0f, -3.0f, -3.0f, 1.0f, 0.0f, 0.0f, },    // side 5
-            { 3.0f, 3.0f, -3.0f, 1.0f, 0.0f, 0.0f, },
-            { 3.0f, -3.0f, 3.0f, 1.0f, 0.0f, 0.0f, },
-            { 3.0f, 3.0f, 3.0f, 1.0f, 0.0f, 0.0f, },
+        { 3.0f, -3.0f, -3.0f, 1.0f, 0.0f, 0.0f, },    // side 5
+        { 3.0f, 3.0f, -3.0f, 1.0f, 0.0f, 0.0f, },
+        { 3.0f, -3.0f, 3.0f, 1.0f, 0.0f, 0.0f, },
+        { 3.0f, 3.0f, 3.0f, 1.0f, 0.0f, 0.0f, },
 
-            { -3.0f, -3.0f, -3.0f, -1.0f, 0.0f, 0.0f, },    // side 6
-            { -3.0f, -3.0f, 3.0f, -1.0f, 0.0f, 0.0f, },
-            { -3.0f, 3.0f, -3.0f, -1.0f, 0.0f, 0.0f, },
-            { -3.0f, 3.0f, 3.0f, -1.0f, 0.0f, 0.0f, },
-        };
+        { -3.0f, -3.0f, -3.0f, -1.0f, 0.0f, 0.0f, },    // side 6
+        { -3.0f, -3.0f, 3.0f, -1.0f, 0.0f, 0.0f, },
+        { -3.0f, 3.0f, -3.0f, -1.0f, 0.0f, 0.0f, },
+        { -3.0f, 3.0f, 3.0f, -1.0f, 0.0f, 0.0f, },
+    };
 
-        // create a vertex buffer interface called v_buffer
-        d3ddev->CreateVertexBuffer(24 * sizeof(CUSTOMVERTEX),
-            0,
-            CUSTOMFVF,
-            D3DPOOL_MANAGED,
-            &v_buffer,
-            NULL);
+    // create a vertex buffer interface called v_buffer
+    d3ddev->CreateVertexBuffer(24 * sizeof(CUSTOMVERTEX),
+        0,
+        CUSTOMFVF,
+        D3DPOOL_MANAGED,
+        &v_buffer,
+        NULL);
 
-        VOID* pVoid;    // a void pointer
+    VOID* pVoid;    // a void pointer
 
-        // lock v_buffer and load the vertices into it
-        v_buffer->Lock(0, 0, (void**)&pVoid, 0);
-        memcpy(pVoid, vertices, sizeof(vertices));
-        v_buffer->Unlock();
+    // lock v_buffer and load the vertices into it
+    v_buffer->Lock(0, 0, (void**)&pVoid, 0);
+    memcpy(pVoid, vertices, sizeof(vertices));
+    v_buffer->Unlock();
 
-        // create the indices using an int array
-        short indices[] =
-        {
-            0, 1, 2,    // side 1
-            2, 1, 3,
-            4, 5, 6,    // side 2
-            6, 5, 7,
-            8, 9, 10,    // side 3
-            10, 9, 11,
-            12, 13, 14,    // side 4
-            14, 13, 15,
-            16, 17, 18,    // side 5
-            18, 17, 19,
-            20, 21, 22,    // side 6
-            22, 21, 23,
-        };
+    // create the indices using an int array
+    short indices[] =
+    {
+        0, 1, 2,    // side 1
+        2, 1, 3,
+        4, 5, 6,    // side 2
+        6, 5, 7,
+        8, 9, 10,    // side 3
+        10, 9, 11,
+        12, 13, 14,    // side 4
+        14, 13, 15,
+        16, 17, 18,    // side 5
+        18, 17, 19,
+        20, 21, 22,    // side 6
+        22, 21, 23,
+    };
 
-        // create an index buffer interface called i_buffer
-        d3ddev->CreateIndexBuffer(36 * sizeof(short),
-            0,
-            D3DFMT_INDEX16,
-            D3DPOOL_MANAGED,
-            &i_buffer,
-            NULL);
+    // create an index buffer interface called i_buffer
+    d3ddev->CreateIndexBuffer(36 * sizeof(short),
+        0,
+        D3DFMT_INDEX16,
+        D3DPOOL_MANAGED,
+        &i_buffer,
+        NULL);
 
-        // lock i_buffer and load the indices into it
-        i_buffer->Lock(0, 0, (void**)&pVoid, 0);
-        memcpy(pVoid, indices, sizeof(indices));
-        i_buffer->Unlock();
-    }
-
-    */
-
-
-#pragma endregion
-
-
+    // lock i_buffer and load the indices into it
+    i_buffer->Lock(0, 0, (void**)&pVoid, 0);
+    memcpy(pVoid, indices, sizeof(indices));
+    i_buffer->Unlock();
+}
 
 // this is the function that sets up the lights and materials
 void init_light(void)

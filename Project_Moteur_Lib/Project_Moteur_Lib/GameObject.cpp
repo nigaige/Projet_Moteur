@@ -2,17 +2,28 @@
 
 void GameObject::addComponent(AbstractComponent* comp)
 {
-	componentList[componentIndex] = comp;
-	componentIndex++;
+	componentList.push_back(comp);
 }
 
 void GameObject::rmComponent(AbstractComponent* comp)
 {
-	delete componentList[componentIndex];
-	componentList[componentIndex] = new AbstractComponent;
 
+	for (int i = 0; i < maxComponent; i++) {
+		if (componentList[i] == comp) {
+			componentList.erase(componentList.begin() + i, componentList.begin() + i + 1);
+			return;
+		}
+	}
+	throw "Component doesn't exis or belong to this Gameobject";
+}
+
+AbstractComponent* GameObject::getComponent(int index)
+{
+	return componentList[index];
 }
 
 void GameObject::rmComponent(int index)
 {
+	delete componentList[index];
+	componentList[index] = new AbstractComponent;
 }

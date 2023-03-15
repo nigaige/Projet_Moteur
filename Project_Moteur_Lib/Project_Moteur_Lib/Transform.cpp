@@ -148,8 +148,7 @@ D3DXVECTOR3 Transform::GetvRot()
 {
 	D3DXQUATERNION getRot;
 	D3DXQuaternionRotationMatrix(&getRot, &mRot);
-	D3DXVECTOR3(DegToRad(getRot.x), DegToRad(getRot.y), DegToRad(getRot.z));
-	return;
+	return D3DXVECTOR3(DegToRad(getRot.x), DegToRad(getRot.y), DegToRad(getRot.z));
 }
 
 #pragma endregion
