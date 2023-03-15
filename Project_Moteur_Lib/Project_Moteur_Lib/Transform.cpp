@@ -245,9 +245,9 @@ void Transform::UpdateRendu()
 
 }
 
-D3DXMATRIX Transform::GetRendu()
+D3DXMATRIX* Transform::GetRendu()
 {
-	return mRendu;
+	return &mRendu;
 }
 
 float Transform::DegToRad(float Angle)

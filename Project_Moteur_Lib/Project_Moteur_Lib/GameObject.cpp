@@ -1,5 +1,16 @@
 #include "GameObject.h"
 
+GameObject::GameObject()
+{
+	toDisplay = false;
+}
+
+GameObject::GameObject(Transform T)
+{
+	toDisplay = false;
+	transform_ = &T;
+}
+
 void GameObject::addComponent(AbstractComponent* comp)
 {
 	componentList.push_back(comp);

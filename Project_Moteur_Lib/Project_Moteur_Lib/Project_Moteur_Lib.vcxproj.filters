@@ -30,6 +30,9 @@
     <ClCompile Include="Vertice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Moteur.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -42,6 +45,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Vertice.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Moteur.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,6 +7,10 @@
 
 #include <cmath>
 #include <iostream>
+
+
+//TODO FIX variable name
+
 using namespace std;
 class Transform
 {
@@ -57,7 +61,7 @@ public:
 	D3DXVECTOR3 GetvRot();
 	
 	void UpdateRendu();
-	D3DXMATRIX GetRendu();
+	D3DXMATRIX* GetRendu();
 	void addRotation(float NewYaw, float NewPitch, float NewRoll, bool isRadian = false);
 
 	void SetvPosX(float NewPos);

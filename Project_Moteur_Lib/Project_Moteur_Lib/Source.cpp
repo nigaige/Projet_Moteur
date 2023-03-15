@@ -6,8 +6,10 @@
     #include <d3d9.h>
     #include <d3dx9.h>
 
-#include "GameObject.h"
-#include "Vertice.h"
+    #include "Moteur.h"
+
+    #include "GameObject.h"
+    #include "Vertice.h"
 
     // define the screen resolution
     #define SCREEN_WIDTH 800
@@ -17,25 +19,7 @@
     #pragma comment (lib, "d3d9.lib")
     #pragma comment (lib, "d3dx9.lib")
 
-    // global declarations
-    LPDIRECT3D9 d3d;    // the pointer to our Direct3D interface
-    LPDIRECT3DDEVICE9 d3ddev;    // the pointer to the device class
-    LPDIRECT3DVERTEXBUFFER9 v_buffer = NULL;    // the pointer to the vertex buffer
-    LPDIRECT3DINDEXBUFFER9 i_buffer = NULL;
 
-
-    // function prototypes
-    void initD3D(HWND hWnd);    // sets up and initializes Direct3D
-    void render_frame(void);    // renders a single frame
-    void cleanD3D(void);    // closes Direct3D and releases memory
-    void init_graphics(void);    // 3D declarations
-    void init_light(void);    // sets up the light and the material
-
-
-    struct CUSTOMVERTEX { FLOAT X, Y, Z; D3DVECTOR NORMAL; };
-    #define CUSTOMFVF (D3DFVF_XYZ | D3DFVF_NORMAL)
-
-    // the WindowProc function prototype
     LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 
@@ -57,32 +41,11 @@ int WINAPI WinMain(HINSTANCE hInstance,
     //TODO fiw drawing
     obj = new GameObject();
     obj->addComponent(new Vertice());
-    (Vertice) (obj->getComponent(0));
+  //  (Vertice) (obj->getComponent(0));
         //.Draw();
 
 
-    HWND hWnd;
-    WNDCLASSEX wc;
 
-    ZeroMemory(&wc, sizeof(WNDCLASSEX));
-
-    wc.cbSize = sizeof(WNDCLASSEX);
-    wc.style = CS_HREDRAW | CS_VREDRAW;
-    wc.lpfnWndProc = WindowProc;
-    wc.hInstance = hInstance;
-    wc.hCursor = LoadCursor(NULL, IDC_CROSS);
-    wc.lpszClassName = L"WindowClass";
-
-    RegisterClassEx(&wc);
-
-    hWnd = CreateWindowEx(NULL, L"WindowClass", L"Our Direct3D Program",
-        WS_OVERLAPPEDWINDOW, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT,
-        NULL, NULL, hInstance, NULL);
-
-    ShowWindow(hWnd, nCmdShow);
-
-    // set up and initialize Direct3D
-    initD3D(hWnd);
 
     // enter the main loop:
 
