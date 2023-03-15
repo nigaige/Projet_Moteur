@@ -131,19 +131,17 @@
   <ItemGroup>
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="Material.cpp" />
-    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Moteur.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="Vertice.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="Material.h" />
-    <ClInclude Include="Shader.h" />
+    <ClInclude Include="Moteur.h" />
     <ClInclude Include="Transform.h" />
-    <ClInclude Include="Utils.h" />
+    <ClInclude Include="Vertice.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

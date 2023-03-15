@@ -1,27 +1,66 @@
 #pragma once
 #include "Component.h"
 #include "Transform.h"
-
+#include <vector>
 
 class GameObject
 {
 private:
 	//MAKE CUSTOMIZABLE?
 	const static int maxComponent = 20;
-	Transform transform_;
-	AbstractComponent* componentList[maxComponent];
+	Transform* transform_;
+	std::vector<Component*> componentList;
+	int componentIndex = 0;
+	bool toDisplay_;
 
 public:
-	Transform transform()			{ return transform_; }
-	void transform(Transform trans) { transform_ = trans; }
+	GameObject();
+	GameObject(Transform* T);
+
+
+	Transform* transform()				{ return transform_; }
+	void transform(Transform* trans)	{ transform_ = trans; }
+
+	bool toDisplay()					{ return toDisplay_; }
+	void toDisplay(bool display)		{ toDisplay_ = display; }
+
+
+	 
+
 	
-	void addComponent(AbstractComponent* comp);
-	void rmComponent(AbstractComponent* comp);
+	void addComponent(Component* comp);
+	void rmComponent(Component* comp);
+	Component* getComponent(int index);
 	void rmComponent(int index);
 	//void rmComponent(TYPE);
-	//void findComponent(TYPE);
+
+	template <typename T>
+	T* findComponent();
+
+
+	void Draw(){}
+	bool collide(){}//Give another Collider
 	
 
 
 };
 
+
+
+/*
+Call with:
+gameobject.findcomponent<type>()
+*/
+
+template<typename T>
+inline T* GameObject::findComponent()
+{
+	for (Component* comp : componentList)
+	{
+		if (typeid(*comp) == typeid(T)) {
+			return static_cast<T*>(comp);
+		}
+	}
+
+	return nullptr;
+}

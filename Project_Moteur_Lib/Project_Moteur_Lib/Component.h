@@ -1,15 +1,11 @@
 #pragma once
 
-class AbstractComponent {
-
-};
-
-template <class T>
-class Component: public AbstractComponent
+class Component
 {
+private:
 	bool active;
+public:
 	void setActive(bool a = true);
-
 
 };
 
