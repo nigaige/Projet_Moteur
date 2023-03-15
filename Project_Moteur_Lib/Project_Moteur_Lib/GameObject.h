@@ -12,17 +12,31 @@ private:
 	Transform* transform_;
 	std::vector<AbstractComponent*> componentList;
 	int componentIndex = 0;
+	bool toDisplay_;
 
 public:
-	Transform* transform()			{ return transform_; }
-	void transform(Transform* trans) { transform_ = trans; }
+	GameObject();
+	GameObject(Transform* T);
+
+
+	Transform* transform()				{ return transform_; }
+	void transform(Transform* trans)	{ transform_ = trans; }
+
+	bool toDisplay()					{ return toDisplay_; }
+	void toDisplay(bool display)		{ toDisplay_ = display; }
+
+
+	 
+
 	
 	void addComponent(AbstractComponent* comp);
 	void rmComponent(AbstractComponent* comp);
 	AbstractComponent* getComponent(int index);
 	void rmComponent(int index);
 	//void rmComponent(TYPE);
-	//void findComponent(TYPE);
+
+	template <typename T>
+	T* findComponent();
 
 
 	void Draw(){}

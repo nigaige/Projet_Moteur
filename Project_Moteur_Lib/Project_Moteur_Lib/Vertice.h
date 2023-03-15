@@ -7,6 +7,8 @@
 struct CUSTOMVERTEX { FLOAT X, Y, Z; D3DVECTOR NORMAL; };
 #define CUSTOMFVF (D3DFVF_XYZ | D3DFVF_NORMAL)
 
+
+
 class Vertice: public Component
 {
 private: 
