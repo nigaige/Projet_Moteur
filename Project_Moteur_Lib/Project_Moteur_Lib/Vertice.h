@@ -9,48 +9,29 @@ struct CUSTOMVERTEX { FLOAT X, Y, Z; D3DVECTOR NORMAL; };
 
 class Vertice: public Component
 {
-private:
-    // create the vertices using the CUSTOMVERTEX struct
-   const CUSTOMVERTEX vertices[24] =
-    {
-        { -3.0f, -3.0f, 3.0f, 0.0f, 0.0f, 1.0f, },    // side 1
-        { 3.0f, -3.0f, 3.0f, 0.0f, 0.0f, 1.0f, },
-        { -3.0f, 3.0f, 3.0f, 0.0f, 0.0f, 1.0f, },
-        { 3.0f, 3.0f, 3.0f, 0.0f, 0.0f, 1.0f, },
+private: 
+	LPDIRECT3DINDEXBUFFER9 i_buffer;
+	LPDIRECT3DVERTEXBUFFER9 v_buffer;
+	D3DPRIMITIVETYPE primitivMethode_;
+	int nbVertex = 0;
+	int nbPrimitives = 0;
 
-        { -3.0f, -3.0f, -3.0f, 0.0f, 0.0f, -1.0f, },    // side 2
-        { -3.0f, 3.0f, -3.0f, 0.0f, 0.0f, -1.0f, },
-        { 3.0f, -3.0f, -3.0f, 0.0f, 0.0f, -1.0f, },
-        { 3.0f, 3.0f, -3.0f, 0.0f, 0.0f, -1.0f, },
-
-        { -3.0f, 3.0f, -3.0f, 0.0f, 1.0f, 0.0f, },    // side 3
-        { -3.0f, 3.0f, 3.0f, 0.0f, 1.0f, 0.0f, },
-        { 3.0f, 3.0f, -3.0f, 0.0f, 1.0f, 0.0f, },
-        { 3.0f, 3.0f, 3.0f, 0.0f, 1.0f, 0.0f, },
-
-        { -3.0f, -3.0f, -3.0f, 0.0f, -1.0f, 0.0f, },    // side 4
-        { 3.0f, -3.0f, -3.0f, 0.0f, -1.0f, 0.0f, },
-        { -3.0f, -3.0f, 3.0f, 0.0f, -1.0f, 0.0f, },
-        { 3.0f, -3.0f, 3.0f, 0.0f, -1.0f, 0.0f, },
-
-        { 3.0f, -3.0f, -3.0f, 1.0f, 0.0f, 0.0f, },    // side 5
-        { 3.0f, 3.0f, -3.0f, 1.0f, 0.0f, 0.0f, },
-        { 3.0f, -3.0f, 3.0f, 1.0f, 0.0f, 0.0f, },
-        { 3.0f, 3.0f, 3.0f, 1.0f, 0.0f, 0.0f, },
-
-        { -3.0f, -3.0f, -3.0f, -1.0f, 0.0f, 0.0f, },    // side 6
-        { -3.0f, -3.0f, 3.0f, -1.0f, 0.0f, 0.0f, },
-        { -3.0f, 3.0f, -3.0f, -1.0f, 0.0f, 0.0f, },
-        { -3.0f, 3.0f, 3.0f, -1.0f, 0.0f, 0.0f, },
-    };
-	LPDIRECT3DINDEXBUFFER9 iBuffer;
 public:
 	Vertice();
 	//TODO load fromFile
 
-	void init_graphics(LPDIRECT3DDEVICE9 d3ddev, LPDIRECT3DVERTEXBUFFER9 v_buffer, LPDIRECT3DINDEXBUFFER9 i_buffer);
+	void init_graphics(LPDIRECT3DDEVICE9 d3ddev, D3DPRIMITIVETYPE primitivMethode, CUSTOMVERTEX vertices[], short indices[]);
 	
 	void Draw(LPDIRECT3DDEVICE9 d3ddev);
 
+	int DeduceTriangle(CUSTOMVERTEX vertices[]);
+
+	LPDIRECT3DVERTEXBUFFER9 GetVBuffer();
+	LPDIRECT3DINDEXBUFFER9 GetIBuffer();
+	void SetVBuffer(LPDIRECT3DVERTEXBUFFER9 v_buffer);
+
+	int GetPrimitvMethode();
+	int GetNbPrimitives();
+	int GetNbVertex();
 };
 

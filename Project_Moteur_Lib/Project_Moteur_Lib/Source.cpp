@@ -57,8 +57,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
     //TODO fiw drawing
     obj = new GameObject();
     obj->addComponent(new Vertice());
-    (Vertice) (obj->getComponent(0));
-        //.Draw();
+          //.Draw();
 
 
     HWND hWnd;
