@@ -11,9 +11,12 @@ GameObject::GameObject(Transform* T)
 	transform_ = T;
 }
 
+
+
 void GameObject::addComponent(Component* comp)
 {
 	componentList.push_back(comp);
+	
 }
 
 void GameObject::rmComponent(Component* comp)
@@ -37,5 +40,10 @@ void GameObject::rmComponent(int index)
 {
 	delete componentList[index];
 	componentList[index] = new Component;
+}
+
+int GameObject::countComponent()
+{
+	return componentList.size();
 }
 

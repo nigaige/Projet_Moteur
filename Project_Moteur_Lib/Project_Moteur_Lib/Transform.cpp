@@ -10,6 +10,8 @@ Transform::Transform()
 	D3DXMatrixIdentity(&mScale);
 	D3DXMatrixIdentity(&mPos);
 	D3DXMatrixIdentity(&mRot);
+	UpdateRendu();
+
 }
 
 #pragma region rotation

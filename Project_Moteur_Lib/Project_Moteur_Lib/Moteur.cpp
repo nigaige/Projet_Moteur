@@ -55,10 +55,9 @@ void Moteur::initD3D(HWND hWnd)
 
     init_light();    // call the function to initialize the light and material
 
-    d3ddev->SetRenderState(D3DRS_LIGHTING, TRUE);    // turn on the 3D lighting
+    d3ddev->SetRenderState(D3DRS_LIGHTING, FALSE);    // turn on the 3D lighting
     d3ddev->SetRenderState(D3DRS_ZENABLE, TRUE);    // turn on the z-buffer
     d3ddev->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(50, 50, 50));    // ambient light
-
 
 }
 
@@ -78,24 +77,56 @@ void Moteur::render(void)
     d3ddev->SetFVF(CUSTOMFVF);
 
     //TODO CAMERA INPUT
-    setUpRenderCamera();
-
+    //setUpRenderCamera();
+    Utils::DebugLogMessage("---NOUVELLE FRAME---");
     for (int i = 0; i < goLisSize; i++) {
         if (gameObjectList[i]->toDisplay()) {
 
             Vertice* vertToDisplay =  gameObjectList[i]->findComponent<Vertice>();
-            
+
             //Vertice* vertToDisplay = nullptr;
             if (vertToDisplay == nullptr)  continue;
 
+
             //TODO material
 
-            // select the vertex and index buffers to use
+            // SET UP THE PIPELINE
 
+            D3DXMATRIX matRotateY;    // a matrix to store the rotation information
+
+            static float index  = 0.0f; index += 0.05f;    // an ever-increasing float value
+
+            // build a matrix to rotate the model based on the increasing float value
+            D3DXMatrixRotationY(&matRotateY, index);
+
+            // tell Direct3D about our matrix
+            d3ddev->SetTransform(D3DTS_WORLD, &matRotateY);
+
+            D3DXVECTOR3 pEye(0.0f, 0.0f, 10.0f);
+            D3DXVECTOR3 pAt(0.0f, 0.0f, 0.0f);
+            D3DXVECTOR3 pUp(0.0f, 1.0f, 0.0f);
+            D3DXMATRIX matView;    // the view transform matrix
+
+
+            D3DXMatrixLookAtLH(&matView,
+                &pEye,    // the camera position
+                &pAt,    // the look-at position
+                &pUp);    // the up direction
+            d3ddev->SetTransform(D3DTS_VIEW, &matView);    // set the view transform to matView
+
+            d3ddev->SetTransform(D3DTS_VIEW, &matView);    // set the view transform to matView
+
+            D3DXMATRIX matProjection;     // the projection transform matrix
+
+            D3DXMatrixPerspectiveFovLH(&matProjection,
+                D3DXToRadian(45),    // the horizontal field of view
+                (FLOAT)SWidth  / (FLOAT)SHeight, // aspect ratio
+                1.0f,    // the near view-plane
+                100.0f);    // the far view-plane
+
+            d3ddev->SetTransform(D3DTS_PROJECTION, &matProjection);    // set the projection
 
             d3ddev->SetStreamSource(0, vertToDisplay->GetVBuffer(), 0, sizeof(CUSTOMVERTEX));
-
-            d3ddev->SetTransform(D3DTS_WORLD, gameObjectList[i]->transform()->GetRendu());
 
             LPDIRECT3DINDEXBUFFER9 indices = vertToDisplay->GetIBuffer();
             if (indices == NULL) {
@@ -105,6 +136,8 @@ void Moteur::render(void)
                 d3ddev->SetIndices(indices);
                 d3ddev->DrawIndexedPrimitive(vertToDisplay->GetPrimitvMethode(), 0, 0, vertToDisplay->GetNbVertex(), 0, vertToDisplay->GetNbPrimitives());
             }
+            Utils::DebugLogMessage(vertToDisplay->GetNbPrimitives());
+
         }
     }
 
@@ -123,7 +156,7 @@ void Moteur::setUpRenderCamera() {
     // set the view transform
     D3DXMATRIX matView;    // the view transform matrix
 
-    D3DXVECTOR3 pEye(0.0f, 5.0f, 15.0f);
+    D3DXVECTOR3 pEye(0.0f, 0.0f, 10.0f);
     D3DXVECTOR3 pAt(0.0f, 0.0f, 0.0f);
     D3DXVECTOR3 pUp(0.0f, 1.0f, 0.0f);
 
@@ -132,7 +165,6 @@ void Moteur::setUpRenderCamera() {
         &pEye,    // the camera position
         &pAt,    // the look-at position
         &pUp);    // the up direction
-    d3ddev->SetTransform(D3DTS_VIEW, &matView);    // set the view transform to matView
     d3ddev->SetTransform(D3DTS_VIEW, &matView);    // set the view transform to matView
 
     // set the projection transform
@@ -173,7 +205,7 @@ void Moteur::init_light(void)
     light.Direction = D3DXVECTOR3(-1.0f, -0.3f, -1.0f);
 
     d3ddev->SetLight(0, &light);    // send the light struct properties to light #0
-    d3ddev->LightEnable(0, TRUE);    // turn on light #0
+    d3ddev->LightEnable(0, FALSE);    // turn on light #0
 
     ZeroMemory(&material, sizeof(D3DMATERIAL9));    // clear out the struct for use
     material.Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);    // set diffuse color to white
@@ -184,10 +216,10 @@ void Moteur::init_light(void)
 
 void Moteur::addMeshToscene(Vertice* verti)
 {
-
+    LPDIRECT3DVERTEXBUFFER9 v_buffer = NULL;    // the pointer to the vertex buffer
 
     //----------------VBUFFER
-    d3ddev->CreateVertexBuffer(verti->verticeSize(),
+    d3ddev->CreateVertexBuffer(verti->verticeSize() * sizeof(CUSTOMVERTEX),
         0,
         CUSTOMFVF,
         D3DPOOL_MANAGED,
@@ -198,12 +230,18 @@ void Moteur::addMeshToscene(Vertice* verti)
 
     // lock v_buffer and load the vertices into it
     v_buffer->Lock(0, 0, (void**)&pVoid, 0);
-    memcpy(pVoid, verti->vertex(), verti->verticeSize());
+    memcpy(pVoid, verti->vertex(), sizeof(verti->vertex()));
     v_buffer->Unlock();
     
     verti->SetVBuffer(v_buffer);
 
 
+
+
+}
+
+LPDIRECT3DINDEXBUFFER9 Moteur::createIndiceBuffer(short indices[])
+{
     //----------------IBUFFER
     d3ddev->CreateIndexBuffer(sizeof(indices),
         0,
@@ -212,10 +250,13 @@ void Moteur::addMeshToscene(Vertice* verti)
         &i_buffer,
         NULL);
 
+    VOID* pVoid;    // a void pointer
 
     // lock v_buffer and load the vertices into it
-    v_buffer->Lock(0, 0, (void**)&pVoid, 0);
-    memcpy(pVoid, verti->indice(), indices);
-    v_buffer->Unlock();
+    i_buffer->Lock(0, 0, (void**)&pVoid, 0);
+    memcpy(pVoid, indices, sizeof(indices));
+    i_buffer->Unlock();
 
+
+    return i_buffer;
 }
