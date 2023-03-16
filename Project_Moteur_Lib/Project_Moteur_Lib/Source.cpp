@@ -25,8 +25,14 @@
 
 #pragma endregion
 
+    struct CUSTOMVERTEX { FLOAT X, Y, Z; D3DVECTOR NORMAL; };
 
-
+    CUSTOMVERTEX triangleMesh[] =
+    {
+        { 3.0f, -3.0f, 0.0f, D3DCOLOR_XRGB(0, 0, 255), },
+        { 0.0f, 3.0f, 0.0f, D3DCOLOR_XRGB(0, 255, 0), },
+        { -3.0f, -3.0f, 0.0f, D3DCOLOR_XRGB(255, 0, 0), },
+    };
 
 
 
@@ -48,10 +54,14 @@ int WINAPI WinMain(HINSTANCE hInstance,
         SCREEN_HEIGHT,
         SCREEN_WIDTH);
 
+   
 
     //INIT SCENE
+    GameObject* triangle = new GameObject();
+    Vertice* triangleVertice = new Vertice(triangleMesh, D3DPT_TRIANGLELIST);
 
-
+    triangle->addComponent(triangleVertice);
+    M->addGameObject(triangle);
 
     // enter the main loop:
 

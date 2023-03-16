@@ -12,19 +12,19 @@ struct CUSTOMVERTEX { FLOAT X, Y, Z; D3DVECTOR NORMAL; };
 class Vertice: public Component
 {
 private: 
-	LPDIRECT3DINDEXBUFFER9 i_buffer;
-	LPDIRECT3DVERTEXBUFFER9 v_buffer;
+	short i_buffer		= NULL;
+	LPDIRECT3DVERTEXBUFFER9 v_buffer	= NULL;
 	D3DPRIMITIVETYPE primitivMethode_;
 	int nbVertex = 0;
 	int nbPrimitives = 0;
+	CUSTOMVERTEX* vertex_ = nullptr;
+	int verticeSize_ = 0;
 
 public:
-	Vertice();
+	Vertice(CUSTOMVERTEX* vertex, D3DPRIMITIVETYPE primitivMethode, LPDIRECT3DINDEXBUFFER9 ibuffer = NULL);
 	//TODO load fromFile
-
-	void init_graphics(LPDIRECT3DDEVICE9 d3ddev, D3DPRIMITIVETYPE primitivMethode, CUSTOMVERTEX vertices[], short indices[]);
-	
-	void Draw(LPDIRECT3DDEVICE9 d3ddev);
+	CUSTOMVERTEX* vertex() { return vertex_; }
+	int verticeSize() { return verticeSize_; }
 
 	int DeduceTriangle(CUSTOMVERTEX vertices[]);
 
