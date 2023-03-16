@@ -132,18 +132,8 @@ void Moteur::render(void)
 	// SET UP THE PIPELINE
 	setUpCamera();
 
-	//TODO gameobject transform
-	D3DXMATRIX matProjection;     // the projection transform matrix
-
-	D3DXMatrixPerspectiveFovLH(&matProjection,
-		D3DXToRadian(45),    // the horizontal field of view
-		(FLOAT)SCREEN_WIDTH / (FLOAT)SCREEN_HEIGHT, // aspect ratio
-		1.0f,    // the near view-plane
-		100.0f);    // the far view-plane
-
-	d3ddev->SetTransform(D3DTS_PROJECTION, &matProjection);    // set the projection
-
 	for (GameObject* go : GOList) {
+		d3ddev->SetTransform(D3DTS_WORLD, go->transform()->displayValue());    // set the projection
 
 		//TODO transform
 		for (Mesh* m : go->meshToDraw()) {
@@ -170,8 +160,8 @@ void Moteur::setUpCamera() {//TODO Transform input
 	D3DXVECTOR3 pEye(0.0f, 0.0f, 10.0f);
 	D3DXVECTOR3 pAt(0.0f, 0.0f, 0.0f);
 	D3DXVECTOR3 pUp(0.0f, 1.0f, 0.0f);
-	D3DXMATRIX matView;    // the view transform matrix
 
+	D3DXMATRIX matView;    // the view transform matrix
 
 	D3DXMatrixLookAtLH(&matView,
 		&pEye,    // the camera position
@@ -186,6 +176,9 @@ void Moteur::setUpCamera() {//TODO Transform input
 		(FLOAT)SCREEN_WIDTH / (FLOAT)SCREEN_HEIGHT, // aspect ratio
 		1.0f,    // the near view-plane
 		100.0f);    // the far view-plane
+
+	d3ddev->SetTransform(D3DTS_PROJECTION, &matProjection);    // set the projection
+
 }
 
 void Moteur::addGameObject(GameObject* go)

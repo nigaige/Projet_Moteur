@@ -2,6 +2,8 @@
 
 #include <windows.h>
 #include <windowsx.h>
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include <iostream>
 #include <vector>
 
@@ -15,6 +17,8 @@ struct CUSTOMVERTEX { FLOAT X, Y, Z; DWORD COLOR; };
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
 
+#define DEGTORAD (M_PI / 180)
+#define RADTODEG (180 / M_PI)
 
 class Component;
 class Mesh;
@@ -41,4 +45,9 @@ public:
 	static void DebugLogMessage(std::string* message);
 	static void DebugLogMessage(int* message);
 	static void DebugLogMessage(int message);
+
+
+	static float DegToRad(float Angle);
+	static float RadToDeg(float Rad);
+
 };

@@ -30,3 +30,7 @@ void Utils::DebugLogMessage(int message)
     sprintf_s(msgd, "%d\n", message);
     OutputDebugStringA(msgd);
 }
+
+
+float Utils::DegToRad(float Angle)  { return Angle * DEGTORAD; }
+float Utils::RadToDeg(float Rad)    { return Rad * RADTODEG; }
