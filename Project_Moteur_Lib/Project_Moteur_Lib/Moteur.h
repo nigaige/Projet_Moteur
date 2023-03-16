@@ -22,7 +22,7 @@ private:
     LPDIRECT3DINDEXBUFFER9 i_buffer = NULL;
 
 
-    #define CUSTOMFVF (D3DFVF_XYZ | D3DFVF_NORMAL)
+    #define CUSTOMFVF (D3DFVF_XYZ | D3DFVF_DIFFUSE)
 
     //SCREEN size
     int SWidth;
@@ -40,9 +40,7 @@ public:
     void init(HINSTANCE hInstance,
         HINSTANCE hPrevInstance,
         LPSTR lpCmdLine,
-        int nCmdShow,
-        int SCREEN_WIDTH,
-        int SCREEN_HEIGHT);
+        int nCmdShow, int width, int height);
 
 
     void initD3D(HWND hWnd);    // sets up and initializes Direct3D

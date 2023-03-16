@@ -1,7 +1,7 @@
 #include "Moteur.h"
 
 
-void Moteur::init(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,int nCmdShow,int SCREEN_WIDTH,int SCREEN_HEIGHT)
+void Moteur::init(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,int nCmdShow,int width,int height)
 {
 	ZeroMemory(&wc, sizeof(WNDCLASSEX));
 
@@ -16,14 +16,14 @@ void Moteur::init(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,in
 
 
     hWnd = CreateWindowEx(NULL, L"WindowClass", L"Our Direct3D Program",
-        WS_OVERLAPPEDWINDOW, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT,
+        WS_OVERLAPPEDWINDOW, 0, 0, width, height,
         NULL, NULL, hInstance, NULL);
 
     ShowWindow(hWnd, nCmdShow);
 
 
-    SWidth = SCREEN_WIDTH;
-    SHeight = SCREEN_HEIGHT;
+    SWidth = width;
+    SHeight = height;
 
     // set up and initialize Direct3D
     initD3D(hWnd);
@@ -49,15 +49,15 @@ void Moteur::initD3D(HWND hWnd)
     d3d->CreateDevice(D3DADAPTER_DEFAULT,
         D3DDEVTYPE_HAL,
         hWnd,
-        D3DCREATE_HARDWARE_VERTEXPROCESSING,
+        D3DCREATE_HARDWARE_VERTEXPROCESSING|D3DCREATE_PUREDEVICE,
         &d3dpp,
         &d3ddev);
 
-    init_light();    // call the function to initialize the light and material
+//    init_light();    // call the function to initialize the light and material
 
     d3ddev->SetRenderState(D3DRS_LIGHTING, FALSE);    // turn on the 3D lighting
-    d3ddev->SetRenderState(D3DRS_ZENABLE, TRUE);    // turn on the z-buffer
-    d3ddev->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(50, 50, 50));    // ambient light
+   // d3ddev->SetRenderState(D3DRS_ZENABLE, TRUE);    // turn on the z-buffer
+    //d3ddev->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(50, 50, 50));    // ambient light
 
 }
 
@@ -68,8 +68,10 @@ void Moteur::render(void)
     // -------------------------TODO change gameobjectLIST location-------------------------------
 
     //TODO opti variable input
-    d3ddev->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
-    d3ddev->Clear(0, NULL, D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
+    d3ddev->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(50, 0, 0), 1.0f, 0);
+   // d3ddev->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(50, 0, 0), 1.0f, 0);
+    //d3ddev->Clear(0, NULL, D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(50, 0, 0), 1.0f, 0);
+
 
     d3ddev->BeginScene();
 
@@ -102,7 +104,7 @@ void Moteur::render(void)
             // tell Direct3D about our matrix
             d3ddev->SetTransform(D3DTS_WORLD, &matRotateY);
 
-            D3DXVECTOR3 pEye(0.0f, 0.0f, 10.0f);
+            D3DXVECTOR3 pEye(20.0f, 20.0f, -80.0f);
             D3DXVECTOR3 pAt(0.0f, 0.0f, 0.0f);
             D3DXVECTOR3 pUp(0.0f, 1.0f, 0.0f);
             D3DXMATRIX matView;    // the view transform matrix
@@ -114,7 +116,6 @@ void Moteur::render(void)
                 &pUp);    // the up direction
             d3ddev->SetTransform(D3DTS_VIEW, &matView);    // set the view transform to matView
 
-            d3ddev->SetTransform(D3DTS_VIEW, &matView);    // set the view transform to matView
 
             D3DXMATRIX matProjection;     // the projection transform matrix
 
@@ -126,11 +127,14 @@ void Moteur::render(void)
 
             d3ddev->SetTransform(D3DTS_PROJECTION, &matProjection);    // set the projection
 
+            d3ddev->SetFVF(CUSTOMFVF);
             d3ddev->SetStreamSource(0, vertToDisplay->GetVBuffer(), 0, sizeof(CUSTOMVERTEX));
 
             LPDIRECT3DINDEXBUFFER9 indices = vertToDisplay->GetIBuffer();
             if (indices == NULL) {
-                d3ddev->DrawPrimitive(vertToDisplay->GetPrimitvMethode(), 0, vertToDisplay->GetNbPrimitives());
+
+                HRESULT h = d3ddev->DrawPrimitive(vertToDisplay->GetPrimitvMethode(), 0, vertToDisplay->GetNbPrimitives());
+                int a = 0;
             }
             else {
                 d3ddev->SetIndices(indices);
@@ -230,7 +234,7 @@ void Moteur::addMeshToscene(Vertice* verti)
 
     // lock v_buffer and load the vertices into it
     v_buffer->Lock(0, 0, (void**)&pVoid, 0);
-    memcpy(pVoid, verti->vertex(), sizeof(verti->vertex()));
+    memcpy(pVoid, verti->vertex(), sizeof(verti->vertex())*3);
     v_buffer->Unlock();
     
     verti->SetVBuffer(v_buffer);

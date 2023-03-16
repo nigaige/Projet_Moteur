@@ -29,9 +29,9 @@
 
     CUSTOMVERTEX triangleMesh[] =
     {
-        { 2.5f, -3.0f, 0.0f, D3DCOLOR_XRGB(0, 0, 255), },
-        { 0.0f, 3.0f, 0.0f, D3DCOLOR_XRGB(0, 255, 0), },
         { -2.5f, -3.0f, 0.0f, D3DCOLOR_XRGB(255, 0, 0), },
+        { 0.0f, 3.0f, 0.0f, D3DCOLOR_XRGB(0, 255, 0), },
+        { 2.5f, -3.0f, 0.0f, D3DCOLOR_XRGB(0, 0, 255), },
     };
 
 

@@ -1,3 +1,8 @@
-﻿  Source.cpp
-D:\Projet_Moteur_Lib\moteur new\moteur new\Source.cpp(83,12): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
+﻿  GameObject.cpp
+  Mesh.cpp
+  Moteur.cpp
+  Source.cpp
+D:\Projet_Moteur_Lib\moteur new\moteur new\Source.cpp(44,12): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
+  Utils.cpp
+  Generating Code...
   moteur new.vcxproj -> D:\Projet_Moteur_Lib\moteur new\x64\Debug\moteur new.exe

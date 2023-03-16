@@ -5,7 +5,7 @@
 #include "Transform.h"
 #include "Utils.h"
 
-#define CUSTOMFVF (D3DFVF_XYZ | D3DFVF_NORMAL)
+#define CUSTOMFVF (D3DFVF_XYZ | D3DFVF_DIFFUSE)
 
 
 
