@@ -3,13 +3,23 @@
 
 class Input
 {
-public:
-	static char previousKey;
 
-	static bool anyKeyDown();
-	static bool getKeyDown(char* VK);
-	static bool getKeyUp(char* VK);
-	static bool getKeyDown(int VK);
-	static bool getKeyUp(int VK);
+public:
+
+	enum States
+	{
+		NOTPRESS,
+		HOLD,
+		PRESSED,
+		RELEASED
+	};
+
+	static bool INIT();
+	Input::States getKeyState(BYTE keyValue) {};
+	void InputUpdate() {};
+
+private:
+	static States keys[256];
+
 };
 
