@@ -7,15 +7,14 @@ private:
 
     LPDIRECT3D9 d3d;    // the pointer to our Direct3D interface
     LPDIRECT3DDEVICE9 d3ddev;    // the pointer to the device class
-	LPDIRECT3DVERTEXBUFFER9 v_buffer = NULL;    // the pointer to the vertex buffer
 
 	HWND hWnd;
 	WNDCLASSEX wc;
 
 	int nCmdShow;
 
-	Mesh* triangle;
-
+	//Mesh* triangle;
+	std::vector<GameObject*> GOList;
 
 public:
 
@@ -25,9 +24,14 @@ public:
 		int nCmdShow);
 
 	void Init();
-	void init_graphics(void);
+	void loadMeshInScene(Mesh* MeshToLoad);
 	void initD3D();
 	void cleanD3D(void);
 	void render(void);
+
+	void setUpCamera();
+
+	void addGameObject(GameObject* go);
+	void rmGamObject(GameObject* go);
 };
 

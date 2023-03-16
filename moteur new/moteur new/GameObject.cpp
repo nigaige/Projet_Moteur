@@ -13,6 +13,10 @@ void GameObject::addComponent(Component* comp)
 {
 	componentList.push_back(comp);
 	componentCount++;
+
+	if (isOfType<Mesh>(comp)) {
+		MeshList.push_back(castToType<Mesh>(comp));
+	}
 }
 
 void GameObject::rmComponent(Component* comp)
@@ -21,6 +25,7 @@ void GameObject::rmComponent(Component* comp)
 		if (componentList[i] == comp) {
 			componentList.erase(componentList.begin() + i, componentList.begin() + i + 1);
 			componentCount--;
+			//TODO DELETE
 			return;
 		}
 	}
@@ -43,4 +48,9 @@ Component* GameObject::getComponent(int index)
 int GameObject::countComponent()
 {
 	return componentCount;
+}
+
+std::vector<Mesh*> GameObject::meshToDraw()
+{
+	return MeshList;
 }

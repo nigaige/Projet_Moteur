@@ -66,29 +66,15 @@ void Moteur::Init()
 		&d3dpp,
 		&d3ddev);
 
-	init_graphics();    // call the function to initialize the triangle
-
 	d3ddev->SetRenderState(D3DRS_LIGHTING, FALSE);    // turn off the 3D lighting
 
 
 	initD3D();
 }
 
-void Moteur::init_graphics(void)
-{
-
-
-	CUSTOMVERTEX vertices[] =
-	{
-		{ 3.0f, -3.0f, 0.0f, D3DCOLOR_XRGB(0, 0, 255), },
-		{ 0.0f, 3.0f, 0.0f, D3DCOLOR_XRGB(0, 255, 0), },
-		{ -3.0f, -3.0f, 0.0f, D3DCOLOR_XRGB(255, 0, 0), },
-	};
-
-	triangle = new Mesh(D3DPT_TRIANGLELIST);
-	for (int i = 0; i < 3; i++) {
-		triangle->addVertex(vertices + i);
-	}
+void Moteur::loadMeshInScene(Mesh* MeshToLoad) {
+	LPDIRECT3DVERTEXBUFFER9 v_buffer = NULL;    // the pointer to the vertex buffer
+	CUSTOMVERTEX* pVoid;    // a void pointer
 
 	d3ddev->CreateVertexBuffer(3 * sizeof(CUSTOMVERTEX),
 		0,
@@ -96,20 +82,19 @@ void Moteur::init_graphics(void)
 		D3DPOOL_MANAGED,
 		&v_buffer,
 		NULL);
-
-	CUSTOMVERTEX* pVoid;    // a void pointer
+	
 	v_buffer->Lock(0, 0, (void**)&pVoid, 0);
-	std::vector<CUSTOMVERTEX*> vList = *triangle->vertex();		//TODO OPTI POINTER?
+	
+	std::vector<CUSTOMVERTEX*> vList = *MeshToLoad->vertex();		//TODO OPTI POINTER?
 	for (int i = 0; i < 3; i++) {
 		memcpy(pVoid + i, vList[i], sizeof(CUSTOMVERTEX));
 	}
-	
+
 	v_buffer->Unlock();
 
-	triangle->Vbuffer(v_buffer);
-
-
+	MeshToLoad->Vbuffer(v_buffer);
 }
+
 
 void Moteur::initD3D()
 {
@@ -133,8 +118,6 @@ void Moteur::initD3D()
 		&d3dpp,
 		&d3ddev);
 
-	init_graphics();    // call the function to initialize the triangle
-
 	d3ddev->SetRenderState(D3DRS_LIGHTING, FALSE);    // turn off the 3D lighting
 }
 
@@ -146,20 +129,43 @@ void Moteur::render(void)
 
 	d3ddev->BeginScene();
 
+	// SET UP THE PIPELINE
+	setUpCamera();
+
+	//TODO gameobject transform
+	D3DXMATRIX matProjection;     // the projection transform matrix
+
+	D3DXMatrixPerspectiveFovLH(&matProjection,
+		D3DXToRadian(45),    // the horizontal field of view
+		(FLOAT)SCREEN_WIDTH / (FLOAT)SCREEN_HEIGHT, // aspect ratio
+		1.0f,    // the near view-plane
+		100.0f);    // the far view-plane
+
+	d3ddev->SetTransform(D3DTS_PROJECTION, &matProjection);    // set the projection
+
+	for (GameObject* go : GOList) {
+
+		//TODO transform
+		for (Mesh* m : go->meshToDraw()) {
+			// select the vertex buffer to display
+			d3ddev->SetStreamSource(0, m->Vbuffer(), 0, sizeof(CUSTOMVERTEX));
+
+			// copy the vertex buffer to the back buffer
+			d3ddev->DrawPrimitive(m->primitivMethode(), 0, 1);
+
+		}
+
+	}
+	d3ddev->EndScene();
+
+	d3ddev->Present(NULL, NULL, NULL, NULL);
+}
+
+
+void Moteur::setUpCamera() {//TODO Transform input
+
 	// select which vertex format we are using
 	d3ddev->SetFVF(CUSTOMFVF);
-
-	// SET UP THE PIPELINE
-
-	D3DXMATRIX matRotateY;    // a matrix to store the rotation information
-
-	static float index = 0.0f;
-
-	// build a matrix to rotate the model based on the increasing float value
-	D3DXMatrixRotationY(&matRotateY, index);
-
-	// tell Direct3D about our matrix
-	d3ddev->SetTransform(D3DTS_WORLD, &matRotateY);
 
 	D3DXVECTOR3 pEye(0.0f, 0.0f, 10.0f);
 	D3DXVECTOR3 pAt(0.0f, 0.0f, 0.0f);
@@ -180,23 +186,27 @@ void Moteur::render(void)
 		(FLOAT)SCREEN_WIDTH / (FLOAT)SCREEN_HEIGHT, // aspect ratio
 		1.0f,    // the near view-plane
 		100.0f);    // the far view-plane
+}
 
-	d3ddev->SetTransform(D3DTS_PROJECTION, &matProjection);    // set the projection
+void Moteur::addGameObject(GameObject* go)
+{
+	GOList.push_back(go);
+}
 
-	// select the vertex buffer to display
-	d3ddev->SetStreamSource(0, triangle->Vbuffer(), 0, sizeof(CUSTOMVERTEX));
+void Moteur::rmGamObject(GameObject* go)
+{
+	delete go;
+	for (int i = 0; i < GOList.size(); i++) {
+		if (GOList[i] == go) {
+			GOList.erase(GOList.begin() + i, GOList.begin() + i + 1);
+			return;
+		}
+	}
 
-	// copy the vertex buffer to the back buffer
-	d3ddev->DrawPrimitive(D3DPT_TRIANGLELIST, 0, 1);
-
-	d3ddev->EndScene();
-
-	d3ddev->Present(NULL, NULL, NULL, NULL);
 }
 
 void Moteur::cleanD3D(void)
 {
-	v_buffer->Release();    // close and release the vertex buffer
 	d3ddev->Release();    // close and release the 3D device
 	d3d->Release();    // close and release Direct3D
 }
