@@ -1,6 +1,6 @@
 #include "Vertice.h"
 
-Vertice::Vertice(CUSTOMVERTEX* vertex, D3DPRIMITIVETYPE primitivMethode,LPDIRECT3DINDEXBUFFER9 ibuffer = NULL)
+Vertice::Vertice(CUSTOMVERTEX* vertex, D3DPRIMITIVETYPE primitivMethode,short indice = NULL)
 {
     vertex_ = vertex;
  
@@ -11,7 +11,6 @@ Vertice::Vertice(CUSTOMVERTEX* vertex, D3DPRIMITIVETYPE primitivMethode,LPDIRECT
     nbVertex = sizeof(vertex_) / sizeof(CUSTOMVERTEX);
     primitivMethode_ = primitivMethode;
     
-    i_buffer = ibuffer;
 
 }
 

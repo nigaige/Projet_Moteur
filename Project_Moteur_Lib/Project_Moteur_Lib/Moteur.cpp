@@ -203,7 +203,7 @@ void Moteur::addMeshToscene(Vertice* verti)
     
     verti->SetVBuffer(v_buffer);
 
-
+    /*
     //----------------IBUFFER
     d3ddev->CreateIndexBuffer(sizeof(indices),
         0,
@@ -217,5 +217,5 @@ void Moteur::addMeshToscene(Vertice* verti)
     v_buffer->Lock(0, 0, (void**)&pVoid, 0);
     memcpy(pVoid, verti->indice(), indices);
     v_buffer->Unlock();
-
+    */
 }
