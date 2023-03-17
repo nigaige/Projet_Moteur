@@ -33,9 +33,9 @@ CUSTOMVERTEX points[] = {
 
 CUSTOMVERTEX vertices[] =
 {
-	points[0],
-	points[1],
-	points[2],
+		{ 1.0f, -1.0f, 0.0f, D3DCOLOR_XRGB(0, 0, 255), },
+		{ -1.0f, 1.0f, 0.0f, D3DCOLOR_XRGB(0, 255, 0), },
+		{ -1.0f, -1.0f, 0.0f, D3DCOLOR_XRGB(255, 0, 0),},
 
 
 
@@ -43,7 +43,7 @@ CUSTOMVERTEX vertices[] =
 };
 
 
-
+#include "GoTester.h"
 
 #pragma endregion
 
@@ -74,6 +74,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	forme->deduceTriangle();
 	M->loadMeshInScene(forme);
 	triangle->addComponent(forme);
+	triangle->addComponent(new GoTester(M->inputManager(), triangle));
+
 	M->addGameObject(triangle);
 
 
@@ -94,11 +96,12 @@ int WINAPI WinMain(HINSTANCE hInstance,
 		if (msg.message  == WM_QUIT)
 			break;
 
+		M->update();
 		M->render();
 	}
 
 	// clean up DirectX and COM
-	M->cleanD3D();
+	delete M;
 
 	return msg.wParam;
 }

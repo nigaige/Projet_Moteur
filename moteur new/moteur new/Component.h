@@ -1,10 +1,16 @@
 #pragma once
+#include "Utils.h"
 class Component
 {
-private:
-	bool active;
+protected:
+	bool active = false;
+	
+	GameObject* gameobject = nullptr;
 public:
-	Component();
+	//TODO GAMEOBJECT OWNER
+	Component(bool isActive = true, GameObject* go = nullptr);
+	~Component();
 	void setActive(bool a = true) { active = a; };
+	virtual void update() {};
 };
 

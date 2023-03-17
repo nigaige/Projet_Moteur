@@ -34,3 +34,4 @@ void Utils::DebugLogMessage(int message)
 
 float Utils::DegToRad(float Angle)  { return Angle * DEGTORAD; }
 float Utils::RadToDeg(float Rad)    { return Rad * RADTODEG; }
+

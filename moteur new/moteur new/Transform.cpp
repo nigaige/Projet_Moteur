@@ -17,6 +17,11 @@ Transform::Transform()
 	updateRotation();
 }
 
+Transform::~Transform()
+{
+
+}
+
 //----------position--------
 D3DXVECTOR3 Transform::position()			{return v_position_;}
 void Transform::position(D3DVECTOR newPos)	{ v_position_ = newPos; updatePosition();}

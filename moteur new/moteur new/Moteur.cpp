@@ -41,6 +41,14 @@ Moteur::Moteur(HINSTANCE hInstance,
 
 }
 
+Moteur::~Moteur()
+{
+	Utils::DeleteVector(GOList);
+	Utils::DeleteVector(MeList);
+	cleanD3D();
+
+}
+
 void Moteur::Init()
 {
 
@@ -70,6 +78,8 @@ void Moteur::Init()
 
 
 	initD3D();
+
+	inputManager_ = new Input();
 }
 
 void Moteur::loadMeshInScene(Mesh* MeshToLoad) {
@@ -121,6 +131,11 @@ void Moteur::initD3D()
 	d3ddev->SetRenderState(D3DRS_LIGHTING, FALSE);    // turn off the 3D lighting
 }
 
+void Moteur::cleanD3D(void)
+{
+	d3ddev->Release();    // close and release the 3D device
+	d3d->Release();    // close and release Direct3D
+}
 
 void Moteur::render(void)
 {
@@ -131,29 +146,32 @@ void Moteur::render(void)
 
 	// SET UP THE PIPELINE
 	setUpCamera();
-	static float index = 0.0f;
-	index += 0.05f;
+
+
 	for (GameObject* go : GOList) {
 		
-		//go->transform()->yaw(index);
-		//go->transform()->roll(index);
-		go->transform()->pitch(index);
 		d3ddev->SetTransform(D3DTS_WORLD, go->transform()->displayValue());    // set the projection
 
-		//TODO transform
+		if (go->meshToDraw().size() == 0) continue;
 		for (Mesh* m : go->meshToDraw()) {
 			// select the vertex buffer to display
 			d3ddev->SetStreamSource(0, m->Vbuffer(), 0, sizeof(CUSTOMVERTEX));
 
 			// copy the vertex buffer to the back buffer
 			d3ddev->DrawPrimitive(m->primitivMethode(), 0, m->Primitiv());
-
 		}
-
 	}
 	d3ddev->EndScene();
 
 	d3ddev->Present(NULL, NULL, NULL, NULL);
+}
+
+void Moteur::update(void)
+{
+	inputManager_->InputUpdate();
+	for (GameObject* go : GOList) {
+		go->update();
+	}
 }
 
 
@@ -186,6 +204,7 @@ void Moteur::setUpCamera() {//TODO Transform input
 
 }
 
+
 void Moteur::addGameObject(GameObject* go)
 {
 	GOList.push_back(go);
@@ -203,8 +222,20 @@ void Moteur::rmGamObject(GameObject* go)
 
 }
 
-void Moteur::cleanD3D(void)
+
+void Moteur::addMesh(Mesh* me)
 {
-	d3ddev->Release();    // close and release the 3D device
-	d3d->Release();    // close and release Direct3D
+	MeList.push_back(me);
+
+}
+
+void Moteur::rmMesh(Mesh* me)
+{
+	delete me;
+	for (int i = 0; i < MeList.size(); i++) {
+		if (MeList[i] == me) {
+			MeList.erase(MeList.begin() + i, MeList.begin() + i + 1);
+			return;
+		}
+	}
 }

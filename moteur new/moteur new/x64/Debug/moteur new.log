@@ -1,3 +1,17 @@
-﻿  Source.cpp
-D:\Projet_Moteur_Lib\moteur new\moteur new\Source.cpp(103,12): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
-  moteur new.vcxproj -> D:\Projet_Moteur_Lib\moteur new\x64\Debug\moteur new.exe
+﻿  Component.cpp
+D:\Projet_Moteur_Lib\moteur new\moteur new\Mesh.h(7,1): error C2504: 'Component': base class undefined
+  GameObject.cpp
+D:\Projet_Moteur_Lib\moteur new\moteur new\GameObject.cpp(67,29): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  GoTester.cpp
+  Input.cpp
+  Mesh.cpp
+D:\Projet_Moteur_Lib\moteur new\moteur new\Mesh.cpp(20,30): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Moteur.cpp
+  Source.cpp
+D:\Projet_Moteur_Lib\moteur new\moteur new\Source.cpp(106,12): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
+  Transform.cpp
+  Utils.cpp
+D:\Projet_Moteur_Lib\moteur new\moteur new\Utils.cpp(35,52): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+D:\Projet_Moteur_Lib\moteur new\moteur new\Utils.cpp(36,50): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
+D:\Projet_Moteur_Lib\moteur new\moteur new\Transform.cpp(72): warning C4172: returning address of local variable or temporary: out

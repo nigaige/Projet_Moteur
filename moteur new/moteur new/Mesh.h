@@ -14,6 +14,7 @@ private:
 	std::vector<CUSTOMVERTEX*> vertex_;
 public:
 	Mesh(D3DPRIMITIVETYPE primitivMethode);
+	~Mesh();
 
 	void addVertex(CUSTOMVERTEX* v);
 
@@ -33,4 +34,3 @@ public:
 
 
 };
-

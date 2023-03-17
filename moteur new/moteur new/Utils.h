@@ -20,23 +20,34 @@ struct CUSTOMVERTEX { FLOAT X, Y, Z; DWORD COLOR; };
 #define DEGTORAD (M_PI / 180)
 #define RADTODEG (180 / M_PI)
 
+enum States
+{
+	NOTPRESS,
+	HOLD,
+	PRESSED,
+	RELEASED
+};
+
+class GameObject;
 class Component;
 class Mesh;
-class Moteur;
-class GameObject;
 class Transform;
+class Input;
+class Moteur;
 
-#include "Component.h"
-#include "Mesh.h"
-#include "Moteur.h"
 #include "GameObject.h"
+#include "Component.h"
 #include "Transform.h"
-
+#include "Input.h"
+#include "Moteur.h"
+#include "Mesh.h"
 
 
 // include the Direct3D Library files
 #pragma comment (lib, "d3d9.lib")
 #pragma comment (lib, "d3dx9.lib")
+
+
 
 class Utils
 {
@@ -49,5 +60,16 @@ public:
 
 	static float DegToRad(float Angle);
 	static float RadToDeg(float Rad);
-
+    template <typename T>
+    static void DeleteVector(std::vector<T*> );
+    
 };
+
+template<typename T>
+inline void Utils::DeleteVector(std::vector<T*> vect)
+{
+    for (int i = 0; i < vect.size(); i++) {
+        delete vect[i];
+    }
+	vect.clear();
+}

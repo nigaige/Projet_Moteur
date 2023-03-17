@@ -6,13 +6,15 @@ private:
 	Transform* transform_;
 	std::vector<Component*> componentList;
 	bool toDisplay_ = false;
-	int componentCount = 0;
 	std::vector<Mesh*> MeshList;
 
 
 public:
 	GameObject();
 	GameObject(Transform* T);
+	~GameObject();
+
+	void update();
 
 	//TODO DESTRUCTOR DELETE THE COMPONENT
 
@@ -26,7 +28,7 @@ public:
 
 
 	void addComponent(Component* comp);
-	void rmComponent(Component* comp);
+	bool rmComponent(Component* comp);
 	void rmComponent(int index);
 
 	Component* getComponent(int index);
@@ -61,8 +63,8 @@ inline T* GameObject::findComponent()
 	for (Component* comp : componentList)
 	{
 		//TODO IMPROVE CASTING, null ptr
-		if (dynamic_cast<T*>(comp) != nullptr) {
-			return dynamic_cast<T*>(comp);
+		if (static_cast<T*>(comp) != nullptr) {
+			return static_cast<T*>(comp);
 		}
 	}
 
@@ -71,7 +73,9 @@ inline T* GameObject::findComponent()
 
 template<typename T>
 inline bool GameObject::isOfType(Component* comp) {
-	return static_cast<T*>(comp) != nullptr;	//TODO DYNAMIC...?
+
+	T* a = static_cast<T*>(comp);
+	return dynamic_cast<T*>(comp) != nullptr;	//TODO DYNAMIC...?
 }
 
 template<typename T>

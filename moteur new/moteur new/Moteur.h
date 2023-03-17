@@ -1,6 +1,7 @@
 #pragma once
 #include "Utils.h"
 
+#include "Mesh.h"
 class Moteur
 {
 private:
@@ -15,6 +16,9 @@ private:
 
 	//Mesh* triangle;
 	std::vector<GameObject*> GOList;
+	std::vector<Mesh*> MeList;
+
+	Input* inputManager_;
 
 public:
 
@@ -22,16 +26,28 @@ public:
 		HINSTANCE hPrevInstance,
 		LPSTR lpCmdLine,
 		int nCmdShow);
+	~Moteur();
+
+	Input* inputManager() { return inputManager_; }
+
+
+
 
 	void Init();
 	void loadMeshInScene(Mesh* MeshToLoad);
 	void initD3D();
 	void cleanD3D(void);
-	void render(void);
 
 	void setUpCamera();
 
 	void addGameObject(GameObject* go);
 	void rmGamObject(GameObject* go);
+	void addMesh(Mesh* me);
+	void rmMesh(Mesh* me);
+
+	//---------------GAMELOOOP
+	void gameLoop();															//TODO
+	void render(void);
+	void update(void);															//TODO MANAGE GLOBAL TIME
 };
 
