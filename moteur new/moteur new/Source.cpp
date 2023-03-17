@@ -2,14 +2,48 @@
 #include "Utils.h"
 
 #pragma region testing
+	
+CUSTOMVERTEX points[] = {
+	{ -1.0f, -1.0f, 1.0f, D3DCOLOR_XRGB(0, 0, 255), },//1
+	{ 1.0f, -1.0f, 1.0f, D3DCOLOR_XRGB(0, 0, 255), },//2
+	{ -1.0f, 1.0f, 1.0f, D3DCOLOR_XRGB(0, 0, 255), },//3
+	{ 1.0f, 1.0f, 1.0f, D3DCOLOR_XRGB(0, 0, 255), },//4
+
+	{ -1.0f, -1.0f, -1.0f, D3DCOLOR_XRGB(0, 0, 255), },//5
+	{ 1.0f, -1.0f, -1.0f, D3DCOLOR_XRGB(0, 0, 255), },//6
+	{ -1.0f, 1.0f, -1.0f, D3DCOLOR_XRGB(0, 0, 255), },//7
+	{ 1.0f, 1.0f, -1.0f, D3DCOLOR_XRGB(0, 0, 255), },//8
+
+};
 
 
+
+/*
 	CUSTOMVERTEX vertices[] =
 	{
-		{ 3.0f, -3.0f, 0.0f, D3DCOLOR_XRGB(0, 0, 255), },
-		{ 0.0f, 3.0f, 0.0f, D3DCOLOR_XRGB(0, 255, 0), },
-		{ -3.0f, -3.0f, 0.0f, D3DCOLOR_XRGB(255, 0, 0), },
-	};
+		{ 1.0f, -1.0f, 0.0f, D3DCOLOR_XRGB(0, 0, 255), },
+		{ -1.0f, 1.0f, 0.0f, D3DCOLOR_XRGB(0, 255, 0), },
+		{ -1.0f, -1.0f, 0.0f, D3DCOLOR_XRGB(255, 0, 0),},
+		
+		{ 1.0f, -1.0f, 0.0f, D3DCOLOR_XRGB(255, 0, 0),},
+		{ 1.0f, 1.0f, 0.0f, D3DCOLOR_XRGB(0, 255, 0), },
+		{ -1.0f, 1.0f, 0.0f, D3DCOLOR_XRGB(0, 0, 255), },
+	};*/
+
+
+CUSTOMVERTEX vertices[] =
+{
+	points[0],
+	points[1],
+	points[2],
+
+
+
+
+};
+
+
+
 
 #pragma endregion
 
@@ -34,9 +68,10 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 	GameObject* triangle = new GameObject();
 	Mesh* forme = new Mesh(D3DPT_TRIANGLELIST);
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < sizeof(vertices)/ sizeof(CUSTOMVERTEX); i++) {
 		forme->addVertex(vertices + i);
 	}
+	forme->deduceTriangle();
 	M->loadMeshInScene(forme);
 	triangle->addComponent(forme);
 	M->addGameObject(triangle);

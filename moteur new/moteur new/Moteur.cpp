@@ -86,7 +86,7 @@ void Moteur::loadMeshInScene(Mesh* MeshToLoad) {
 	v_buffer->Lock(0, 0, (void**)&pVoid, 0);
 	
 	std::vector<CUSTOMVERTEX*> vList = *MeshToLoad->vertex();		//TODO OPTI POINTER?
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i <	vList.size(); i++) {
 		memcpy(pVoid + i, vList[i], sizeof(CUSTOMVERTEX));
 	}
 
@@ -124,15 +124,20 @@ void Moteur::initD3D()
 
 void Moteur::render(void)
 {
-
+	
 	d3ddev->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 
 	d3ddev->BeginScene();
 
 	// SET UP THE PIPELINE
 	setUpCamera();
-
+	static float index = 0.0f;
+	index += 0.05f;
 	for (GameObject* go : GOList) {
+		
+		//go->transform()->yaw(index);
+		//go->transform()->roll(index);
+		go->transform()->pitch(index);
 		d3ddev->SetTransform(D3DTS_WORLD, go->transform()->displayValue());    // set the projection
 
 		//TODO transform
@@ -141,7 +146,7 @@ void Moteur::render(void)
 			d3ddev->SetStreamSource(0, m->Vbuffer(), 0, sizeof(CUSTOMVERTEX));
 
 			// copy the vertex buffer to the back buffer
-			d3ddev->DrawPrimitive(m->primitivMethode(), 0, 1);
+			d3ddev->DrawPrimitive(m->primitivMethode(), 0, m->Primitiv());
 
 		}
 
@@ -157,7 +162,7 @@ void Moteur::setUpCamera() {//TODO Transform input
 	// select which vertex format we are using
 	d3ddev->SetFVF(CUSTOMFVF);
 
-	D3DXVECTOR3 pEye(0.0f, 0.0f, 10.0f);
+	D3DXVECTOR3 pEye(0.0f, 0.0f, 20.0f);
 	D3DXVECTOR3 pAt(0.0f, 0.0f, 0.0f);
 	D3DXVECTOR3 pUp(0.0f, 1.0f, 0.0f);
 

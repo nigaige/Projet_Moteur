@@ -29,7 +29,7 @@ public:
 	void Ibuffer(LPDIRECT3DINDEXBUFFER9 buff)	{ Ibuffer_ = buff; }
 	void Vbuffer(LPDIRECT3DVERTEXBUFFER9 buff)	{ Vbuffer_ = buff; }
 
-
+	void deduceTriangle();
 
 
 };
