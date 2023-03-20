@@ -1,4 +1,5 @@
-#include "Transform.h"
+#pragma once
+#include "Utils.h"
 
 Transform::Transform()
 {

@@ -1,5 +1,4 @@
-#pragma once
-#include "Utils.h"
+
 
 
 #define FORWARD		D3DXVECTOR3(1.0f, 0.0f, 0.0f)

@@ -1,4 +1,5 @@
-#include "GameObject.h"
+#pragma once
+#include "Utils.h"
 
 GameObject::GameObject(){
 	transform_ = new Transform();

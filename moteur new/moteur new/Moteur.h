@@ -1,7 +1,5 @@
-#pragma once
-#include "Utils.h"
 
-#include "Mesh.h"
+
 class Moteur
 {
 private:

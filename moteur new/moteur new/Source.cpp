@@ -1,4 +1,4 @@
-// include the basic windows header files and the Direct3D header file
+#pragma once
 #include "Utils.h"
 
 #pragma region testing

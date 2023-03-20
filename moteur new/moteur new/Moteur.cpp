@@ -1,5 +1,5 @@
-#include "Moteur.h"
-
+#pragma once
+#include "Utils.h"
 
 // this is the main message handler for the program
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)

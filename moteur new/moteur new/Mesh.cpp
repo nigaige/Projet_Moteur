@@ -1,6 +1,9 @@
-#include "Mesh.h"
+#pragma once
+#include "Utils.h"
 
-Mesh::Mesh(D3DPRIMITIVETYPE primitivMethode)
+
+
+Mesh::Mesh(D3DPRIMITIVETYPE primitivMethode) 
 {
 	primitivMethode_ = primitivMethode;
     gameobject = nullptr;

@@ -1,3 +1,5 @@
+#pragma once
+#include "Utils.h"
 #include "GoTester.h"
 
 void GoTester::update()

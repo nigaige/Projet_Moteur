@@ -1,5 +1,5 @@
-#include "Input.h"
-
+#pragma once
+#include "Utils.h"
 
 Input::Input()
 {
