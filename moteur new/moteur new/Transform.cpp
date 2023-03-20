@@ -20,7 +20,7 @@ Transform::Transform()
 
 Transform::~Transform()
 {
-	//TODO ?????
+
 }
 
 //----------position--------
@@ -58,21 +58,7 @@ float Transform::pitch()					{return pitch_;}
 
 void Transform::updateRotation(){
 	m_rotation_ = *getARotation(roll_, pitch_, yaw_);
-	updateForward();
 	updateFinal();
-}
-
-D3DXVECTOR3 Transform::forward()
-{
-	return v_forward_;
-}
-
-void Transform::updateForward()
-{
-	D3DXVECTOR3* v_pOut = new D3DXVECTOR3(0.0f,0.0f,0.0f);
-	D3DXVECTOR3* v_pIn  = new D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	D3DXVec3TransformNormal(v_pOut,v_pIn, &m_rotation_);
-	v_forward_ = *v_pOut;
 }
 
 D3DXMATRIX* Transform::getARotation(float roll, float pitch, float yaw, bool isRadian){	

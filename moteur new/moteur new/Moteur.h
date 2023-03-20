@@ -27,7 +27,7 @@ public:
 	~Moteur();
 
 	Input* inputManager() { return inputManager_; }
-	GameObject* camera;
+
 
 
 

@@ -108,10 +108,6 @@ void Moteur::loadMeshInScene(Mesh* MeshToLoad) {
 
 void Moteur::initD3D()
 {
-	camera = new GameObject();
-	Camera* init = new Camera(45, 1.0f, 100.0f);
-	camera->addComponent(init);
-
 	d3d = Direct3DCreate9(D3D_SDK_VERSION);
 
 	D3DPRESENT_PARAMETERS d3dpp;
@@ -181,19 +177,28 @@ void Moteur::update(void)
 
 void Moteur::setUpCamera() {//TODO Transform input
 
+	// select which vertex format we are using
 	d3ddev->SetFVF(CUSTOMFVF);
 
-	camera->updateCamera();
+	D3DXVECTOR3 pEye(0.0f, 0.0f, 20.0f);
+	D3DXVECTOR3 pAt(0.0f, 0.0f, 0.0f);
+	D3DXVECTOR3 pUp(0.0f, 1.0f, 0.0f);
 
-	d3ddev->SetTransform(D3DTS_VIEW,camera->getMatView());
+	D3DXMATRIX matView;    // the view transform matrix
+
+	D3DXMatrixLookAtLH(&matView,
+		&pEye,    // the camera position
+		&pAt,    // the look-at position
+		&pUp);    // the up direction
+	d3ddev->SetTransform(D3DTS_VIEW, &matView);
 
 	D3DXMATRIX matProjection;     // the projection transform matrix
 
 	D3DXMatrixPerspectiveFovLH(&matProjection,
-		D3DXToRadian(camera->fov()),    // the horizontal field of view
+		D3DXToRadian(45),    // the horizontal field of view
 		(FLOAT)SCREEN_WIDTH / (FLOAT)SCREEN_HEIGHT, // aspect ratio
-		camera->nearViewPlane(),    // the near view-plane
-		camera->farViewPlane());    // the far view-plane
+		1.0f,    // the near view-plane
+		100.0f);    // the far view-plane
 
 	d3ddev->SetTransform(D3DTS_PROJECTION, &matProjection);    // set the projection
 
