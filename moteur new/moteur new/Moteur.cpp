@@ -250,11 +250,11 @@ Shader Moteur::LoadShader(std::string* shaderPath)
 	ID3DXBuffer* code_v = NULL;
 	LPD3DXCONSTANTTABLE* ppConstantTable_OUT = NULL;
 	LPD3DXBUFFER shaderContent_ = NULL;
-	IDirect3DVertexShader9** ppShader;
+	IDirect3DVertexShader9** ppShader = NULL;
 
 	std::ifstream file;
 
-	file.open("C:/Users/asabi/Desktop/text.hlsl", std::ios_base::binary);
+	//file.open("C:/Users/asabi/Desktop/text.hlsl", std::ios_base::binary);
 	//file.open(*shaderPath, std::ios_base::binary);
 
 	if (file)
@@ -268,9 +268,9 @@ Shader Moteur::LoadShader(std::string* shaderPath)
 
 		HRESULT Buffer = D3DXCompileShader((LPCSTR)_Str, strlen(_Str), NULL, NULL, "main_vertex", "vs_3_0", 0, &code_v, &listing_v, ppConstantTable_OUT);
 
-		//d3ddev->CreateVertexShader((DWORD*)Buffer, ppShader);
+		d3ddev->CreateVertexShader((DWORD*)Buffer, ppShader);
 
-		//d3ddev->SetVertexShader(*ppShader);
+		d3ddev->SetVertexShader(*ppShader);
 
 		return *new Shader(NULL);
 	}
@@ -278,16 +278,11 @@ Shader Moteur::LoadShader(std::string* shaderPath)
 
 void Moteur::ImportingModel()
 {
-	std::ifstream file;
-	//file.open("C:/Users/asabi/Desktop/ObjectFiles/Yes/Cool.x", std::ios_base::binary);
-	/*file.seekg(0, file.end);
-	int length = file.tellg();
-	file.seekg(0, file.beg);
-	char* _Str = new char[length + 1];
-	file.read(_Str, length);
-	_Str[length] = 0;*/
+	LPDIRECT3DDEVICE9 g_pd3dDevice; // pointeur vers l'objet périphérique Direct X
 
-	DirectXFileCreate((LPDIRECTXFILE*)"C:/Users/asabi/Desktop/ObjectFiles/Yes/Coddol.x");
+	LPD3DXMESH g_pMesh = NULL;
+
+	//HRESULT hr = D3DXLoadMeshFromX((LPWSTR)"C:/Users/asabi/Desktop/ObjectFiles/Yes/Cool.x", D3DXMESH_SYSTEMMEM, g_pd3dDevice, NULL, NULL, NULL, NULL, &g_pMesh);
 
 }
 

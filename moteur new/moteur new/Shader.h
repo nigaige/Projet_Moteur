@@ -1,7 +1,7 @@
 class Shader
 {
 private:
-	IDirect3DVertexShader9** _ppShader;
+	IDirect3DVertexShader9** _ppShader = NULL;
 
 public:
 
