@@ -239,3 +239,39 @@ void Moteur::rmMesh(Mesh* me)
 		}
 	}
 }
+
+
+
+Shader Moteur::LoadShader(std::string* shaderPath)
+{
+	ID3DXBuffer* listing_f = NULL;
+	ID3DXBuffer* listing_v = NULL;
+	ID3DXBuffer* code_f = NULL;
+	ID3DXBuffer* code_v = NULL;
+	LPD3DXCONSTANTTABLE* ppConstantTable_OUT = NULL;
+	LPD3DXBUFFER shaderContent_ = NULL;
+	IDirect3DVertexShader9** ppShader;
+
+	std::ifstream file;
+
+	file.open("C:/Users/asabi/Desktop/text.hlsl", std::ios_base::binary);
+	//file.open(*shaderPath, std::ios_base::binary);
+
+	if (file)
+	{
+		file.seekg(0, file.end);
+		int length = file.tellg();
+		file.seekg(0, file.beg);
+		char* _Str = new char[length + 1];
+		file.read(_Str, length);
+		_Str[length] = 0;
+
+		HRESULT Buffer = D3DXCompileShader((LPCSTR)_Str, strlen(_Str), NULL, NULL, "main_vertex", "vs_3_0", 0, &code_v, &listing_v, ppConstantTable_OUT);
+
+		d3ddev->CreateVertexShader((DWORD*)Buffer, ppShader);
+
+		d3ddev->SetVertexShader(*ppShader);
+
+		return *new Shader(ppShader);
+	}
+}

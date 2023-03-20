@@ -6,6 +6,7 @@
 #include <cmath>
 #include <iostream>
 #include <vector>
+#include <fstream>
 
 #include <d3d9.h>
 #include <d3dx9.h>
@@ -34,6 +35,7 @@ class Mesh;
 class Transform;
 class Input;
 class Moteur;
+class Shader;
 
 #include "GameObject.h"
 #include "Component.h"
@@ -41,6 +43,7 @@ class Moteur;
 #include "Input.h"
 #include "Moteur.h"
 #include "Mesh.h"
+#include "Shader.h"
 
 
 // include the Direct3D Library files
