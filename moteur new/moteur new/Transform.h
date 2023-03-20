@@ -19,9 +19,13 @@ private:
 
 	D3DXMATRIX m_position_;
 	D3DXMATRIX m_scale_;
-	D3DXMATRIX m_rotation_;
+	D3DXQUATERNION q_rotation_;
 
-	float roll_, yaw_, pitch_;
+	//float roll_, yaw_, pitch_;
+	D3DXVECTOR3* v_forward_;
+	D3DXVECTOR3* v_up_;
+	D3DXVECTOR3* v_right_;
+	D3DXMATRIX m_rotation_;
 
 
 	D3DXMATRIX m_Transform_;//Final Value
@@ -50,15 +54,16 @@ public:
 
 	//---------Rotation---------
 	D3DXMATRIX rotation();
-	void rotation(D3DXMATRIX newrot);
-	void roll(float newRoll);
-	void yaw(float newYaw);
-	void pitch(float newPitch);
-	float roll();
-	float yaw();
-	float pitch();
-	void updateRotation();
-	static D3DXMATRIX* getARotation(float roll, float pitch, float yaw, bool isRadian = true);
+	void addPitch(float pitch);
+	void addRoll(float roll);
+	void addYaw(float yaw);
+	void addRollPitchYaw(float pitch, float roll, float yaw);
+	D3DXVECTOR3* forward();
+	D3DXVECTOR3* right();
+	D3DXVECTOR3* up();
+	D3DXQUATERNION genRotation(float roll = NULL, float pitch = NULL, float yaw = NULL);
+	void setARotation(float roll = NULL, float pitch = NULL, float yaw = NULL);
+	void getARotation(float roll = NULL, float pitch=NULL, float yaw = NULL);
 
 	//---------FINAL-------------
 	void updateFinal();

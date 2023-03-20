@@ -33,10 +33,16 @@ CUSTOMVERTEX points[] = {
 
 CUSTOMVERTEX vertices[] =
 {
+		{ -1.0f, -1.0f, 0.0f, D3DCOLOR_XRGB(255, 0, 0),},
+		{ -1.0f, 1.0f, 0.0f, D3DCOLOR_XRGB(0, 255, 0), },
+		{ 1.0f, -1.0f, 0.0f, D3DCOLOR_XRGB(0, 0, 255), },
 		{ 1.0f, -1.0f, 0.0f, D3DCOLOR_XRGB(0, 0, 255), },
 		{ -1.0f, 1.0f, 0.0f, D3DCOLOR_XRGB(0, 255, 0), },
 		{ -1.0f, -1.0f, 0.0f, D3DCOLOR_XRGB(255, 0, 0),},
 
+	{ 1.0f, -1.0f, -1.0f, D3DCOLOR_XRGB(0, 0, 255), },//6
+	{ -1.0f, 1.0f, -1.0f, D3DCOLOR_XRGB(0, 0, 255), },//7
+	{ 1.0f, 1.0f, -1.0f, D3DCOLOR_XRGB(0, 0, 255), },//8
 
 
 
@@ -74,7 +80,12 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	forme->deduceTriangle();
 	M->loadMeshInScene(forme);
 	triangle->addComponent(forme);
-	triangle->addComponent(new GoTester(M->inputManager(), triangle));
+	
+	//triangle->addComponent(new GoTester(M->inputManager()));
+	M->camera()->addComponent(new GoTester(M->inputManager()));
+	M->camera()->transform()->posZ(20.0f);
+	M->camera()->transform()->addPitch(M_PI);
+
 
 	M->addGameObject(triangle);
 
