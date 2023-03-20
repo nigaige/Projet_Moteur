@@ -34,6 +34,7 @@ class Mesh;
 class Transform;
 class Input;
 class Moteur;
+class Camera;
 
 #include "GameObject.h"
 #include "Component.h"
@@ -41,6 +42,7 @@ class Moteur;
 #include "Input.h"
 #include "Moteur.h"
 #include "Mesh.h"
+#include "Camera.h"
 
 
 // include the Direct3D Library files

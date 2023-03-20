@@ -22,6 +22,7 @@ private:
 	D3DXMATRIX m_rotation_;
 
 	float roll_, yaw_, pitch_;
+	D3DXVECTOR3 v_forward_;
 
 
 	D3DXMATRIX m_Transform_;//Final Value
@@ -58,7 +59,10 @@ public:
 	float yaw();
 	float pitch();
 	void updateRotation();
+	D3DXVECTOR3 forward();
+	void updateForward();
 	static D3DXMATRIX* getARotation(float roll, float pitch, float yaw, bool isRadian = true);
+
 
 	//---------FINAL-------------
 	void updateFinal();
