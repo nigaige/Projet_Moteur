@@ -1,4 +1,3 @@
-#pragma once
 #include "Utils.h"
 
 Component::Component(bool isActive, GameObject* go)

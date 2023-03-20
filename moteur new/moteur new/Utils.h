@@ -37,6 +37,7 @@ class Transform;
 class Input;
 class Moteur;
 class Shader;
+class Material;
 
 #include "GameObject.h"
 #include "Component.h"
@@ -45,6 +46,7 @@ class Shader;
 #include "Moteur.h"
 #include "Mesh.h"
 #include "Shader.h"
+#include "Material.h"
 
 
 // include the Direct3D Library files

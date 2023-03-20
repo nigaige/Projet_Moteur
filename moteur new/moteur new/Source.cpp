@@ -1,6 +1,4 @@
-#pragma once
 #include "Utils.h"
-
 #pragma region testing
 	
 CUSTOMVERTEX points[] = {
@@ -32,11 +30,36 @@ CUSTOMVERTEX points[] = {
 
 
 CUSTOMVERTEX vertices[] =
-{
+{/*
 		{ 1.0f, -1.0f, 0.0f, D3DCOLOR_XRGB(0, 0, 255), },
 		{ -1.0f, 1.0f, 0.0f, D3DCOLOR_XRGB(0, 255, 0), },
 		{ -1.0f, -1.0f, 0.0f, D3DCOLOR_XRGB(255, 0, 0),},
+		*/
 
+{ 1.000000f, 1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
+{ -1.000000f, 1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
+{ -1.000000f, 1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
+{ 1.000000f, 1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
+{ 1.000000f, -1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
+{ 1.000000f, 1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
+{ -1.000000f, 1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
+{ -1.000000f, -1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
+{ -1.000000f, -1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
+{ -1.000000f, 1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
+{ -1.000000f, 1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
+{ -1.000000f, -1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
+{ -1.000000f, -1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
+{ 1.000000f, -1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
+{ 1.000000f, -1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
+{ -1.000000f, -1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
+{ 1.000000f, -1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
+{ 1.000000f, 1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
+{ 1.000000f, 1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
+{ 1.000000f, -1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
+{ -1.000000f, -1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
+{ -1.000000f, 1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
+{ 1.000000f, 1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
+{ 1.000000f, -1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), }
 
 
 
@@ -71,14 +94,28 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	for (int i = 0; i < sizeof(vertices)/ sizeof(CUSTOMVERTEX); i++) {
 		forme->addVertex(vertices + i);
 	}
+
 	forme->deduceTriangle();
 	M->loadMeshInScene(forme);
+
 	triangle->addComponent(forme);
 	triangle->addComponent(new GoTester(M->inputManager(), triangle));
 
-	M->addGameObject(triangle);
+	//M->addGameObject(triangle);
 
-	M->ImportingModel();
+
+	GameObject* Singe = new GameObject();
+	Mesh* burbur = M->ImportingModel("C:/Users/Asabi/Desktop/ObjectFiles/CUBEWESH/Sympa.x");
+	//burbur->deduceTriangle();
+
+	
+	//M->loadMeshInScene(burbur);
+
+	Singe->addComponent(burbur);
+	Singe->addComponent(new GoTester(M->inputManager(), Singe));
+	//Utils::DebugLogMessage(burbur->vertex()->size());
+
+	M->addGameObject(Singe);
 	// set up and initialize Direct3D
 
 	// enter the main loop:

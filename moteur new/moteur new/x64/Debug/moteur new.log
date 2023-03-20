@@ -1,17 +1,8 @@
-﻿  Material.cpp
-C:\Users\Asabi\Documents\GitHub\Projet_Moteur_Lib\moteur new\moteur new\Shader.h(4,24): error C2143: syntax error: missing ';' before '*'
-C:\Users\Asabi\Documents\GitHub\Projet_Moteur_Lib\moteur new\moteur new\Shader.h(4,24): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-C:\Users\Asabi\Documents\GitHub\Projet_Moteur_Lib\moteur new\moteur new\Shader.h(4,43): error C2238: unexpected token(s) preceding ';'
-C:\Users\Asabi\Documents\GitHub\Projet_Moteur_Lib\moteur new\moteur new\Shader.h(8,9): error C2061: syntax error: identifier 'IDirect3DVertexShader9'
-C:\Users\Asabi\Documents\GitHub\Projet_Moteur_Lib\moteur new\moteur new\Shader.h(12,18): error C2061: syntax error: identifier 'LPD3DXBUFFER'
-C:\Users\Asabi\Documents\GitHub\Projet_Moteur_Lib\moteur new\moteur new\Shader.h(15,23): error C2039: 'string': is not a member of 'std'
-C:\Users\Asabi\Documents\GitHub\Projet_Moteur_Lib\moteur new\moteur new\predefined C++ types (compiler internal)(342): message : see declaration of 'std'
-C:\Users\Asabi\Documents\GitHub\Projet_Moteur_Lib\moteur new\moteur new\Shader.h(15,29): error C2061: syntax error: identifier 'string'
-C:\Users\Asabi\Documents\GitHub\Projet_Moteur_Lib\moteur new\moteur new\Shader.h(15,42): error C2535: 'void Shader::LoadShader(void)': member function already defined or declared
-C:\Users\Asabi\Documents\GitHub\Projet_Moteur_Lib\moteur new\moteur new\Shader.h(12): message : see declaration of 'Shader::LoadShader'
-  Mesh.cpp
-C:\Users\Asabi\Documents\GitHub\Projet_Moteur_Lib\moteur new\moteur new\Mesh.cpp(23,30): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  Utils.cpp
-C:\Users\Asabi\Documents\GitHub\Projet_Moteur_Lib\moteur new\moteur new\Utils.cpp(35,52): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-C:\Users\Asabi\Documents\GitHub\Projet_Moteur_Lib\moteur new\moteur new\Utils.cpp(36,50): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
+﻿  Moteur.cpp
+C:\Users\Asabi\Documents\GitHub\Projet_Moteur_Lib\moteur new\moteur new\Moteur.cpp(95,7): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+C:\Users\Asabi\Documents\GitHub\Projet_Moteur_Lib\moteur new\moteur new\Moteur.cpp(277,14): warning C4244: 'initializing': conversion from 'std::streamoff' to 'int', possible loss of data
+C:\Users\Asabi\Documents\GitHub\Projet_Moteur_Lib\moteur new\moteur new\Moteur.cpp(283,146): warning C4267: 'argument': conversion from 'size_t' to 'UINT', possible loss of data
+C:\Users\Asabi\Documents\GitHub\Projet_Moteur_Lib\moteur new\moteur new\Moteur.cpp(285,44): warning C4312: 'type cast': conversion from 'HRESULT' to 'DWORD *' of greater size
+C:\Users\Asabi\Documents\GitHub\Projet_Moteur_Lib\moteur new\moteur new\Moteur.cpp(351,7): warning C4091: '': ignored on left of 'unsigned long' when no variable is declared
+C:\Users\Asabi\Documents\GitHub\Projet_Moteur_Lib\moteur new\moteur new\Moteur.cpp(291): warning C4715: 'Moteur::LoadShader': not all control paths return a value
+  moteur new.vcxproj -> C:\Users\Asabi\Documents\GitHub\Projet_Moteur_Lib\moteur new\x64\Debug\moteur new.exe

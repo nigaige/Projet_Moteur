@@ -1,7 +1,4 @@
-#pragma once
 #include "Utils.h"
-
-
 
 Mesh::Mesh(D3DPRIMITIVETYPE primitivMethode) 
 {
@@ -17,6 +14,12 @@ Mesh::~Mesh()
 void Mesh::addVertex(CUSTOMVERTEX* v)
 {
 	vertex_.push_back(v);
+}
+
+void Mesh::addvector(D3DXVECTOR3* v)
+{
+    CUSTOMVERTEX newCustom = { v->x, v->y, v->z, D3DCOLOR_XRGB(255, 0, 255)};
+    vertex_.push_back(&newCustom);
 }
 
 void Mesh::deduceTriangle() {

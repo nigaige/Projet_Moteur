@@ -1,4 +1,4 @@
-#include "Shader.h"
+#pragma once
 
 class Material
 {

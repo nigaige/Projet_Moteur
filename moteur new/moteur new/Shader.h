@@ -1,7 +1,9 @@
+#pragma once
+
 class Shader
 {
 private:
-	IDirect3DVertexShader9** _ppShader = NULL;
+	IDirect3DVertexShader9** _ppShader = nullptr;
 
 public:
 

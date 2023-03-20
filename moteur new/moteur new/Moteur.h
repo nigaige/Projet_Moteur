@@ -1,3 +1,4 @@
+#pragma once
 
 
 class Moteur
@@ -50,6 +51,6 @@ public:
 
 	Shader LoadShader(std::string* shaderPath);
 
-	void ImportingModel();
+	Mesh* ImportingModel(std::string path);
 };
 
