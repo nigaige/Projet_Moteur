@@ -49,5 +49,7 @@ public:
 	void update(void);															//TODO MANAGE GLOBAL TIME
 
 	Shader LoadShader(std::string* shaderPath);
+
+	void ImportingModel();
 };
 

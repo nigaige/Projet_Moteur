@@ -78,7 +78,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 	M->addGameObject(triangle);
 
-
+	M->ImportingModel();
 	// set up and initialize Direct3D
 
 	// enter the main loop:

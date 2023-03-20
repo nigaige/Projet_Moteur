@@ -268,10 +268,26 @@ Shader Moteur::LoadShader(std::string* shaderPath)
 
 		HRESULT Buffer = D3DXCompileShader((LPCSTR)_Str, strlen(_Str), NULL, NULL, "main_vertex", "vs_3_0", 0, &code_v, &listing_v, ppConstantTable_OUT);
 
-		d3ddev->CreateVertexShader((DWORD*)Buffer, ppShader);
+		//d3ddev->CreateVertexShader((DWORD*)Buffer, ppShader);
 
-		d3ddev->SetVertexShader(*ppShader);
+		//d3ddev->SetVertexShader(*ppShader);
 
-		return *new Shader(ppShader);
+		return *new Shader(NULL);
 	}
 }
+
+void Moteur::ImportingModel()
+{
+	std::ifstream file;
+	//file.open("C:/Users/asabi/Desktop/ObjectFiles/Yes/Cool.x", std::ios_base::binary);
+	/*file.seekg(0, file.end);
+	int length = file.tellg();
+	file.seekg(0, file.beg);
+	char* _Str = new char[length + 1];
+	file.read(_Str, length);
+	_Str[length] = 0;*/
+
+	DirectXFileCreate((LPDIRECTXFILE*)"C:/Users/asabi/Desktop/ObjectFiles/Yes/Coddol.x");
+
+}
+
