@@ -4,6 +4,7 @@
 #include <windowsx.h>
 #define _USE_MATH_DEFINES
 #include <cmath>
+#include <math.h>  
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -34,8 +35,15 @@ class Component;
 class Mesh;
 class Transform;
 class Input;
+class Camera;
 class Moteur;
 class Shader;
+
+class Collider;
+class ColliderSphere;
+class ColliderCube;
+class ColliderManager;
+
 
 #include "GameObject.h"
 #include "Component.h"
@@ -44,6 +52,12 @@ class Shader;
 #include "Moteur.h"
 #include "Mesh.h"
 #include "Shader.h"
+#include "Camera.h"
+
+#include "Collider.h"
+#include "ColliderSphere.h"
+#include "ColliderCube.h"
+#include "ColliderManager.h"
 
 
 // include the Direct3D Library files

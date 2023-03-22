@@ -16,6 +16,10 @@ private:
 	std::vector<GameObject*> GOList;
 	std::vector<Mesh*> MeList;
 
+
+	GameObject* camera_;
+	Camera* cameraComponent;
+
 	Input* inputManager_;
 
 public:
@@ -37,6 +41,7 @@ public:
 	void cleanD3D(void);
 
 	void setUpCamera();
+	GameObject* camera();
 
 	void addGameObject(GameObject* go);
 	void rmGamObject(GameObject* go);

@@ -12,15 +12,20 @@ Transform::Transform()
 	v_position_.y = 0;
 	v_position_.z = 0;
 	updatePosition();
-	pitch_ = 0;
-	yaw_ = 0;
-	roll_ = 0;
-	updateRotation();
+	v_forward_ = new FORWARD;
+	v_up_ = new UP;
+	v_right_ = new RIGHT;
+	D3DXMATRIX out;
+
+	D3DXQuaternionIdentity(&q_rotation_);
+	D3DXMatrixRotationQuaternion(&m_rotation_, &q_rotation_);
+
+	updateFinal();
 }
 
 Transform::~Transform()
 {
-
+	//TODO FIX
 }
 
 //----------position--------
@@ -48,37 +53,104 @@ void Transform::updateScale() {
 //---------Rotation---------
 
 D3DXMATRIX Transform::rotation()			{ return m_rotation_; }
-void Transform::rotation(D3DXMATRIX newrot) { m_rotation_ = newrot; updateRotation();}
-void Transform::roll(float newRoll)			{ roll_ = newRoll; updateRotation();}
-void Transform::yaw(float newYaw)			{ yaw_ = newYaw; updateRotation();}
-void Transform::pitch(float newPitch)		{ pitch_ = newPitch; updateRotation();}
-float Transform::roll()						{return roll_;}
-float Transform::yaw()						{return yaw_;}
-float Transform::pitch()					{return pitch_;}
 
-void Transform::updateRotation(){
-	m_rotation_ = *getARotation(roll_, pitch_, yaw_);
-	updateFinal();
+void Transform::addPitch(float pitch)
+{
+	getARotation(NULL, pitch, NULL);
 }
 
-D3DXMATRIX* Transform::getARotation(float roll, float pitch, float yaw, bool isRadian){	
+void Transform::addRoll(float roll)
+{
+	getARotation(roll, NULL, NULL);
+}
+
+void Transform::addYaw(float yaw)
+{
+	getARotation(NULL, NULL, yaw);
+}
+
+void Transform::addRollPitchYaw(float pitch, float roll, float yaw) {
+	getARotation(pitch, roll, yaw);
+}
+
+D3DXVECTOR3* Transform::forward()
+{
+	return v_forward_;
+}
+
+D3DXVECTOR3* Transform::right()
+{
+	return v_right_;
+}
+
+D3DXVECTOR3* Transform::up()
+{
+	return v_up_;
+}
+
+D3DXQUATERNION Transform::genRotation(float roll, float pitch, float yaw)
+{
 	D3DXQUATERNION quat;
-	D3DXMATRIX out;
-	if (isRadian) {
-		D3DXQuaternionRotationYawPitchRoll(&quat, roll, pitch, yaw);
-	} else {
-		D3DXQuaternionRotationYawPitchRoll(&quat,Utils::DegToRad(roll), Utils::DegToRad(pitch), Utils::DegToRad(yaw));
+	D3DXQUATERNION quatRot;
+	D3DXQuaternionIdentity(&quatRot);
+
+	if (roll != NULL) {
+		D3DXQuaternionRotationAxis(&quat, v_forward_, roll);
+		quatRot *= quat;
 	}
-	D3DXMatrixRotationQuaternion(&out, &quat);
-	return &out;
+	if (pitch != NULL) {
+		D3DXQuaternionRotationAxis(&quat, v_right_, pitch);
+		quatRot *= quat;
+	}
+	if (yaw != NULL) {
+		D3DXQuaternionRotationAxis(&quat, v_up_, yaw);
+		quatRot *= quat;
+	}
+
+	return quatRot;
+}
+
+void Transform::setARotation(float roll, float pitch, float yaw)
+{
+	q_rotation_ = genRotation(roll,pitch,yaw);
+	D3DXMatrixRotationQuaternion(&m_rotation_, &q_rotation_);
+	v_right_->x = m_rotation_._11;
+	v_right_->y = m_rotation_._12;
+	v_right_->z = m_rotation_._13;
+	v_up_->x = m_rotation_._21;
+	v_up_->y = m_rotation_._22;
+	v_up_->z = m_rotation_._23;
+	v_forward_->x = m_rotation_._31;
+	v_forward_->y = m_rotation_._32;
+	v_forward_->z = m_rotation_._33;
+	updateFinal();
+
+}
+
+void Transform::getARotation(float roll, float pitch, float yaw){	
+
+	q_rotation_ *= genRotation(roll, pitch, yaw);
+	D3DXMatrixRotationQuaternion(&m_rotation_, &q_rotation_);
+
+	v_right_->x		= m_rotation_._11;
+	v_right_->y		= m_rotation_._12;
+	v_right_->z		= m_rotation_._13;
+	v_up_->x		= m_rotation_._21;
+	v_up_->y		= m_rotation_._22;
+	v_up_->z		= m_rotation_._23;
+	v_forward_->x	= m_rotation_._31;
+	v_forward_->y	= m_rotation_._32;
+	v_forward_->z	= m_rotation_._33;
+
+	updateFinal();
 }
 
 
 //-------------FINAL------------
 void Transform::updateFinal(){
 	m_Transform_ = m_scale_;
-	m_Transform_ *= m_rotation_;
 	m_Transform_ *= m_position_;
+	m_Transform_ *= m_rotation_;
 }
 
 D3DXMATRIX* Transform::displayValue()

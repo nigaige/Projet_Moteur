@@ -1,7 +1,2 @@
-﻿  GoTester.cpp
-  Input.cpp
-  Utils.cpp
-D:\Projet_Moteur_Lib\moteur new\moteur new\Utils.cpp(35,52): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-D:\Projet_Moteur_Lib\moteur new\moteur new\Utils.cpp(36,50): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
+﻿  Transform.cpp
   moteur new.vcxproj -> D:\Projet_Moteur_Lib\moteur new\x64\Debug\moteur new.exe

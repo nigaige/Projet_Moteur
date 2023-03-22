@@ -6,7 +6,6 @@
 Mesh::Mesh(D3DPRIMITIVETYPE primitivMethode) 
 {
 	primitivMethode_ = primitivMethode;
-    gameobject = nullptr;
 }
 
 Mesh::~Mesh()

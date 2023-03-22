@@ -129,6 +129,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="ColliderCube.cpp" />
+    <ClCompile Include="ColliderManager.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GoTester.cpp" />
@@ -136,16 +140,22 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Moteur.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="ColliderSphere.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collider.h" />
+    <ClInclude Include="ColliderCube.h" />
+    <ClInclude Include="ColliderManager.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GoTester.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Moteur.h" />
+    <ClInclude Include="ColliderSphere.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>

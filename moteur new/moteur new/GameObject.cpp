@@ -36,6 +36,9 @@ void GameObject::addComponent(Component* comp)
 
 	if (isOfType<Mesh>(comp)) {
 		MeshList.push_back(castToType<Mesh>(comp));
+	}else {
+		comp->gameObject(this);
+		comp->transform(transform_);
 	}
 }
 

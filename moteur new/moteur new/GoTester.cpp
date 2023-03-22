@@ -5,14 +5,12 @@
 void GoTester::update()
 {
 	if (InputManager->getKeyState('A') == States::HOLD) {
-		gameobject->transform()->pitch(gameobject->transform()->pitch()+0.1f);
+		//transform_->addPitch(0.1f);
+		transform_->addYaw(0.1f);
+		//transform_->addRoll(0.1f);
 	};
-
-
-
 }
 
-GoTester::GoTester(Input* IM, GameObject* go) {
-	gameobject = go;
+GoTester::GoTester(Input* IM) {
 	InputManager = IM;
 }

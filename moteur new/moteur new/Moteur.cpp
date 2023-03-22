@@ -86,7 +86,9 @@ void Moteur::loadMeshInScene(Mesh* MeshToLoad) {
 	LPDIRECT3DVERTEXBUFFER9 v_buffer = NULL;    // the pointer to the vertex buffer
 	CUSTOMVERTEX* pVoid;    // a void pointer
 
-	d3ddev->CreateVertexBuffer(3 * sizeof(CUSTOMVERTEX),
+	std::vector<CUSTOMVERTEX*> vList = *MeshToLoad->vertex();		//TODO OPTI POINTER?
+
+	d3ddev->CreateVertexBuffer(vList.size() * sizeof(CUSTOMVERTEX),
 		0,
 		CUSTOMFVF,
 		D3DPOOL_MANAGED,
@@ -95,7 +97,6 @@ void Moteur::loadMeshInScene(Mesh* MeshToLoad) {
 	
 	v_buffer->Lock(0, 0, (void**)&pVoid, 0);
 	
-	std::vector<CUSTOMVERTEX*> vList = *MeshToLoad->vertex();		//TODO OPTI POINTER?
 	for (int i = 0; i <	vList.size(); i++) {
 		memcpy(pVoid + i, vList[i], sizeof(CUSTOMVERTEX));
 	}
@@ -129,6 +130,14 @@ void Moteur::initD3D()
 		&d3ddev);
 
 	d3ddev->SetRenderState(D3DRS_LIGHTING, FALSE);    // turn off the 3D lighting
+	
+
+
+	camera_ = new GameObject();
+	cameraComponent = new Camera(45, 1.0f, 100.0f);
+	camera_->addComponent(cameraComponent);
+	
+
 }
 
 void Moteur::cleanD3D(void)
@@ -168,7 +177,9 @@ void Moteur::render(void)
 
 void Moteur::update(void)
 {
+
 	inputManager_->InputUpdate();
+	camera_->update();
 	for (GameObject* go : GOList) {
 		go->update();
 	}
@@ -178,30 +189,40 @@ void Moteur::update(void)
 void Moteur::setUpCamera() {//TODO Transform input
 
 	// select which vertex format we are using
+
 	d3ddev->SetFVF(CUSTOMFVF);
+
+	//d3ddev->SetTransform(D3DTS_VIEW, cameraComponent->updateCamera());
+
 
 	D3DXVECTOR3 pEye(0.0f, 0.0f, 20.0f);
 	D3DXVECTOR3 pAt(0.0f, 0.0f, 0.0f);
 	D3DXVECTOR3 pUp(0.0f, 1.0f, 0.0f);
-
 	D3DXMATRIX matView;    // the view transform matrix
 
 	D3DXMatrixLookAtLH(&matView,
 		&pEye,    // the camera position
 		&pAt,    // the look-at position
 		&pUp);    // the up direction
-	d3ddev->SetTransform(D3DTS_VIEW, &matView);
+
+
+	d3ddev->SetTransform(D3DTS_VIEW, cameraComponent->transform()->displayValue());
+
 
 	D3DXMATRIX matProjection;     // the projection transform matrix
 
 	D3DXMatrixPerspectiveFovLH(&matProjection,
-		D3DXToRadian(45),    // the horizontal field of view
+		D3DXToRadian(cameraComponent->fov()),    // the horizontal field of view
 		(FLOAT)SCREEN_WIDTH / (FLOAT)SCREEN_HEIGHT, // aspect ratio
-		1.0f,    // the near view-plane
-		100.0f);    // the far view-plane
+		cameraComponent->nearViewPlane(),    // the near view-plane
+		cameraComponent->farViewPlane());    // the far view-plane
 
 	d3ddev->SetTransform(D3DTS_PROJECTION, &matProjection);    // set the projection
+}
 
+GameObject* Moteur::camera()
+{
+	return camera_;
 }
 
 
