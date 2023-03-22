@@ -15,8 +15,11 @@ private:
 
 
 	LPD3DXMESH importedMesh_ = nullptr;
-	LPD3DXBUFFER* material_ = nullptr;
-	DWORD* matCount_ = 0;
+	LPD3DXBUFFER materialBuffer_ = nullptr;
+	DWORD matCount_ = 0;
+
+	D3DMATERIAL9* meshMaterials_ = nullptr;
+	LPDIRECT3DTEXTURE9* meshTexture_ = nullptr;
 
 public:
 	Mesh(D3DPRIMITIVETYPE primitivMethode);
@@ -27,26 +30,31 @@ public:
 
 	
 	//	GETTER/SETTER
-	std::vector<CUSTOMVERTEX*>* vertex()		{ return &vertex_; }
-	D3DPRIMITIVETYPE primitivMethode()			{ return primitivMethode_; }
-	void Primitiv(int face)						{ Primitiv_ = face; }
-	int Primitiv()								{ return Primitiv_; }
-	void pointCount(int point)					{ pointCount_ = point; }
-	int pointCount()							{ return pointCount_; }
+	std::vector<CUSTOMVERTEX*>* vertex()			{ return &vertex_; }
+	D3DPRIMITIVETYPE primitivMethode()				{ return primitivMethode_; }
+	void Primitiv(int face)							{ Primitiv_ = face; }
+	int Primitiv()									{ return Primitiv_; }
+	void pointCount(int point)						{ pointCount_ = point; }
+	int pointCount()								{ return pointCount_; }
 
-	LPD3DXMESH importedMesh()					{ return importedMesh_; }
-	void importedMesh(LPD3DXMESH mesh)			{ importedMesh_ = mesh; }
-	LPD3DXBUFFER* material()					{ return material_; }
-	void material(LPD3DXBUFFER* material)		{ material_ = material; }
-	DWORD* matCount()							{ return matCount_; }
-	void matCount(DWORD* matCount)				{ matCount_ = matCount; }
+	LPD3DXMESH importedMesh()						{ return importedMesh_; }
+	void importedMesh(LPD3DXMESH mesh)				{ importedMesh_ = mesh; }
+	LPD3DXBUFFER materialBuffer()					{ return materialBuffer_; }
+	void materialBuffer(LPD3DXBUFFER material)		{ materialBuffer_ = material; }
+	DWORD matCount()								{ return matCount_; }
+	void matCount(DWORD matCount)					{ matCount_ = matCount; }
+
+	void meshMaterials(D3DMATERIAL9* materials)		{ meshMaterials_ = materials; }
+	D3DMATERIAL9* meshMaterials()					{ return meshMaterials_; }
+	void meshTexture(LPDIRECT3DTEXTURE9* textures)	{ meshTexture_ = textures; }
+	LPDIRECT3DTEXTURE9* meshTexture()				{ return meshTexture_; }
 
 
 
-	LPDIRECT3DINDEXBUFFER9 Ibuffer()			{ return Ibuffer_; }
-	LPDIRECT3DVERTEXBUFFER9 Vbuffer()			{ return Vbuffer_; }
-	void Ibuffer(LPDIRECT3DINDEXBUFFER9 buff)	{ Ibuffer_ = buff; }
-	void Vbuffer(LPDIRECT3DVERTEXBUFFER9 buff)	{ Vbuffer_ = buff; }
+	LPDIRECT3DINDEXBUFFER9 Ibuffer()				{ return Ibuffer_; }
+	LPDIRECT3DVERTEXBUFFER9 Vbuffer()				{ return Vbuffer_; }
+	void Ibuffer(LPDIRECT3DINDEXBUFFER9 buff)		{ Ibuffer_ = buff; }
+	void Vbuffer(LPDIRECT3DVERTEXBUFFER9 buff)		{ Vbuffer_ = buff; }
 
 	void deduceTriangle();
 

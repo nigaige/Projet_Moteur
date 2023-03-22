@@ -1,6 +1,8 @@
 #include "Utils.h"
 #include <tchar.h>
 
+
+
 // this is the main message handler for the program
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -70,11 +72,12 @@ void Moteur::Init()
 	d3d->CreateDevice(D3DADAPTER_DEFAULT,
 		D3DDEVTYPE_HAL,
 		hWnd,
-		D3DCREATE_SOFTWARE_VERTEXPROCESSING,
+		D3DCREATE_HARDWARE_VERTEXPROCESSING,
 		&d3dpp,
 		&d3ddev);
 
-	d3ddev->SetRenderState(D3DRS_LIGHTING, FALSE);    // turn off the 3D lighting
+	d3ddev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	d3ddev->SetRenderState(D3DRS_AMBIENT, 0xffffffff); // turn off the 3D lighting
 
 
 	initD3D();
@@ -125,12 +128,13 @@ void Moteur::initD3D()
 	d3d->CreateDevice(D3DADAPTER_DEFAULT,
 		D3DDEVTYPE_HAL,
 		hWnd,
-		D3DCREATE_SOFTWARE_VERTEXPROCESSING,
+		/*D3DCREATE_SOFTWARE_VERTEXPROCESSING*/D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_PUREDEVICE,
 		&d3dpp,
 		&d3ddev);
 
-	d3ddev->SetRenderState(D3DRS_LIGHTING, FALSE);    // turn off the 3D lighting
-	
+	d3ddev->SetRenderState(D3DRS_LIGHTING, TRUE);    // turn off the 3D lighting
+	d3ddev->SetRenderState(D3DRS_ZENABLE, TRUE);
+	d3ddev->SetRenderState(D3DRS_AMBIENT, 0xffffffff);
 
 
 	camera_ = new GameObject();
@@ -163,14 +167,32 @@ void Moteur::render(void)
 
 		if (go->meshToDraw().size() == 0) continue;
 		for (Mesh* m : go->meshToDraw()) {
-
 			
-			m->importedMesh()->DrawSubset(0);
+			if (m->importedMesh() == NULL)
+			{
+				d3ddev->SetStreamSource(0, m->Vbuffer(), 0, sizeof(CUSTOMVERTEX));
+				d3ddev->DrawPrimitive(m->primitivMethode(), 0, m->Primitiv());
+			}
 
+			else
+			{
+				for (DWORD i = 0; i < m->matCount(); i++) 
+						{
+							d3ddev->SetMaterial(&m->meshMaterials()[i]);
+							if (m->meshTexture() != NULL)
+							{
+								d3ddev->SetTexture(0, m->meshTexture()[i]);
+							}
+				
+							m->importedMesh()->DrawSubset(i);
+						}
+			}
+			
+		
 
-			/*			// select the vertex buffer to display
-			d3ddev->SetStreamSource(0, m->Vbuffer(), 0, sizeof(CUSTOMVERTEX));
-
+		
+			
+			/*
 			if (m->Ibuffer() != NULL) {
 
 
@@ -183,7 +205,7 @@ void Moteur::render(void)
 			}
 			else {
 				// copy the vertex buffer to the back buffer
-				d3ddev->DrawPrimitive(m->primitivMethode(), 0, m->Primitiv());
+				
 			}*/
 			
 		}
@@ -326,14 +348,54 @@ Shader Moteur::LoadShader(std::string* shaderPath)
 /// <returns>Mesh* resultMesh</returns>
 Mesh* Moteur::ImportingModel(std::string path)
 {
-	LPD3DXMESH meshImp = nullptr;
+	
+	LPD3DXBUFFER materialBuffer = NULL;
+	DWORD numMaterial = 0;
+	LPD3DXMESH mesh = nullptr;
+	
+	
+	
 	Mesh* resultMesh = new Mesh(D3DPT_TRIANGLELIST);
-	HRESULT hr = D3DXLoadMeshFromXA(path.c_str(), D3DXMESH_IB_SYSTEMMEM, d3ddev, NULL, resultMesh->material(), NULL, resultMesh->matCount(), &meshImp); //Import mesh in meshImp
-	resultMesh->importedMesh(meshImp);
-
+	HRESULT hr = D3DXLoadMeshFromXA(path.c_str(), D3DXMESH_MANAGED, d3ddev, NULL, &materialBuffer, NULL, &numMaterial, &mesh); //Import mesh in meshImp
 	if (FAILED(hr))
 		Utils::DebugLogMessage("Failed import model");
+	
+	
+	resultMesh->importedMesh(mesh);
+	resultMesh->materialBuffer(materialBuffer);
+	resultMesh->matCount(numMaterial);
 
+
+	D3DXMATERIAL* materials = (D3DXMATERIAL*)resultMesh->materialBuffer()->GetBufferPointer();
+
+	resultMesh->meshMaterials(new D3DMATERIAL9[resultMesh->matCount()]);
+	resultMesh->meshTexture(new LPDIRECT3DTEXTURE9[resultMesh->matCount()]);
+
+	if (resultMesh->meshMaterials() != NULL)
+	{
+		for (DWORD i = 0; i < resultMesh->matCount(); i++)
+			{
+				resultMesh->meshMaterials()[i] = materials[i].MatD3D;
+				resultMesh->meshMaterials()[i].Ambient = resultMesh->meshMaterials()[i].Diffuse;
+				if (materials[i].pTextureFilename != NULL)
+				{
+					if (FAILED(D3DXCreateTextureFromFileA(d3ddev, materials[i].pTextureFilename, &resultMesh->meshTexture()[i])))
+					{
+						Utils::DebugLogMessage("ERROR");
+					}
+				}
+				else
+				{
+					resultMesh->meshTexture()[i] = NULL;
+				}
+				
+		
+			}
+	}
+	
+	
+	
+	materialBuffer->Release();
 
 	return resultMesh;
 }

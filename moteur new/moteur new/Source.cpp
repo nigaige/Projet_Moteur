@@ -30,36 +30,13 @@ CUSTOMVERTEX points[] = {
 
 
 CUSTOMVERTEX vertices[] =
-{/*
+{
 		{ 1.0f, -1.0f, 0.0f, D3DCOLOR_XRGB(0, 0, 255), },
 		{ -1.0f, 1.0f, 0.0f, D3DCOLOR_XRGB(0, 255, 0), },
 		{ -1.0f, -1.0f, 0.0f, D3DCOLOR_XRGB(255, 0, 0),},
-		*/
+		
 
-{ 1.000000f, 1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ -1.000000f, 1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ -1.000000f, 1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ 1.000000f, 1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ 1.000000f, -1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ 1.000000f, 1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ -1.000000f, 1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ -1.000000f, -1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ -1.000000f, -1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ -1.000000f, 1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ -1.000000f, 1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ -1.000000f, -1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ -1.000000f, -1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ 1.000000f, -1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ 1.000000f, -1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ -1.000000f, -1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ 1.000000f, -1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ 1.000000f, 1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ 1.000000f, 1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ 1.000000f, -1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ -1.000000f, -1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ -1.000000f, 1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ 1.000000f, 1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ 1.000000f, -1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), }
+
 
 
 
@@ -89,38 +66,37 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 	M->Init();
 
+
+	M->camera()->transform()->posZ(10.0f);
+	
+
 	GameObject* triangle = new GameObject();
 	Mesh* forme = new Mesh(D3DPT_TRIANGLELIST);
+	
+	GameObject* GoImported = new GameObject();
+	Mesh* MeshImported = M->ImportingModel("./Mesh/CUBEN.x");
+
+
 	for (int i = 0; i < sizeof(vertices)/ sizeof(CUSTOMVERTEX); i++) {
 		forme->addVertex(vertices + i);
 	}
-
 	forme->deduceTriangle();
 	M->loadMeshInScene(forme);
-
 	triangle->addComponent(forme);
-	
+	M->addGameObject(triangle);
+
 	//triangle->addComponent(new GoTester(M->inputManager()));
+
 	//M->camera()->addComponent(new GoTester(M->inputManager()));
-	M->camera()->transform()->posZ(20.0f);
+
+	
 	//M->camera()->transform()->addPitch(M_PI);
 
 
-	//M->addGameObject(triangle);
+	GoImported->addComponent(MeshImported);
+	GoImported->addComponent(new GoTester(M->inputManager()));
+	M->addGameObject(GoImported);
 
-
-	GameObject* Singe = new GameObject();
-	Mesh* burbur = M->ImportingModel("C:/Users/Asabi/Desktop/ObjectFiles/Monkey.x");
-	//burbur->deduceTriangle();
-
-	
-	//M->loadMeshInScene(burbur);
-
-	Singe->addComponent(burbur);
-	Singe->addComponent(new GoTester(M->inputManager()));
-	//Utils::DebugLogMessage(burbur->vertex()->size());
-
-	M->addGameObject(Singe);
 	// set up and initialize Direct3D
 
 	// enter the main loop:
