@@ -9,6 +9,7 @@
 #include <vector>
 #include <fstream>
 
+#include <DXFile.h>
 #include <d3d9.h>
 #include <d3dx9.h>
 
@@ -38,6 +39,7 @@ class Input;
 class Camera;
 class Moteur;
 class Shader;
+class Material;
 
 class Collider;
 class ColliderSphere;

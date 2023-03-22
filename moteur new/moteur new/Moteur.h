@@ -1,3 +1,4 @@
+#pragma once
 
 
 class Moteur
@@ -54,5 +55,7 @@ public:
 	void update(void);															//TODO MANAGE GLOBAL TIME
 
 	Shader LoadShader(std::string* shaderPath);
+
+	Mesh* ImportingModel(std::string path);
 };
 

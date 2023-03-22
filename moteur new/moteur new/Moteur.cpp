@@ -1,5 +1,5 @@
-#pragma once
 #include "Utils.h"
+#include <tchar.h>
 
 // this is the main message handler for the program
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -166,8 +166,21 @@ void Moteur::render(void)
 			// select the vertex buffer to display
 			d3ddev->SetStreamSource(0, m->Vbuffer(), 0, sizeof(CUSTOMVERTEX));
 
-			// copy the vertex buffer to the back buffer
-			d3ddev->DrawPrimitive(m->primitivMethode(), 0, m->Primitiv());
+			if (m->Ibuffer() != NULL) {
+
+
+
+
+				
+				d3ddev->SetIndices(m->Ibuffer());
+				d3ddev->DrawIndexedPrimitive(m->primitivMethode(), 0, 0, m->pointCount(),0,m->Primitiv());//methode,start, mini,||nbface||,pr index,||nb point||
+				
+			}
+			else {
+				// copy the vertex buffer to the back buffer
+				d3ddev->DrawPrimitive(m->primitivMethode(), 0, m->Primitiv());
+			}
+			
 		}
 	}
 	d3ddev->EndScene();
@@ -271,11 +284,11 @@ Shader Moteur::LoadShader(std::string* shaderPath)
 	ID3DXBuffer* code_v = NULL;
 	LPD3DXCONSTANTTABLE* ppConstantTable_OUT = NULL;
 	LPD3DXBUFFER shaderContent_ = NULL;
-	IDirect3DVertexShader9** ppShader;
+	IDirect3DVertexShader9** ppShader = NULL;
 
 	std::ifstream file;
 
-	file.open("C:/Users/asabi/Desktop/text.hlsl", std::ios_base::binary);
+	//file.open("C:/Users/asabi/Desktop/text.hlsl", std::ios_base::binary);
 	//file.open(*shaderPath, std::ios_base::binary);
 
 	if (file)
@@ -293,6 +306,75 @@ Shader Moteur::LoadShader(std::string* shaderPath)
 
 		d3ddev->SetVertexShader(*ppShader);
 
-		return *new Shader(ppShader);
+		return *new Shader(NULL);
 	}
 }
+
+Mesh* Moteur::ImportingModel(std::string path)
+{
+	LPD3DXMESH g_pMesh = NULL;
+	Mesh* my = new Mesh(D3DPT_TRIANGLELIST);
+
+	my->MTest = &g_pMesh;
+
+
+	int wideStringLength = MultiByteToWideChar(CP_ACP, 0, path.c_str(), -1, NULL, 0);
+	std::wstring wideString(wideStringLength, 0);
+	MultiByteToWideChar(CP_ACP, 0, path.c_str(), -1, &wideString[0], wideStringLength);
+	LPCTSTR strFileName = wideString.c_str();
+
+	HRESULT hr = D3DXLoadMeshFromX(strFileName, D3DXMESH_IB_SYSTEMMEM, d3ddev, NULL, NULL, NULL, NULL, &g_pMesh);
+
+	if (FAILED(hr))
+		Utils::DebugLogMessage("Failed import model");
+
+
+	// normalise les coordonn�es des sommets pour s'assurer que le mod�le est bien affich�
+	//D3DXVECTOR3 vCenter;
+	//FLOAT fObjectRadius;
+	//LPVOID* ppData = nullptr;
+
+
+	//D3DXComputeBoundingSphere((D3DXVECTOR3*)g_pMesh->LockVertexBuffer(D3DLOCK_READONLY, ppData), g_pMesh->GetNumVertices(), D3DXGetFVFVertexSize(g_pMesh->GetFVF()), &vCenter, &fObjectRadius);
+
+
+
+	// Obtenez un pointeur vers le tampon de vertex
+	LPDIRECT3DVERTEXBUFFER9 pVertexBuffer = NULL;
+	LPDIRECT3DINDEXBUFFER9 pIndexBuffer = NULL;
+	g_pMesh->GetVertexBuffer(&pVertexBuffer);
+	g_pMesh->GetIndexBuffer(&pIndexBuffer);
+
+
+
+	my->Vbuffer(pVertexBuffer);
+	my->Ibuffer(pIndexBuffer);
+	my->Primitiv(g_pMesh->GetNumFaces());
+	my->pointCount(g_pMesh->GetNumVertices());
+	
+	
+	
+	D3DINDEXBUFFER_DESC* test = new D3DINDEXBUFFER_DESC();
+	D3DVERTEXBUFFER_DESC* test2 = new D3DVERTEXBUFFER_DESC();
+	pIndexBuffer->GetDesc(test);
+
+	int a = 0;
+	pVertexBuffer->GetDesc(test2);
+	int b = 0;
+	
+	GUID res;
+	void* pdata;
+	DWORD* pw = new DWORD();
+	pIndexBuffer->GetPrivateData(res, &pdata, pw);
+	int c = 2;
+
+	DWORD;
+
+
+
+
+
+
+	return my;
+}
+
