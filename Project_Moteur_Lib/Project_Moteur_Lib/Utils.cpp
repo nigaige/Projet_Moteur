@@ -1,5 +1,10 @@
 #include "Utils.h"
 
+
+
+//Utils::DebugLogMessage((vertToDisplay == nullptr) ? "true" : "false");
+
+
 void Utils::DebugLogMessage(const char* message)
 {
 	std::string txt = message;

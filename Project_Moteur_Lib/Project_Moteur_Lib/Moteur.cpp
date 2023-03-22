@@ -1,7 +1,7 @@
 #include "Moteur.h"
 
 
-void Moteur::init(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,int nCmdShow,int SCREEN_WIDTH,int SCREEN_HEIGHT)
+void Moteur::init(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,int nCmdShow,int width,int height)
 {
 	ZeroMemory(&wc, sizeof(WNDCLASSEX));
 
@@ -16,14 +16,14 @@ void Moteur::init(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,in
 
 
     hWnd = CreateWindowEx(NULL, L"WindowClass", L"Our Direct3D Program",
-        WS_OVERLAPPEDWINDOW, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT,
+        WS_OVERLAPPEDWINDOW, 0, 0, width, height,
         NULL, NULL, hInstance, NULL);
 
     ShowWindow(hWnd, nCmdShow);
 
 
-    SWidth = SCREEN_WIDTH;
-    SHeight = SCREEN_HEIGHT;
+    SWidth = width;
+    SHeight = height;
 
     // set up and initialize Direct3D
     initD3D(hWnd);
@@ -49,16 +49,15 @@ void Moteur::initD3D(HWND hWnd)
     d3d->CreateDevice(D3DADAPTER_DEFAULT,
         D3DDEVTYPE_HAL,
         hWnd,
-        D3DCREATE_HARDWARE_VERTEXPROCESSING,
+        D3DCREATE_HARDWARE_VERTEXPROCESSING|D3DCREATE_PUREDEVICE,
         &d3dpp,
         &d3ddev);
 
-    init_light();    // call the function to initialize the light and material
+//    init_light();    // call the function to initialize the light and material
 
-    d3ddev->SetRenderState(D3DRS_LIGHTING, TRUE);    // turn on the 3D lighting
-    d3ddev->SetRenderState(D3DRS_ZENABLE, TRUE);    // turn on the z-buffer
-    d3ddev->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(50, 50, 50));    // ambient light
-
+    d3ddev->SetRenderState(D3DRS_LIGHTING, FALSE);    // turn on the 3D lighting
+   // d3ddev->SetRenderState(D3DRS_ZENABLE, TRUE);    // turn on the z-buffer
+    //d3ddev->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(50, 50, 50));    // ambient light
 
 }
 
@@ -69,8 +68,10 @@ void Moteur::render(void)
     // -------------------------TODO change gameobjectLIST location-------------------------------
 
     //TODO opti variable input
-    d3ddev->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
-    d3ddev->Clear(0, NULL, D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
+    d3ddev->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(50, 0, 0), 1.0f, 0);
+   // d3ddev->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(50, 0, 0), 1.0f, 0);
+    //d3ddev->Clear(0, NULL, D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(50, 0, 0), 1.0f, 0);
+
 
     d3ddev->BeginScene();
 
@@ -78,33 +79,70 @@ void Moteur::render(void)
     d3ddev->SetFVF(CUSTOMFVF);
 
     //TODO CAMERA INPUT
-    setUpRenderCamera();
-
+    //setUpRenderCamera();
+    Utils::DebugLogMessage("---NOUVELLE FRAME---");
     for (int i = 0; i < goLisSize; i++) {
         if (gameObjectList[i]->toDisplay()) {
 
             Vertice* vertToDisplay =  gameObjectList[i]->findComponent<Vertice>();
-            
+
             //Vertice* vertToDisplay = nullptr;
             if (vertToDisplay == nullptr)  continue;
 
+
             //TODO material
 
-            // select the vertex and index buffers to use
+            // SET UP THE PIPELINE
 
-            //TODO MERGE
+            D3DXMATRIX matRotateY;    // a matrix to store the rotation information
+
+            static float index  = 0.0f; index += 0.05f;    // an ever-increasing float value
+
+            // build a matrix to rotate the model based on the increasing float value
+            D3DXMatrixRotationY(&matRotateY, index);
+
+            // tell Direct3D about our matrix
+            d3ddev->SetTransform(D3DTS_WORLD, &matRotateY);
+
+            D3DXVECTOR3 pEye(20.0f, 20.0f, -80.0f);
+            D3DXVECTOR3 pAt(0.0f, 0.0f, 0.0f);
+            D3DXVECTOR3 pUp(0.0f, 1.0f, 0.0f);
+            D3DXMATRIX matView;    // the view transform matrix
+
+
+            D3DXMatrixLookAtLH(&matView,
+                &pEye,    // the camera position
+                &pAt,    // the look-at position
+                &pUp);    // the up direction
+            d3ddev->SetTransform(D3DTS_VIEW, &matView);    // set the view transform to matView
+
+
+            D3DXMATRIX matProjection;     // the projection transform matrix
+
+            D3DXMatrixPerspectiveFovLH(&matProjection,
+                D3DXToRadian(45),    // the horizontal field of view
+                (FLOAT)SWidth  / (FLOAT)SHeight, // aspect ratio
+                1.0f,    // the near view-plane
+                100.0f);    // the far view-plane
+
+            d3ddev->SetTransform(D3DTS_PROJECTION, &matProjection);    // set the projection
+
+            d3ddev->SetFVF(CUSTOMFVF);
             d3ddev->SetStreamSource(0, vertToDisplay->GetVBuffer(), 0, sizeof(CUSTOMVERTEX));
-            d3ddev->SetIndices(vertToDisplay->GetIBuffer());
 
+            LPDIRECT3DINDEXBUFFER9 indices = vertToDisplay->GetIBuffer();
+            if (indices == NULL) {
 
-
-            d3ddev->SetTransform(D3DTS_WORLD,gameObjectList[i]->transform()->GetRendu());
-
-            d3ddev->DrawIndexedPrimitive(vertToDisplay->GetPrimitvMethode(), 0, 0, vertToDisplay->GetNbVertex(), 0, vertToDisplay->GetNbPrimitives());
+                HRESULT h = d3ddev->DrawPrimitive(vertToDisplay->GetPrimitvMethode(), 0, vertToDisplay->GetNbPrimitives());
+                int a = 0;
+            }
+            else {
+                d3ddev->SetIndices(indices);
+                d3ddev->DrawIndexedPrimitive(vertToDisplay->GetPrimitvMethode(), 0, 0, vertToDisplay->GetNbVertex(), 0, vertToDisplay->GetNbPrimitives());
+            }
+            Utils::DebugLogMessage(vertToDisplay->GetNbPrimitives());
 
         }
-
-
     }
 
     d3ddev->EndScene();
@@ -122,7 +160,7 @@ void Moteur::setUpRenderCamera() {
     // set the view transform
     D3DXMATRIX matView;    // the view transform matrix
 
-    D3DXVECTOR3 pEye(0.0f, 5.0f, 15.0f);
+    D3DXVECTOR3 pEye(0.0f, 0.0f, 10.0f);
     D3DXVECTOR3 pAt(0.0f, 0.0f, 0.0f);
     D3DXVECTOR3 pUp(0.0f, 1.0f, 0.0f);
 
@@ -131,7 +169,6 @@ void Moteur::setUpRenderCamera() {
         &pEye,    // the camera position
         &pAt,    // the look-at position
         &pUp);    // the up direction
-    d3ddev->SetTransform(D3DTS_VIEW, &matView);    // set the view transform to matView
     d3ddev->SetTransform(D3DTS_VIEW, &matView);    // set the view transform to matView
 
     // set the projection transform
@@ -172,7 +209,7 @@ void Moteur::init_light(void)
     light.Direction = D3DXVECTOR3(-1.0f, -0.3f, -1.0f);
 
     d3ddev->SetLight(0, &light);    // send the light struct properties to light #0
-    d3ddev->LightEnable(0, TRUE);    // turn on light #0
+    d3ddev->LightEnable(0, FALSE);    // turn on light #0
 
     ZeroMemory(&material, sizeof(D3DMATERIAL9));    // clear out the struct for use
     material.Diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);    // set diffuse color to white
@@ -181,22 +218,12 @@ void Moteur::init_light(void)
     d3ddev->SetMaterial(&material);    // set the globably-used material to &material
 }
 
-void Moteur::addMeshToscene(Vertice verti)
+void Moteur::addMeshToscene(Vertice* verti)
 {
-    //TODO MERGE
-    //CUSTOMVERTEX vertices[] vertiverti.getVertex()
+    LPDIRECT3DVERTEXBUFFER9 v_buffer = NULL;    // the pointer to the vertex buffer
 
-
-    // create the vertices using the CUSTOMVERTEX struct
-    CUSTOMVERTEX vertices[] =
-    {
-        { 3.0f, -3.0f, 0.0f, D3DCOLOR_XRGB(0, 0, 255), },
-        { 0.0f, 3.0f, 0.0f, D3DCOLOR_XRGB(0, 255, 0), },
-        { -3.0f, -3.0f, 0.0f, D3DCOLOR_XRGB(255, 0, 0), },
-    };
-
-    // create a vertex buffer interface called v_buffer
-    d3ddev->CreateVertexBuffer(3 * sizeof(CUSTOMVERTEX),
+    //----------------VBUFFER
+    d3ddev->CreateVertexBuffer(verti->verticeSize() * sizeof(CUSTOMVERTEX),
         0,
         CUSTOMFVF,
         D3DPOOL_MANAGED,
@@ -207,43 +234,33 @@ void Moteur::addMeshToscene(Vertice verti)
 
     // lock v_buffer and load the vertices into it
     v_buffer->Lock(0, 0, (void**)&pVoid, 0);
-    memcpy(pVoid, vertices, sizeof(vertices));
+    memcpy(pVoid, verti->vertex(), sizeof(verti->vertex())*3);
     v_buffer->Unlock();
     
-    //TODO MERGE
-    //verti.setVbuffer(v_buffer)
+    verti->SetVBuffer(v_buffer);
+
+
+
+
 }
 
-Shader Moteur::LoadShader(std::string* shaderPath)
+LPDIRECT3DINDEXBUFFER9 Moteur::createIndiceBuffer(short indices[])
 {
-    ID3DXBuffer* listing_f = NULL;
-    ID3DXBuffer* listing_v = NULL;
-    ID3DXBuffer* code_f = NULL;
-    ID3DXBuffer* code_v = NULL;
-    LPD3DXCONSTANTTABLE* ppConstantTable_OUT = NULL;
-    LPD3DXBUFFER shaderContent_ = NULL;
-    IDirect3DVertexShader9** ppShader;
+    //----------------IBUFFER
+    d3ddev->CreateIndexBuffer(sizeof(indices),
+        0,
+        D3DFMT_INDEX16,
+        D3DPOOL_MANAGED,
+        &i_buffer,
+        NULL);
 
-    std::ifstream file;
+    VOID* pVoid;    // a void pointer
 
-    file.open("C:/Users/asabi/Desktop/text.hlsl", std::ios_base::binary);
-    //file.open(*shaderPath, std::ios_base::binary);
+    // lock v_buffer and load the vertices into it
+    i_buffer->Lock(0, 0, (void**)&pVoid, 0);
+    memcpy(pVoid, indices, sizeof(indices));
+    i_buffer->Unlock();
 
-    if (file)
-    {
-        file.seekg(0, file.end);
-        int length = file.tellg();
-        file.seekg(0, file.beg);
-        char* _Str = new char[length + 1];
-        file.read(_Str, length);
-        _Str[length] = 0;
 
-        HRESULT Buffer = D3DXCompileShader((LPCSTR)_Str, strlen(_Str), NULL, NULL, "main_vertex", "vs_3_0", 0, &code_v, &listing_v, ppConstantTable_OUT);
-
-        d3ddev->CreateVertexShader((DWORD*)Buffer, ppShader);
-
-        d3ddev->SetVertexShader(*ppShader);
-
-        return *new Shader(ppShader);
-    }
+    return i_buffer;
 }

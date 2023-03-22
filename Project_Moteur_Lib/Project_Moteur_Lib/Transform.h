@@ -37,26 +37,26 @@ private :
 
 	D3DXMATRIX mRendu;//Final Value
 public:
-	Transform();
-	~Transform();
-	void SetvPos(D3DXVECTOR3 NewPos);
-	D3DXVECTOR3 GetvPos();
-	float GetvPosX();
-	float GetvPosY();
-	float GetvPosZ();
+//	Transform();
+//	~Transform();
+//	void SetvPos(D3DXVECTOR3 NewPos);
+//	D3DXVECTOR3 GetvPos();
+//	float GetvPosX();
+//	float GetvPosY();
+//	float GetvPosZ();
 
-	float GetvScaleX();
-	float GetvScaleY();
-	float GetvScaleZ();
+//	float GetvScaleX();
+//	float GetvScaleY();
+//	float GetvScaleZ();
 
-	void SetvScale(D3DXVECTOR3 NewScale);
-	D3DXVECTOR3 GetvScale();
+//	void SetvScale(D3DXVECTOR3 NewScale);
+//	D3DXVECTOR3 GetvScale();
 
 	void SetRotation(float NewYaw, float NewPitch, float NewRoll, bool isRadian = false);
 	void CreateRotation(float NewRoll, float NewPitch, float NewYaw, bool isRadian = false);
 
-	float DegToRad(float Angle);
-	float RadToDeg(float Rad);
+//	float DegToRad(float Angle);
+//	float RadToDeg(float Rad);
 	
 	D3DXVECTOR3 GetvRot();
 	
@@ -64,13 +64,13 @@ public:
 	D3DXMATRIX* GetRendu();
 	void addRotation(float NewYaw, float NewPitch, float NewRoll, bool isRadian = false);
 
-	void SetvPosX(float NewPos);
-	void SetvPosY(float NewPos);
-	void SetvPosZ(float NewPos);
+//	void SetvPosX(float NewPos);
+//	void SetvPosY(float NewPos);
+//	void SetvPosZ(float NewPos);
 
-	void SetvScaleX(float newscale);
-	void SetvScaleY(float newscale);
-	void SetvScaleZ(float newscale);
+//	void SetvScaleX(float newscale);
+//	void SetvScaleY(float newscale);
+//	void SetvScaleZ(float newscale);
 
 	void SetRoll(float Angle, bool isRadian = false);
 	void SetYaw(float Angle, bool isRadian = false);

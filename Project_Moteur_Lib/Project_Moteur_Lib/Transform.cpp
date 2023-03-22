@@ -10,6 +10,8 @@ Transform::Transform()
 	D3DXMatrixIdentity(&mScale);
 	D3DXMatrixIdentity(&mPos);
 	D3DXMatrixIdentity(&mRot);
+	UpdateRendu();
+
 }
 
 #pragma region rotation
@@ -66,7 +68,7 @@ void Transform::SetRoll(float Angle, bool isRadian)
 		Roll = Angle;
 	}
 	else {
-		//Converting to rad
+		//Converting to rad 
 		Roll = DegToRad(Angle);
 	}
 	D3DXQuaternionRotationAxis(&quat, &vDir, Roll);

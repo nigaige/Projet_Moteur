@@ -6,14 +6,15 @@
     #include <d3d9.h>
     #include <d3dx9.h>
 
+    #include "Utils.h"
     #include "Moteur.h"
 
     #include "GameObject.h"
     #include "Vertice.h"
 
     // define the screen resolution
-    #define SCREEN_WIDTH 800
-    #define SCREEN_HEIGHT 600
+    #define SCREEN_WIDTH 600
+    #define SCREEN_HEIGHT 800
 
     // include the Direct3D Library files
     #pragma comment (lib, "d3d9.lib")
@@ -25,13 +26,12 @@
 
 #pragma endregion
 
-    struct CUSTOMVERTEX { FLOAT X, Y, Z; D3DVECTOR NORMAL; };
 
     CUSTOMVERTEX triangleMesh[] =
     {
-        { 3.0f, -3.0f, 0.0f, D3DCOLOR_XRGB(0, 0, 255), },
+        { -2.5f, -3.0f, 0.0f, D3DCOLOR_XRGB(255, 0, 0), },
         { 0.0f, 3.0f, 0.0f, D3DCOLOR_XRGB(0, 255, 0), },
-        { -3.0f, -3.0f, 0.0f, D3DCOLOR_XRGB(255, 0, 0), },
+        { 2.5f, -3.0f, 0.0f, D3DCOLOR_XRGB(0, 0, 255), },
     };
 
 
@@ -57,10 +57,11 @@ int WINAPI WinMain(HINSTANCE hInstance,
    
 
     //INIT SCENE
-    GameObject* triangle = new GameObject();
-    Vertice* triangleVertice = new Vertice(triangleMesh, D3DPT_TRIANGLELIST);
-
+    GameObject* triangle = new GameObject(new Transform());
+    Vertice* triangleVertice = new Vertice(triangleMesh,3, D3DPT_TRIANGLELIST);
+    M->addMeshToscene(triangleVertice);
     triangle->addComponent(triangleVertice);
+    triangle->toDisplay(true);
     M->addGameObject(triangle);
 
     // enter the main loop:

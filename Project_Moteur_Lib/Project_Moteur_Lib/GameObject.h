@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "Transform.h"
 #include <vector>
+#include "Utils.h"
 
 class GameObject
 {
@@ -34,6 +35,8 @@ public:
 	void rmComponent(int index);
 	//void rmComponent(TYPE);
 
+	int countComponent();
+
 	template <typename T>
 	T* findComponent();
 
@@ -57,7 +60,10 @@ inline T* GameObject::findComponent()
 {
 	for (Component* comp : componentList)
 	{
-		if (typeid(*comp) == typeid(T)) {
+		/*
+		Utils::DebugLogMessage(typeid(static_cast<T*>(comp)).name());
+		Utils::DebugLogMessage(typeid(T).name());*/
+		if (typeid(static_cast<T*>(comp)) == typeid(T*)) {
 			return static_cast<T*>(comp);
 		}
 	}
