@@ -110,7 +110,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 
 	GameObject* Singe = new GameObject();
-	Mesh* burbur = M->ImportingModel("./Mesh/Cube.x");
+	Mesh* burbur = M->ImportingModel("C:/Users/Asabi/Desktop/ObjectFiles/Monkey.x");
 	//burbur->deduceTriangle();
 
 	

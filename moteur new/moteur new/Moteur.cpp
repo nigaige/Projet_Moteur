@@ -165,7 +165,7 @@ void Moteur::render(void)
 		for (Mesh* m : go->meshToDraw()) {
 
 			
-			m->TempMehs->DrawSubset(0);
+			m->importedMesh()->DrawSubset(0);
 
 
 			/*			// select the vertex buffer to display
@@ -280,7 +280,11 @@ void Moteur::rmMesh(Mesh* me)
 }
 
 
-
+/// <summary>
+/// Return a pointeur of Shader by .hlsl pathfile
+/// </summary>
+/// <param name="shaderPath">String shaderPath of .hlsl file</param>
+/// <returns>Shader* new Shader()</returns>
 Shader Moteur::LoadShader(std::string* shaderPath)
 {
 	ID3DXBuffer* listing_f = NULL;
@@ -289,7 +293,7 @@ Shader Moteur::LoadShader(std::string* shaderPath)
 	ID3DXBuffer* code_v = NULL;
 	LPD3DXCONSTANTTABLE* ppConstantTable_OUT = NULL;
 	LPD3DXBUFFER shaderContent_ = NULL;
-	//IDirect3DVertexShader9** ppShader = NULL;
+	IDirect3DVertexShader9** ppShader = nullptr;
 
 	std::ifstream file;
 
@@ -307,71 +311,30 @@ Shader Moteur::LoadShader(std::string* shaderPath)
 
 		HRESULT Buffer = D3DXCompileShader((LPCSTR)_Str, strlen(_Str), NULL, NULL, "main_vertex", "vs_3_0", 0, &code_v, &listing_v, ppConstantTable_OUT);
 
-		//d3ddev->CreateVertexShader((DWORD*)Buffer, ppShader);
+		d3ddev->CreateVertexShader((DWORD*)Buffer, ppShader);
 
-		//d3ddev->SetVertexShader(*ppShader);
+		d3ddev->SetVertexShader(*ppShader);
 
 		return *new Shader(NULL);
 	}
 }
 
+/// <summary>
+/// Return a pointeur of a Mesh by .x filepath
+/// </summary>
+/// <param name="path">String path of .x file</param>
+/// <returns>Mesh* resultMesh</returns>
 Mesh* Moteur::ImportingModel(std::string path)
 {
-	LPD3DXMESH g_pMesh = NULL;
-	Mesh* my = new Mesh(D3DPT_TRIANGLELIST);
-
-
-
-	int wideStringLength = MultiByteToWideChar(CP_ACP, 0, path.c_str(), -1, NULL, 0);
-	std::wstring wideString(wideStringLength, 0);
-	MultiByteToWideChar(CP_ACP, 0, path.c_str(), -1, &wideString[0], wideStringLength);
-	LPCTSTR strFileName = wideString.c_str();
-
-
-
-	HRESULT hr = D3DXLoadMeshFromXA(path.c_str(), D3DXMESH_IB_SYSTEMMEM, d3ddev, NULL, my->mat, NULL,my->matCount, &my->TempMehs);
-
-
-
-
-
+	LPD3DXMESH meshImp = nullptr;
+	Mesh* resultMesh = new Mesh(D3DPT_TRIANGLELIST);
+	HRESULT hr = D3DXLoadMeshFromXA(path.c_str(), D3DXMESH_IB_SYSTEMMEM, d3ddev, NULL, resultMesh->material(), NULL, resultMesh->matCount(), &meshImp); //Import mesh in meshImp
+	resultMesh->importedMesh(meshImp);
 
 	if (FAILED(hr))
 		Utils::DebugLogMessage("Failed import model");
 
 
-
-
-
-
-	/*
-	// normalise les coordonn�es des sommets pour s'assurer que le mod�le est bien affich�
-	//D3DXVECTOR3 vCenter;
-	//FLOAT fObjectRadius;
-	//LPVOID* ppData = nullptr;
-
-
-	//D3DXComputeBoundingSphere((D3DXVECTOR3*)g_pMesh->LockVertexBuffer(D3DLOCK_READONLY, ppData), g_pMesh->GetNumVertices(), D3DXGetFVFVertexSize(g_pMesh->GetFVF()), &vCenter, &fObjectRadius);
-
-
-
-	// Obtenez un pointeur vers le tampon de vertex
-	LPDIRECT3DVERTEXBUFFER9 pVertexBuffer = NULL;
-	LPDIRECT3DINDEXBUFFER9 pIndexBuffer = NULL;
-	g_pMesh->GetVertexBuffer(&pVertexBuffer);
-	g_pMesh->GetIndexBuffer(&pIndexBuffer);
-
-
-
-	my->Vbuffer(pVertexBuffer);
-	my->Ibuffer(pIndexBuffer);
-	my->Primitiv(g_pMesh->GetNumFaces());
-	my->pointCount(g_pMesh->GetNumVertices());
-	
-
-	*/
-
-
-	return my;
+	return resultMesh;
 }
 

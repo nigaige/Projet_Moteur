@@ -12,6 +12,12 @@ private:
 	int Primitiv_ = 0;
 	int pointCount_ = 0;
 	std::vector<CUSTOMVERTEX*> vertex_;
+
+
+	LPD3DXMESH importedMesh_ = nullptr;
+	LPD3DXBUFFER* material_ = nullptr;
+	DWORD* matCount_ = 0;
+
 public:
 	Mesh(D3DPRIMITIVETYPE primitivMethode);
 	~Mesh();
@@ -23,10 +29,18 @@ public:
 	//	GETTER/SETTER
 	std::vector<CUSTOMVERTEX*>* vertex()		{ return &vertex_; }
 	D3DPRIMITIVETYPE primitivMethode()			{ return primitivMethode_; }
-	void Primitiv(int face) { Primitiv_ = face; }
-	int Primitiv() { return Primitiv_; }
-	void pointCount(int point) { pointCount_ = point; }
-	int pointCount() { return pointCount_; }
+	void Primitiv(int face)						{ Primitiv_ = face; }
+	int Primitiv()								{ return Primitiv_; }
+	void pointCount(int point)					{ pointCount_ = point; }
+	int pointCount()							{ return pointCount_; }
+
+	LPD3DXMESH importedMesh()					{ return importedMesh_; }
+	void importedMesh(LPD3DXMESH mesh)			{ importedMesh_ = mesh; }
+	LPD3DXBUFFER* material()					{ return material_; }
+	void material(LPD3DXBUFFER* material)		{ material_ = material; }
+	DWORD* matCount()							{ return matCount_; }
+	void matCount(DWORD* matCount)				{ matCount_ = matCount; }
+
 
 
 	LPDIRECT3DINDEXBUFFER9 Ibuffer()			{ return Ibuffer_; }
@@ -38,9 +52,7 @@ public:
 
 
 
-	LPD3DXMESH TempMehs = nullptr;
-	LPD3DXBUFFER* mat = nullptr;
-	DWORD* matCount = 0;
+	
 
 
 
