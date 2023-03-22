@@ -117,7 +117,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	//M->loadMeshInScene(burbur);
 
 	Singe->addComponent(burbur);
-	Singe->addComponent(new GoTester(M->inputManager(), Singe));
+	Singe->addComponent(new GoTester(M->inputManager()));
 	//Utils::DebugLogMessage(burbur->vertex()->size());
 
 	M->addGameObject(Singe);

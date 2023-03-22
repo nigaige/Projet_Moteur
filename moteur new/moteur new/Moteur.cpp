@@ -284,7 +284,7 @@ Shader Moteur::LoadShader(std::string* shaderPath)
 	ID3DXBuffer* code_v = NULL;
 	LPD3DXCONSTANTTABLE* ppConstantTable_OUT = NULL;
 	LPD3DXBUFFER shaderContent_ = NULL;
-	IDirect3DVertexShader9** ppShader = NULL;
+	//IDirect3DVertexShader9** ppShader = NULL;
 
 	std::ifstream file;
 
@@ -302,9 +302,9 @@ Shader Moteur::LoadShader(std::string* shaderPath)
 
 		HRESULT Buffer = D3DXCompileShader((LPCSTR)_Str, strlen(_Str), NULL, NULL, "main_vertex", "vs_3_0", 0, &code_v, &listing_v, ppConstantTable_OUT);
 
-		d3ddev->CreateVertexShader((DWORD*)Buffer, ppShader);
+		//d3ddev->CreateVertexShader((DWORD*)Buffer, ppShader);
 
-		d3ddev->SetVertexShader(*ppShader);
+		//d3ddev->SetVertexShader(*ppShader);
 
 		return *new Shader(NULL);
 	}
