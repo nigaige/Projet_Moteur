@@ -9,9 +9,10 @@
 #include <vector>
 #include <fstream>
 
-#include <DXFile.h>
+
 #include <d3d9.h>
 #include <d3dx9.h>
+#include <DXFile.h>
 
 #define CUSTOMFVF (D3DFVF_XYZ  | D3DFVF_DIFFUSE)
 struct CUSTOMVERTEX { FLOAT X, Y, Z; DWORD COLOR; };
