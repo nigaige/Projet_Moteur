@@ -163,7 +163,12 @@ void Moteur::render(void)
 
 		if (go->meshToDraw().size() == 0) continue;
 		for (Mesh* m : go->meshToDraw()) {
-			// select the vertex buffer to display
+
+			
+			m->TempMehs->DrawSubset(0);
+
+
+			/*			// select the vertex buffer to display
 			d3ddev->SetStreamSource(0, m->Vbuffer(), 0, sizeof(CUSTOMVERTEX));
 
 			if (m->Ibuffer() != NULL) {
@@ -179,7 +184,7 @@ void Moteur::render(void)
 			else {
 				// copy the vertex buffer to the back buffer
 				d3ddev->DrawPrimitive(m->primitivMethode(), 0, m->Primitiv());
-			}
+			}*/
 			
 		}
 	}
@@ -315,7 +320,6 @@ Mesh* Moteur::ImportingModel(std::string path)
 	LPD3DXMESH g_pMesh = NULL;
 	Mesh* my = new Mesh(D3DPT_TRIANGLELIST);
 
-	my->MTest = &g_pMesh;
 
 
 	int wideStringLength = MultiByteToWideChar(CP_ACP, 0, path.c_str(), -1, NULL, 0);
@@ -323,12 +327,24 @@ Mesh* Moteur::ImportingModel(std::string path)
 	MultiByteToWideChar(CP_ACP, 0, path.c_str(), -1, &wideString[0], wideStringLength);
 	LPCTSTR strFileName = wideString.c_str();
 
-	HRESULT hr = D3DXLoadMeshFromX(strFileName, D3DXMESH_IB_SYSTEMMEM, d3ddev, NULL, NULL, NULL, NULL, &g_pMesh);
+
+
+	HRESULT hr = D3DXLoadMeshFromXA(path.c_str(), D3DXMESH_IB_SYSTEMMEM, d3ddev, NULL, my->mat, NULL,my->matCount, &my->TempMehs);
+
+
+
+
+
 
 	if (FAILED(hr))
 		Utils::DebugLogMessage("Failed import model");
 
 
+
+
+
+
+	/*
 	// normalise les coordonn�es des sommets pour s'assurer que le mod�le est bien affich�
 	//D3DXVECTOR3 vCenter;
 	//FLOAT fObjectRadius;
@@ -352,27 +368,8 @@ Mesh* Moteur::ImportingModel(std::string path)
 	my->Primitiv(g_pMesh->GetNumFaces());
 	my->pointCount(g_pMesh->GetNumVertices());
 	
-	
-	
-	D3DINDEXBUFFER_DESC* test = new D3DINDEXBUFFER_DESC();
-	D3DVERTEXBUFFER_DESC* test2 = new D3DVERTEXBUFFER_DESC();
-	pIndexBuffer->GetDesc(test);
 
-	int a = 0;
-	pVertexBuffer->GetDesc(test2);
-	int b = 0;
-	
-	GUID res;
-	void* pdata;
-	DWORD* pw = new DWORD();
-	pIndexBuffer->GetPrivateData(res, &pdata, pw);
-	int c = 2;
-
-	DWORD;
-
-
-
-
+	*/
 
 
 	return my;

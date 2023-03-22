@@ -38,12 +38,10 @@ public:
 
 
 
+	LPD3DXMESH TempMehs = nullptr;
+	LPD3DXBUFFER* mat = nullptr;
+	DWORD* matCount = 0;
 
 
-
-
-
-	//FIX
-	LPD3DXMESH* MTest = nullptr;
 
 };

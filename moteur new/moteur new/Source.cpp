@@ -101,16 +101,16 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	triangle->addComponent(forme);
 	
 	//triangle->addComponent(new GoTester(M->inputManager()));
-	M->camera()->addComponent(new GoTester(M->inputManager()));
+	//M->camera()->addComponent(new GoTester(M->inputManager()));
 	M->camera()->transform()->posZ(20.0f);
-	M->camera()->transform()->addPitch(M_PI);
+	//M->camera()->transform()->addPitch(M_PI);
 
 
 	//M->addGameObject(triangle);
 
 
 	GameObject* Singe = new GameObject();
-	Mesh* burbur = M->ImportingModel("C:/Users/Asabi/Desktop/ObjectFiles/CUBEWESH/Sympa.x");
+	Mesh* burbur = M->ImportingModel("./Mesh/Cube.x");
 	//burbur->deduceTriangle();
 
 	
