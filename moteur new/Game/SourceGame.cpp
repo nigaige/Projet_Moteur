@@ -35,6 +35,12 @@ int main()
 	moteur->addGameObject(Singe);
 	Singe->addComponent(new GoTester());
 
+	std::string path = "C:/Users/Asabi/Documents/GitHub/Projet_Moteur_Lib/moteur new/Game/Shader/redCube.hlsl";
+	moteur->LoadShader(&path);
+
+
+
+
 
 	//----------------------------FixedUpdate-----------------------------------//
 	while (TRUE)

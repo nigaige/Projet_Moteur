@@ -60,10 +60,6 @@ public:
 
 	Mesh* ImportingModel(std::string path);
 
-
-	
-
-
 	static float s_deltaTime_;//TODO merge
 	static Input* inputManager_;
 

@@ -320,7 +320,43 @@ Shader Moteur::LoadShader(std::string* shaderPath)
 		file.read(_Str, length);
 		_Str[length] = 0;
 
-		HRESULT Buffer = D3DXCompileShader((LPCSTR)_Str, strlen(_Str), NULL, NULL, "main_vertex", "vs_3_0", 0, &code_v, &listing_v, ppConstantTable_OUT);
+		LPD3DXEFFECT shaderBuff; 
+
+		HRESULT hr = D3DXCreateEffectFromFileA(d3ddev, shaderPath->c_str(), NULL, NULL, NULL, NULL,&shaderBuff,NULL);
+
+		if (hr == D3D_OK)
+		{
+			shaderBuff->SetTechnique("Default");
+
+			unsigned int i = 0;
+
+			shaderBuff->Begin(&i,0);
+
+			shaderBuff->SetMatrix("var", );
+
+			shaderBuff->CommitChanges();
+
+			for (int ip = 0; ip < i; i++)
+			{
+				shaderBuff->BeginPass(ip);
+
+				/// <summary>
+				/// draw 
+				/// </summary>
+				/// <param name="shaderPath"></param>
+				/// <returns></returns>
+
+				shaderBuff->EndPass();
+			}
+
+			shaderBuff->End();
+
+
+		}
+
+		HRESULT Buffer = D3DXCompileShader((LPCSTR)shaderPath, strlen(shaderPath->c_str()), NULL, NULL, "main_vertex", "vs_3_0", 0, &code_v, &listing_v, ppConstantTable_OUT);
+		if (FAILED(Buffer))
+			Utils::DebugLogMessage("Error Buffer");
 
 		d3ddev->CreateVertexShader((DWORD*)Buffer, ppShader);
 
