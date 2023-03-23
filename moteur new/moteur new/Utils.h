@@ -23,6 +23,9 @@ struct CUSTOMVERTEX { FLOAT X, Y, Z; DWORD COLOR; };
 #define DEGTORAD (M_PI / 180)
 #define RADTODEG (180 / M_PI)
 
+#define GRAVITY 1
+
+
 enum States
 {
 	NOTPRESS,
@@ -41,6 +44,7 @@ class Moteur;
 class Shader;
 class Material;
 
+class RigidBody;
 class Collider;
 class ColliderSphere;
 class ColliderCube;
@@ -56,6 +60,8 @@ class ColliderManager;
 #include "Shader.h"
 #include "Camera.h"
 
+
+#include "RigidBody.h"
 #include "Collider.h"
 #include "ColliderSphere.h"
 #include "ColliderCube.h"
@@ -81,7 +87,15 @@ public:
 	static float RadToDeg(float Rad);
     template <typename T>
     static void DeleteVector(std::vector<T*> );
-    
+
+	template <typename T>
+	static bool isOfType(void* val);
+	template <typename T>
+	static T* castToType(void* val);
+
+
+	static float distance(D3DXVECTOR3 pos1, D3DXVECTOR3 pos2);
+
 };
 
 template<typename T>
@@ -91,4 +105,16 @@ inline void Utils::DeleteVector(std::vector<T*> vect)
         delete vect[i];
     }
 	vect.clear();
+}
+
+template<typename T>
+inline bool Utils::isOfType(void* val)
+{
+	return dynamic_cast<T*>(val) != nullptr;	//TODO DYNAMIC...?
+}
+
+template<typename T>
+inline T* Utils::castToType(void* val)
+{
+	return static_cast<T*>(val);
 }

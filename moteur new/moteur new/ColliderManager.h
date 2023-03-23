@@ -5,11 +5,13 @@ private:
 
 	std::vector<Collider*> colliderList;
 public:
+	void addCollider(Collider* col);
+
 	void manageCollision();
-	bool isColliding(Collider* c1, Collider* c2);
-	bool collisionSphereSphere(ColliderSphere* c1, ColliderSphere* c2);
-	bool collisionCubeCube(ColliderCube* c1, ColliderCube* c2);
-	bool collisionSphereCube(ColliderSphere* c1, ColliderCube* c2);
+	D3DXVECTOR3* isColliding(Collider* c1, Collider* c2);
+	D3DXVECTOR3* collisionSphereSphere(ColliderSphere* c1, ColliderSphere* c2);
+	D3DXVECTOR3* collisionCubeCube(ColliderCube* c1, ColliderCube* c2);
+	D3DXVECTOR3* collisionSphereCube(ColliderSphere* c1, ColliderCube* c2);
 
 
 

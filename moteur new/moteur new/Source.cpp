@@ -89,39 +89,50 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 	M->Init();
 
+
+
 	GameObject* triangle = new GameObject();
 	Mesh* forme = new Mesh(D3DPT_TRIANGLELIST);
 	for (int i = 0; i < sizeof(vertices)/ sizeof(CUSTOMVERTEX); i++) {
 		forme->addVertex(vertices + i);
 	}
 
-	forme->deduceTriangle();
-	M->loadMeshInScene(forme);
-
-	triangle->addComponent(forme);
-	
-	//triangle->addComponent(new GoTester(M->inputManager()));
-	//M->camera()->addComponent(new GoTester(M->inputManager()));
 	M->camera()->transform()->posZ(20.0f);
-	//M->camera()->transform()->addPitch(M_PI);
 
 
-	//M->addGameObject(triangle);
 
 
-	GameObject* Singe = new GameObject();
-	Mesh* burbur = M->ImportingModel("./Mesh/Cube.x");
-	//burbur->deduceTriangle();
+	GameObject* kinematicCube = new GameObject();
+	GameObject* nonKinematicCube = new GameObject();
+	Mesh* m_cube = M->ImportingModel("./Mesh/Cube.x");
+
+	kinematicCube->addComponent(m_cube);
+	nonKinematicCube->addComponent(m_cube);
+	
+	kinematicCube->addComponent(new GoTester());
+
+	RigidBody* rb = new RigidBody();
+	rb->isKinematic(true);
+	kinematicCube->addComponent(rb);
+	kinematicCube->transform()->posY(-5.0f);
+	
+	nonKinematicCube->addComponent(new RigidBody());
+	
+	ColliderSphere* sph1 = new ColliderSphere(new D3DXVECTOR3(0, 0, 0), 1);
+	ColliderSphere* sph2 = new ColliderSphere(new D3DXVECTOR3(0,0,0), 1);
+	M->colliderManager()->addCollider(sph1);
+	M->colliderManager()->addCollider(sph2);
+	nonKinematicCube->addComponent(sph1);
+	kinematicCube->addComponent(sph2);
+
 
 	
-	//M->loadMeshInScene(burbur);
+	M->addGameObject(kinematicCube);
+	M->addGameObject(nonKinematicCube);
+	
 
-	Singe->addComponent(burbur);
-	Singe->addComponent(new GoTester(M->inputManager()));
-	//Utils::DebugLogMessage(burbur->vertex()->size());
+	Moteur::s_deltaTime_ = 0.1f;
 
-	M->addGameObject(Singe);
-	// set up and initialize Direct3D
 
 	// enter the main loop:
 

@@ -11,10 +11,13 @@ public:
 	//TODO GAMEOBJECT OWNER
 	Component(bool isActive = true);
 	~Component();
+
+	Transform* transform() { return transform_; }
+	void transform(Transform* trans);
+
 	void gameObject(GameObject* go);
 	GameObject* gameObject();
-	void transform(Transform* trans);
-	Transform* transform();
+
 	void setActive(bool a = true) { active = a; };
 	virtual void update() {};
 };

@@ -35,3 +35,12 @@ void Utils::DebugLogMessage(int message)
 float Utils::DegToRad(float Angle)  { return Angle * DEGTORAD; }
 float Utils::RadToDeg(float Rad)    { return Rad * RADTODEG; }
 
+float Utils::distance(D3DXVECTOR3 pos1, D3DXVECTOR3 pos2)
+{
+    D3DXVECTOR3 distVec = pos1 - pos2;
+    return D3DXVec3Length(&distVec);
+
+
+
+}
+

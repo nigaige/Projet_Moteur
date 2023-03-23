@@ -8,15 +8,16 @@ enum colliderType
 	CUBE
 };
 
-class Collider
+class Collider : public Component
 {
 protected:
-	colliderType type;
-	bool isTrigger = false;
+	colliderType type_;
+	bool isTrigger_ = false;
 	//triggerCallback function //TODO
 	//CollisionCallBack
 public:
-	void isColliding(Collider* other);
+	void isColliding(Collider* other, D3DXVECTOR3* distance);
+	colliderType type() { return type_; }
 
 };
 

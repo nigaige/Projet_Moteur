@@ -4,10 +4,10 @@
 
 #define FORWARD		D3DXVECTOR3(1.0f, 0.0f, 0.0f)
 #define BACKWARD	D3DXVECTOR3(-1.0f, 0.0f, 0.0f)
-#define RIGHT		D3DXVECTOR3(0.0f, 1.0f, 0.0f)
-#define LEFT		D3DXVECTOR3(0.0f, -1.0f, 0.0f)
-#define UP			D3DXVECTOR3(0.0f, 0.0f, 1.0f)
-#define DOWN		D3DXVECTOR3(0.0f, 0.0f, -1.0f)
+#define RIGHT		D3DXVECTOR3(0.0f, 0.0f, 1.0f)
+#define LEFT		D3DXVECTOR3(0.0f, 0.0f, -1.0f)
+#define UP			D3DXVECTOR3(0.0f, 1.0f, 0.0f)
+#define DOWN		D3DXVECTOR3(0.0f, -1.0f,0.0f )
 
 
 
@@ -74,6 +74,12 @@ public:
 
 	//-------UTILS--------------
 	std::string toString();
+	std::string posToString();
+	std::string ScaToString();
+	std::string rotToString();
+
+
+
 
 };
 

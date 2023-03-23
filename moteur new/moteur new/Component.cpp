@@ -27,7 +27,3 @@ void Component::transform(Transform* trans)
 	transform_ = trans;
 }
 
-Transform* Component::transform()
-{
-	return transform_;
-}

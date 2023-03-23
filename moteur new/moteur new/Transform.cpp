@@ -159,6 +159,22 @@ D3DXMATRIX* Transform::displayValue()
 //-------UTILS---------
 std::string Transform::toString()
 {
-	return std::string();
+	return "position: " + posToString() + " || rotation: " +rotToString() + " || Scale " + ScaToString() ;
 }
+
+std::string Transform::posToString()
+{
+	return std::string();//TODO
+}
+
+std::string Transform::ScaToString()
+{
+	return std::string();//TODO
+}
+
+std::string Transform::rotToString()
+{
+	return std::string();//TODo
+}
+
 

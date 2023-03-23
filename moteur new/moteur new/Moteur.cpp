@@ -1,6 +1,10 @@
 #include "Utils.h"
 #include <tchar.h>
 
+
+Input* Moteur::inputManager_ = new Input();
+float Moteur::s_deltaTime_ = 0;
+
 // this is the main message handler for the program
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -79,7 +83,8 @@ void Moteur::Init()
 
 	initD3D();
 
-	inputManager_ = new Input();
+	colliderManager_ = new ColliderManager();
+
 }
 
 void Moteur::loadMeshInScene(Mesh* MeshToLoad) {
@@ -159,16 +164,19 @@ void Moteur::render(void)
 
 	for (GameObject* go : GOList) {
 		
+		if (go->meshToDraw().size() == 0) continue;
 		d3ddev->SetTransform(D3DTS_WORLD, go->transform()->displayValue());    // set the projection
 
-		if (go->meshToDraw().size() == 0) continue;
 		for (Mesh* m : go->meshToDraw()) {
 
 			
 			m->TempMehs->DrawSubset(0);
 
 
-			/*			// select the vertex buffer to display
+			//TODO FIX OTHER MESH
+
+			/*			
+			// select the vertex buffer to display
 			d3ddev->SetStreamSource(0, m->Vbuffer(), 0, sizeof(CUSTOMVERTEX));
 
 			if (m->Ibuffer() != NULL) {
@@ -196,11 +204,12 @@ void Moteur::render(void)
 void Moteur::update(void)
 {
 
-	inputManager_->InputUpdate();
+	Moteur::inputManager_->InputUpdate();
 	camera_->update();
 	for (GameObject* go : GOList) {
 		go->update();
 	}
+	colliderManager_->manageCollision();
 }
 
 
@@ -320,57 +329,11 @@ Mesh* Moteur::ImportingModel(std::string path)
 	LPD3DXMESH g_pMesh = NULL;
 	Mesh* my = new Mesh(D3DPT_TRIANGLELIST);
 
-
-
-	int wideStringLength = MultiByteToWideChar(CP_ACP, 0, path.c_str(), -1, NULL, 0);
-	std::wstring wideString(wideStringLength, 0);
-	MultiByteToWideChar(CP_ACP, 0, path.c_str(), -1, &wideString[0], wideStringLength);
-	LPCTSTR strFileName = wideString.c_str();
-
-
-
 	HRESULT hr = D3DXLoadMeshFromXA(path.c_str(), D3DXMESH_IB_SYSTEMMEM, d3ddev, NULL, my->mat, NULL,my->matCount, &my->TempMehs);
-
-
-
-
 
 
 	if (FAILED(hr))
 		Utils::DebugLogMessage("Failed import model");
-
-
-
-
-
-
-	/*
-	// normalise les coordonn�es des sommets pour s'assurer que le mod�le est bien affich�
-	//D3DXVECTOR3 vCenter;
-	//FLOAT fObjectRadius;
-	//LPVOID* ppData = nullptr;
-
-
-	//D3DXComputeBoundingSphere((D3DXVECTOR3*)g_pMesh->LockVertexBuffer(D3DLOCK_READONLY, ppData), g_pMesh->GetNumVertices(), D3DXGetFVFVertexSize(g_pMesh->GetFVF()), &vCenter, &fObjectRadius);
-
-
-
-	// Obtenez un pointeur vers le tampon de vertex
-	LPDIRECT3DVERTEXBUFFER9 pVertexBuffer = NULL;
-	LPDIRECT3DINDEXBUFFER9 pIndexBuffer = NULL;
-	g_pMesh->GetVertexBuffer(&pVertexBuffer);
-	g_pMesh->GetIndexBuffer(&pIndexBuffer);
-
-
-
-	my->Vbuffer(pVertexBuffer);
-	my->Ibuffer(pIndexBuffer);
-	my->Primitiv(g_pMesh->GetNumFaces());
-	my->pointCount(g_pMesh->GetNumVertices());
-	
-
-	*/
-
 
 	return my;
 }

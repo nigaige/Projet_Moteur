@@ -17,11 +17,12 @@ private:
 	std::vector<GameObject*> GOList;
 	std::vector<Mesh*> MeList;
 
+	ColliderManager* colliderManager_;
 
 	GameObject* camera_;
 	Camera* cameraComponent;
 
-	Input* inputManager_;
+	
 
 public:
 
@@ -31,8 +32,9 @@ public:
 		int nCmdShow);
 	~Moteur();
 
-	Input* inputManager() { return inputManager_; }
+	//Input* inputManager() { return inputManager_; }
 
+	ColliderManager* colliderManager() { return colliderManager_; }
 
 
 
@@ -57,5 +59,15 @@ public:
 	Shader LoadShader(std::string* shaderPath);
 
 	Mesh* ImportingModel(std::string path);
+
+
+	
+
+
+	static float s_deltaTime_;//TODO merge
+	static Input* inputManager_;
+
+
+
 };
 
