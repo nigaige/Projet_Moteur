@@ -11,7 +11,6 @@ std::string* message;
 
 const int FIXED_UPDATE_INTERVAL = 1006; // 16ms, equivalent to 60fps
 Moteur* moteur;
-MSG msg;
 GameObject* Singe;
 Mesh* burbur;
 
@@ -36,35 +35,11 @@ int main()
 	Singe->addComponent(new GoTester());
 
 
-	//----------------------------FixedUpdate-----------------------------------//
-	while (TRUE)
-	{
-		auto lastUpdateTime = std::chrono::high_resolution_clock::now();
-
-		while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}	
-		moteur->update();
-		moteur->render();
-
-		if (msg.message == WM_QUIT)
-			break;
-		auto currentTime = std::chrono::high_resolution_clock::now();
-		auto deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastUpdateTime);
-		if (deltaTime.count() >= FIXED_UPDATE_INTERVAL)
-		{
-			fixedUpdate();
-			lastUpdateTime = currentTime;
-		}
-	}
-	//----------------------------FixedUpdate-----------------------------------//
-
+	moteur->gameLoop();
 
 	delete moteur;
 
-	return msg.wParam;
+	//return msg.wParam;
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(1));
 

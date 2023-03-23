@@ -1,9 +1,13 @@
 #include "Utils.h"
 #include <tchar.h>
+#include <chrono>
+
 
 
 Input* Moteur::inputManager_ = new Input();
 float Moteur::s_deltaTime_ = 0;
+const int FIXED_UPDATE_INTERVAL = 16; // 16ms, equivalent to 60fps
+
 
 // this is the main message handler for the program
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -155,6 +159,31 @@ void Moteur::cleanD3D(void)
 
 void Moteur::gameLoop()
 {
+	MSG msg;
+	//----------------------------FixedUpdate-----------------------------------//
+	while (TRUE)
+	{
+		auto lastUpdateTime = std::chrono::high_resolution_clock::now();
+
+
+		while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+		update();
+
+		if (msg.message == WM_QUIT)
+			break;
+		auto currentTime = std::chrono::high_resolution_clock::now();
+		auto deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastUpdateTime);
+		if (deltaTime.count() >= FIXED_UPDATE_INTERVAL)
+		{
+			fixedUpdate();
+			lastUpdateTime = currentTime;
+		}
+	}
+	//----------------------------FixedUpdate-----------------------------------//
 
 }
 
@@ -205,6 +234,7 @@ void Moteur::render(void)
 
 void Moteur::update(void)
 {
+	render();
 
 	Moteur::inputManager_->InputUpdate();
 	camera_->update();
@@ -212,6 +242,10 @@ void Moteur::update(void)
 		go->update();
 	}
 	colliderManager_->manageCollision();
+}
+
+void Moteur::fixedUpdate(void)
+{
 }
 
 
