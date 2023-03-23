@@ -1,17 +1,24 @@
 #pragma once
 
-#include <string>
+#include <windows.h>
+#include <windowsx.h>
+#include <d3d9.h>
 #include <d3dx9.h>
+#include <string>
+#include "Utils.h"
 #include <WinNT.h>
+#include <iostream>
+#include <fstream>
+#include "Utils.h"
 
 class Shader
 {
 private:
-	LPD3DXBUFFER shaderContent;
+	IDirect3DVertexShader9** _ppShader;
 
 public:
 
-	Shader();
+	Shader(IDirect3DVertexShader9** ppShader);
 	~Shader();
 
 	//Charge le shader grâce à un contenu.

@@ -82,5 +82,5 @@ inline bool GameObject::isOfType(Component* comp) {
 template<typename T>
 inline T* GameObject::castToType(Component* comp)
 {
-	return static_cast<T*>(comp);
+	return dynamic_cast<T*>(comp);
 }

@@ -4,10 +4,11 @@ class Material
 {
 	Shader* shader;
 
-	Material(Shader* shader_);
+	Material();
 	~Material();
 
+	void SetMaterial(Shader* newShader);
+	Shader GetMaterial();
 
-	
 };
 

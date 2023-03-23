@@ -76,7 +76,7 @@
       <Filter>Source Files\Gameobject\Component</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Gameobject\Component</Filter>
     </ClCompile>
     <ClCompile Include="RigidBody.cpp">
       <Filter>Source Files\Gameobject\Component</Filter>
@@ -126,7 +126,7 @@
       <Filter>Header Files\Gameobject\Component</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Gameobject\Component</Filter>
     </ClInclude>
     <ClInclude Include="RigidBody.h">
       <Filter>Header Files\Gameobject\Component</Filter>
