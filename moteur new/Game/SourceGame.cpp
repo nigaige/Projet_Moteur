@@ -1,153 +1,106 @@
+
 #include <Utils.h>
-
-
-CUSTOMVERTEX points[] = {
-	{ -1.0f, -1.0f, 1.0f, D3DCOLOR_XRGB(0, 0, 255), },//1
-	{ 1.0f, -1.0f, 1.0f, D3DCOLOR_XRGB(0, 0, 255), },//2
-	{ -1.0f, 1.0f, 1.0f, D3DCOLOR_XRGB(0, 0, 255), },//3
-	{ 1.0f, 1.0f, 1.0f, D3DCOLOR_XRGB(0, 0, 255), },//4
-
-	{ -1.0f, -1.0f, -1.0f, D3DCOLOR_XRGB(0, 0, 255), },//5
-	{ 1.0f, -1.0f, -1.0f, D3DCOLOR_XRGB(0, 0, 255), },//6
-	{ -1.0f, 1.0f, -1.0f, D3DCOLOR_XRGB(0, 0, 255), },//7
-	{ 1.0f, 1.0f, -1.0f, D3DCOLOR_XRGB(0, 0, 255), },//8
-
-};
-
-
-
-/*
-	CUSTOMVERTEX vertices[] =
-	{
-		{ 1.0f, -1.0f, 0.0f, D3DCOLOR_XRGB(0, 0, 255), },
-		{ -1.0f, 1.0f, 0.0f, D3DCOLOR_XRGB(0, 255, 0), },
-		{ -1.0f, -1.0f, 0.0f, D3DCOLOR_XRGB(255, 0, 0),},
-
-		{ 1.0f, -1.0f, 0.0f, D3DCOLOR_XRGB(255, 0, 0),},
-		{ 1.0f, 1.0f, 0.0f, D3DCOLOR_XRGB(0, 255, 0), },
-		{ -1.0f, 1.0f, 0.0f, D3DCOLOR_XRGB(0, 0, 255), },
-	};*/
-
-
-CUSTOMVERTEX vertices[] =
-{/*
-		{ 1.0f, -1.0f, 0.0f, D3DCOLOR_XRGB(0, 0, 255), },
-		{ -1.0f, 1.0f, 0.0f, D3DCOLOR_XRGB(0, 255, 0), },
-		{ -1.0f, -1.0f, 0.0f, D3DCOLOR_XRGB(255, 0, 0),},
-		*/
-
-{ 1.000000f, 1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ -1.000000f, 1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ -1.000000f, 1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ 1.000000f, 1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ 1.000000f, -1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ 1.000000f, 1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ -1.000000f, 1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ -1.000000f, -1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ -1.000000f, -1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ -1.000000f, 1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ -1.000000f, 1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ -1.000000f, -1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ -1.000000f, -1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ 1.000000f, -1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ 1.000000f, -1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ -1.000000f, -1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ 1.000000f, -1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ 1.000000f, 1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ 1.000000f, 1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ 1.000000f, -1.000000f, -1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ -1.000000f, -1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ -1.000000f, 1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ 1.000000f, 1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), },
-{ 1.000000f, -1.000000f, 1.000000f, D3DCOLOR_XRGB(0, 0, 255), }
-
-
-
-};
-
-
+#include <chrono>
+#include <thread>
 #include "GoTester.h"
+std::string* message;
 
-#pragma endregion
+#ifdef _DEBUG
+#include <crtdbg.h>
+#endif
+
+const int FIXED_UPDATE_INTERVAL = 1006; // 16ms, equivalent to 60fps
+Moteur* moteur;
+MSG msg;
+GameObject* Singe;
+Mesh* burbur;
 
 
-
-
-
-
-// the entry point for any Windows program
-int WINAPI WinMain(HINSTANCE hInstance,
-	HINSTANCE hPrevInstance,
-	LPSTR lpCmdLine,
-	int nCmdShow)
+void fixedUpdate()
 {
+	Utils util;
+	util.DebugLogMessage("ok");
 
-	Moteur* M = new Moteur(hInstance,
-		hPrevInstance,
-		lpCmdLine,
-		nCmdShow);
+// Perform physics calculations and other time-sensitive operations here
+}
 
-	M->Init();
-
-	GameObject* triangle = new GameObject();
-	Mesh* forme = new Mesh(D3DPT_TRIANGLELIST);
-	for (int i = 0; i < sizeof(vertices) / sizeof(CUSTOMVERTEX); i++) {
-		forme->addVertex(vertices + i);
-	}
-
-	forme->deduceTriangle();
-	M->loadMeshInScene(forme);
-
-	triangle->addComponent(forme);
-
-	//triangle->addComponent(new GoTester(M->inputManager()));
-	//M->camera()->addComponent(new GoTester(M->inputManager()));
-	M->camera()->transform()->posZ(20.0f);
-	//M->camera()->transform()->addPitch(M_PI);
-
-
-	//M->addGameObject(triangle);
-
-
-	GameObject* Singe = new GameObject();
-	Mesh* burbur = M->ImportingModel("./Mesh/Cube.x");
-	//burbur->deduceTriangle();
-
-
-	//M->loadMeshInScene(burbur);
+int main()
+{
+	moteur->camera()->transform()->posZ(20.0f);
+	Singe = new GameObject();
+	burbur = moteur->ImportingModel("./Mesh/Cube.x");
 
 	Singe->addComponent(burbur);
-	Singe->addComponent(new GoTester(M->inputManager()));
-	//Utils::DebugLogMessage(burbur->vertex()->size());
 
-	M->addGameObject(Singe);
-	// set up and initialize Direct3D
+	moteur->addGameObject(Singe);
+	Singe->addComponent(new GoTester(moteur->inputManager()));
 
-	// enter the main loop:
 
-	MSG msg;
-
+	//----------------------------FixedUpdate-----------------------------------//
 	while (TRUE)
 	{
+		auto lastUpdateTime = std::chrono::high_resolution_clock::now();
+
 		while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
-		}
+		}	
+		moteur->update();
+		moteur->render();
 
 		if (msg.message == WM_QUIT)
 			break;
-
-		M->update();
-		M->render();
+		auto currentTime = std::chrono::high_resolution_clock::now();
+		auto deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastUpdateTime);
+		if (deltaTime.count() >= FIXED_UPDATE_INTERVAL)
+		{
+			fixedUpdate();
+			lastUpdateTime = currentTime;
+		}
 	}
+	//----------------------------FixedUpdate-----------------------------------//
 
-	// clean up DirectX and COM
-	delete M;
+
+	delete moteur;
 
 	return msg.wParam;
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(1));
+
+	return 0;
 }
 
 
+int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
+{
+#ifdef _DEBUG
+	_CrtMemState memStateInit;
+	_CrtMemCheckpoint(&memStateInit);
+#endif
 
+	moteur = new Moteur(hInstance,
+		hPrevInstance,
+		lpCmdLine,
+		nCmdShow);
+	moteur->Init();
+
+	main();
+
+
+
+#ifdef _DEBUG
+	_CrtMemState memStateEnd, memStateDiff;
+	_CrtMemCheckpoint(&memStateEnd);
+	if (_CrtMemDifference(&memStateDiff, &memStateInit, &memStateEnd))
+	{
+		MessageBoxA(NULL, "MEMORY LEAKS", "DISCLAIMER", 0);
+	}
+#endif 
+
+	return 0;
+}
+
+
+#pragma endregion
 
