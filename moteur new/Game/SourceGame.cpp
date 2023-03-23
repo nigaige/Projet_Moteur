@@ -3,36 +3,40 @@
 #include <chrono>
 #include <thread>
 #include "GoTester.h"
-std::string* message;
+#include "tube.h"
 
 #ifdef _DEBUG
 #include <crtdbg.h>
 #endif
 
-const int FIXED_UPDATE_INTERVAL = 1006; // 16ms, equivalent to 60fps
-Moteur* moteur;
-GameObject* Singe;
-Mesh* burbur;
+const int FIXED_UPDATE_INTERVAL = 16; // 16ms, equivalent to 60fps
 
 
-void fixedUpdate()
-{
-	Utils util;
-	util.DebugLogMessage("ok");
 
-// Perform physics calculations and other time-sensitive operations here
-}
 
-int main()
-{
+#pragma endregion
+
+int main(Moteur* moteur)
+{	
 	moteur->camera()->transform()->posZ(20.0f);
-	Singe = new GameObject();
-	burbur = moteur->ImportingModel("./Mesh/Cube.x");
+	moteur->camera()->transform()->posY(-5.0f);
 
-	Singe->addComponent(burbur);
+	Mesh* meshCube;
+	meshCube = moteur->ImportingModel("./Mesh/test.x");
 
-	moteur->addGameObject(Singe);
-	Singe->addComponent(new GoTester());
+	Tube* a[5];
+	for (int x = 0; x < 5; ++x) {
+		
+		a[x] = new Tube();
+		a[x]-> initRoad(meshCube);
+		a[x]->GetGO()->addComponent(new GoTester());		
+		a[x]->GetGO()->transform()->addRoll(M_PI*0.5);
+		a[x]->GetGO()->transform()->scaleY(5);
+		a[x]->GetGO()->transform()->posY(x * 10);
+		moteur->addGameObject(a[x]->GetGO());
+
+	}
+	a[4]->move();
 
 
 	moteur->gameLoop();
@@ -54,14 +58,19 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	_CrtMemCheckpoint(&memStateInit);
 #endif
 
+	Moteur* moteur;
+
+
+	Utils util;
+	util.DebugLogMessage("ok");
+
 	moteur = new Moteur(hInstance,
 		hPrevInstance,
 		lpCmdLine,
 		nCmdShow);
 	moteur->Init();
 
-	main();
-
+	main(moteur);
 
 
 #ifdef _DEBUG
@@ -76,6 +85,4 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	return 0;
 }
 
-
-#pragma endregion
 

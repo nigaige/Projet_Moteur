@@ -130,6 +130,8 @@ void Moteur::initD3D()
 	d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
 	d3dpp.BackBufferWidth = SCREEN_WIDTH;
 	d3dpp.BackBufferHeight = SCREEN_HEIGHT;
+	d3dpp.EnableAutoDepthStencil = TRUE;    // automatically run the z-buffer for us
+	d3dpp.AutoDepthStencilFormat = D3DFMT_D24S8;    // 16-bit pixel format for the z-buffer
 
 	// create a device class using this information and the info from the d3dpp stuct
 	d3d->CreateDevice(D3DADAPTER_DEFAULT,
@@ -142,7 +144,8 @@ void Moteur::initD3D()
 	d3ddev->SetRenderState(D3DRS_LIGHTING, TRUE);    // turn off the 3D lighting
 	d3ddev->SetRenderState(D3DRS_ZENABLE, TRUE);
 	d3ddev->SetRenderState(D3DRS_AMBIENT, 0xffffffff);
-
+//	d3ddev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);    // both sides of the triangles
+	d3ddev->SetRenderState(D3DRS_ZENABLE, TRUE);    // turn on the z-buffer
 
 	camera_ = new GameObject();
 	cameraComponent = new Camera(45, 1.0f, 100.0f);
@@ -191,6 +194,8 @@ void Moteur::render(void)
 {
 	
 	d3ddev->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
+	d3ddev->Clear(0, NULL, D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
+
 
 	d3ddev->BeginScene();
 
