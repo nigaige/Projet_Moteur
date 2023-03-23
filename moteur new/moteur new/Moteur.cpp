@@ -361,13 +361,13 @@ Mesh* Moteur::ImportingModel(std::string path)
 				{
 					if (FAILED(D3DXCreateTextureFromFileA(d3ddev, materials[i].pTextureFilename, &resultMesh->meshTexture()[i])))
 					{
-						Utils::DebugLogMessage("ERROR");
+					Utils::DebugLogMessage("ERROR");
 					}
 				}
-				else
-				{
-					resultMesh->meshTexture()[i] = NULL;
-				}
+			else
+			{
+				resultMesh->meshTexture()[i] = NULL;
+			}
 		}
 	}
 	
