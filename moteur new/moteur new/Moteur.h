@@ -28,7 +28,7 @@ public:
 
     Moteur(HINSTANCE hInstance,
 		HINSTANCE hPrevInstance,
-		LPSTR lpCmdLine,
+		LPWSTR lpCmdLine,
 		int nCmdShow);
 	~Moteur();
 

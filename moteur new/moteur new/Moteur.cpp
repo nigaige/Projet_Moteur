@@ -22,7 +22,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 
 Moteur::Moteur(HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,
-	LPSTR lpCmdLine,
+	LPWSTR lpCmdLine,
 	int nCmdShow)
 {
 	this->nCmdShow = nCmdShow;
@@ -149,6 +149,11 @@ void Moteur::cleanD3D(void)
 {
 	d3ddev->Release();    // close and release the 3D device
 	d3d->Release();    // close and release Direct3D
+}
+
+void Moteur::gameLoop()
+{
+
 }
 
 void Moteur::render(void)

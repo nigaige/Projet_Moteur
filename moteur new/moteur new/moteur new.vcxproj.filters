@@ -81,6 +81,9 @@
     <ClCompile Include="RigidBody.cpp">
       <Filter>Source Files\Gameobject\Component</Filter>
     </ClCompile>
+    <ClCompile Include="TimeManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Moteur.h">
@@ -127,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="RigidBody.h">
       <Filter>Header Files\Gameobject\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
