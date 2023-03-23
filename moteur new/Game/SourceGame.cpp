@@ -33,7 +33,7 @@ int main()
 	Singe->addComponent(burbur);
 
 	moteur->addGameObject(Singe);
-	Singe->addComponent(new GoTester(moteur->inputManager()));
+	Singe->addComponent(new GoTester());
 
 
 	//----------------------------FixedUpdate-----------------------------------//
