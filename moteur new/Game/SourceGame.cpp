@@ -10,10 +10,7 @@ std::string* message;
 #endif
 
 const int FIXED_UPDATE_INTERVAL = 1006; // 16ms, equivalent to 60fps
-Moteur* moteur;
-MSG msg;
-GameObject* Singe;
-Mesh* burbur;
+
 
 
 void fixedUpdate()
@@ -24,17 +21,44 @@ void fixedUpdate()
 // Perform physics calculations and other time-sensitive operations here
 }
 
-int main()
+int main(Moteur* M)
 {
-	moteur->camera()->transform()->posZ(20.0f);
+
+	MSG msg;
+	GameObject* Singe;
+	Mesh* burbur;
+
+
+	M->camera()->transform()->posZ(20.0f);
 	Singe = new GameObject();
-	burbur = moteur->ImportingModel("./Mesh/Cube.x");
 
-	Singe->addComponent(burbur);
+	GameObject* kinematicCube = new GameObject();
+	GameObject* nonKinematicCube = new GameObject();
+	Mesh* m_cube = M->ImportingModel("./Mesh/Cube.x");
 
-	moteur->addGameObject(Singe);
-	Singe->addComponent(new GoTester());
+	kinematicCube->addComponent(m_cube);
+	nonKinematicCube->addComponent(m_cube);
 
+	kinematicCube->addComponent(new GoTester());
+
+	RigidBody* rb = new RigidBody();
+	rb->isKinematic(true);
+	kinematicCube->addComponent(rb);
+	kinematicCube->transform()->posY(-5.0f);
+
+	nonKinematicCube->addComponent(new RigidBody());
+
+	ColliderCube* sph1 = new ColliderCube(new D3DXVECTOR3(0, 0, 0), new D3DXVECTOR3(1, 1, 1));
+	ColliderCube* sph2 = new ColliderCube(new D3DXVECTOR3(0, 0, 0), new D3DXVECTOR3(1, 1, 1));
+	M->colliderManager()->addCollider(sph1);
+	M->colliderManager()->addCollider(sph2);
+	nonKinematicCube->addComponent(sph1);
+	kinematicCube->addComponent(sph2);
+
+
+
+	M->addGameObject(kinematicCube);
+	M->addGameObject(nonKinematicCube);
 
 	//----------------------------FixedUpdate-----------------------------------//
 	while (TRUE)
@@ -46,8 +70,8 @@ int main()
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}	
-		moteur->update();
-		moteur->render();
+		M->update();
+		M->render();
 
 		if (msg.message == WM_QUIT)
 			break;
@@ -62,7 +86,7 @@ int main()
 	//----------------------------FixedUpdate-----------------------------------//
 
 
-	delete moteur;
+	delete M;
 
 	return msg.wParam;
 
@@ -78,14 +102,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	_CrtMemState memStateInit;
 	_CrtMemCheckpoint(&memStateInit);
 #endif
+	Moteur* M;
 
-	moteur = new Moteur(hInstance,
+	M = new Moteur(hInstance,
 		hPrevInstance,
 		lpCmdLine,
 		nCmdShow);
-	moteur->Init();
+	M->Init();
 
-	main();
+	main(M);
 
 
 

@@ -3,7 +3,7 @@
 
 
 Input* Moteur::inputManager_ = new Input();
-float Moteur::s_deltaTime_ = 0;
+float Moteur::s_deltaTime_ = 0.01f;
 
 // this is the main message handler for the program
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -155,6 +155,7 @@ void Moteur::cleanD3D(void)
 
 void Moteur::gameLoop()
 {
+	Moteur::s_deltaTime_ = 0.1f;
 
 }
 

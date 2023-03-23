@@ -31,14 +31,22 @@ void GameObject::update()
 
 void GameObject::addComponent(Component* comp)
 {
-	componentList.push_back(comp);
 
 	if (isOfType<Mesh>(comp)) {
 		MeshList.push_back(castToType<Mesh>(comp));
-	}else {
+	}
+	else {
+		if (isOfType<Collider>(comp)) {
+			ColliderList.push_back(castToType<Collider>(comp));
+		}
+		else if (isOfType<RigidBody>(comp)) {
+			if (rb_ != nullptr) return;
+			rb_ = castToType<RigidBody>(comp);
+		}
 		comp->gameObject(this);
 		comp->transform(transform_);
 	}
+	componentList.push_back(comp);
 }
 
 bool GameObject::rmComponent(Component* comp)
