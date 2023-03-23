@@ -3,7 +3,7 @@
 #include <chrono>
 #include <thread>
 #include "GoTester.h"
-#include "tube.h"
+#include "MoveForward.h"
 
 #ifdef _DEBUG
 #include <crtdbg.h>
@@ -24,19 +24,22 @@ int main(Moteur* moteur)
 	Mesh* meshCube;
 	meshCube = moteur->ImportingModel("./Mesh/test.x");
 
-	Tube* a[5];
-	for (int x = 0; x < 5; ++x) {
+	GameObject* a[10];
+	for (int x = 0; x < 10; ++x) {
 		
-		a[x] = new Tube();
-		a[x]-> initRoad(meshCube);
-		a[x]->GetGO()->addComponent(new GoTester());		
-		a[x]->GetGO()->transform()->addRoll(M_PI*0.5);
-		a[x]->GetGO()->transform()->scaleY(5);
-		a[x]->GetGO()->transform()->posY(x * 10);
-		moteur->addGameObject(a[x]->GetGO());
+		MoveForward* roadcomponent = new MoveForward();
+
+		a[x] = new GameObject();
+		a[x]->addComponent(roadcomponent);
+		a[x]->addComponent(meshCube);
+
+		a[x]->addComponent(new GoTester());		
+		a[x]->transform()->addRoll(M_PI*0.5);
+		a[x]->transform()->scaleY(5);
+		a[x]->transform()->posY(x * 10);
+		moteur->addGameObject(a[x]);
 
 	}
-	a[4]->move();
 
 
 	moteur->gameLoop();

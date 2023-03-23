@@ -24,7 +24,7 @@
     <ClCompile Include="wall.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tube.cpp">
+    <ClCompile Include="MoveForward.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,7 +35,7 @@
     <ClInclude Include="wall.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tube.h">
+    <ClInclude Include="MoveForward.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
