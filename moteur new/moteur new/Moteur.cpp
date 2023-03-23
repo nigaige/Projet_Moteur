@@ -177,36 +177,16 @@ void Moteur::render(void)
 			else
 			{
 				for (DWORD i = 0; i < m->matCount(); i++) 
-						{
-							d3ddev->SetMaterial(&m->meshMaterials()[i]);
-							if (m->meshTexture() != NULL)
-							{
-								d3ddev->SetTexture(0, m->meshTexture()[i]);
-							}
+				{
+					d3ddev->SetMaterial(&m->meshMaterials()[i]);
+					if (m->meshTexture() != NULL)
+					{
+						d3ddev->SetTexture(0, m->meshTexture()[i]);
+					}
 				
-							m->importedMesh()->DrawSubset(i);
-						}
+					m->importedMesh()->DrawSubset(i);
+				}
 			}
-			
-		
-
-		
-			
-			/*
-			if (m->Ibuffer() != NULL) {
-
-
-
-
-				
-				d3ddev->SetIndices(m->Ibuffer());
-				d3ddev->DrawIndexedPrimitive(m->primitivMethode(), 0, 0, m->pointCount(),0,m->Primitiv());//methode,start, mini,||nbface||,pr index,||nb point||
-				
-			}
-			else {
-				// copy the vertex buffer to the back buffer
-				
-			}*/
 			
 		}
 	}
@@ -388,9 +368,7 @@ Mesh* Moteur::ImportingModel(std::string path)
 				{
 					resultMesh->meshTexture()[i] = NULL;
 				}
-				
-		
-			}
+		}
 	}
 	
 	
