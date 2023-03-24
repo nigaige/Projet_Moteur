@@ -407,6 +407,7 @@ Mesh* Moteur::ImportingModel(std::string path)
 				resultMesh->meshMaterials()[i].Ambient = resultMesh->meshMaterials()[i].Diffuse;
 				if (materials[i].pTextureFilename != NULL)
 				{
+					//TODO put filename
 					if (FAILED(D3DXCreateTextureFromFileA(d3ddev, materials[i].pTextureFilename, &resultMesh->meshTexture()[i])))
 					{
 						Utils::DebugLogMessage("ERROR");

@@ -22,7 +22,11 @@ int main(Moteur* moteur)
 	moteur->camera()->transform()->posY(-5.0f);
 
 	Mesh* meshCube;
-	meshCube = moteur->ImportingModel("./Mesh/test.x");
+	meshCube = moteur->ImportingModel("./Mesh/BONGUSV2.x");
+	Mesh* meshPlayer;
+	meshPlayer = moteur->ImportingModel("./Mesh/test.x");
+
+	GameObject* player = new GameObject;
 
 	GameObject* a[10];
 	for (int x = 0; x < 10; ++x) {

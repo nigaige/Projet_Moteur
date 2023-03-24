@@ -26,6 +26,8 @@ struct CUSTOMVERTEX { FLOAT X, Y, Z; DWORD COLOR; };
 
 #define GRAVITY 1
 
+#define MESHFILE 
+#define TEXTFILE "./Texture/"
 
 enum States
 {
