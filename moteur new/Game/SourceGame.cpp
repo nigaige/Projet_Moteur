@@ -28,15 +28,16 @@ int main()
 {
 	moteur->camera()->transform()->posZ(20.0f);
 	Singe = new GameObject();
-	burbur = moteur->ImportingModel("./Mesh/Cube.x");
+	//burbur = moteur->ImportingModel("./Mesh/Cube.x");
+	std::string path = "D:/Professional/Unity/Lost_In_The_Forest/Projet_Moteur_Lib/moteur new/Game/Shader/red.hlsl";
+	burbur = moteur->LoadShader(&path);
 
 	Singe->addComponent(burbur);
 
 	moteur->addGameObject(Singe);
 	Singe->addComponent(new GoTester());
 
-	std::string path = "C:/Users/Asabi/Documents/GitHub/Projet_Moteur_Lib/moteur new/Game/Shader/redCube.hlsl";
-	moteur->LoadShader(&path);
+	
 
 
 

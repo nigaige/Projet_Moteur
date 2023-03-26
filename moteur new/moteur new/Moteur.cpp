@@ -5,6 +5,9 @@
 Input* Moteur::inputManager_ = new Input();
 float Moteur::s_deltaTime_ = 0;
 
+LPD3DXEFFECT shaderBuff;
+D3DXMATRIX matWorldViewProj;
+
 // this is the main message handler for the program
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -184,7 +187,7 @@ void Moteur::render(void)
 
 			else
 			{
-				for (DWORD i = 0; i < m->matCount(); i++) 
+				/*for (DWORD i = 0; i < m->matCount(); i++) 
 				{
 					d3ddev->SetMaterial(&m->meshMaterials()[i]);
 					if (m->meshTexture() != NULL)
@@ -193,9 +196,27 @@ void Moteur::render(void)
 					}
 				
 					m->importedMesh()->DrawSubset(i);
+				}*/
+
+
+				for (DWORD i = 0; i < m->matCount(); i++)
+				{
+					d3ddev->SetMaterial(&m->meshMaterials()[i]);
+					if (m->meshTexture() != NULL)
+					{
+						d3ddev->SetTexture(0, m->meshTexture()[i]);
+					}
+
+					shaderBuff->CommitChanges();
+					shaderBuff->Begin(NULL, NULL); // Démarrer le traitement du shader
+					shaderBuff->BeginPass(0); // Sélectionner la première passe de la technique
+
+					m->importedMesh()->DrawSubset(i); 
+
+					shaderBuff->EndPass(); // Terminer la passe
+					shaderBuff->End(); // Terminer le traitement du shader
 				}
 			}
-			
 		}
 	}
 	d3ddev->EndScene();
@@ -296,7 +317,7 @@ void Moteur::rmMesh(Mesh* me)
 /// </summary>
 /// <param name="shaderPath">String shaderPath of .hlsl file</param>
 /// <returns>Shader* new Shader()</returns>
-Shader Moteur::LoadShader(std::string* shaderPath)
+Mesh* Moteur::LoadShader(std::string* shaderPath)
 {
 	ID3DXBuffer* listing_f = NULL;
 	ID3DXBuffer* listing_v = NULL;
@@ -306,64 +327,57 @@ Shader Moteur::LoadShader(std::string* shaderPath)
 	LPD3DXBUFFER shaderContent_ = NULL;
 	IDirect3DVertexShader9** ppShader = nullptr;
 
-	std::ifstream file;
+	LPD3DXBUFFER materialBuffer = NULL;
+	DWORD numMaterial = 0;
+	LPD3DXMESH mesh = nullptr;
+	
+	
+	
+	Mesh* resultMesh = new Mesh(D3DPT_TRIANGLELIST);
+	HRESULT hrMesh = D3DXLoadMeshFromXA("./Mesh/Cube.x", D3DXMESH_MANAGED, d3ddev, NULL, &materialBuffer, NULL, &numMaterial, &mesh); //Import mesh in meshImp
+	if (FAILED(hrMesh))
+		Utils::DebugLogMessage("Failed import model");
+	
+	
+	resultMesh->importedMesh(mesh);
+	resultMesh->materialBuffer(materialBuffer);
+	resultMesh->matCount(1);
 
-	//file.open("C:/Users/asabi/Desktop/text.hlsl", std::ios_base::binary);
-	//file.open(*shaderPath, std::ios_base::binary);
+	ID3DXBuffer* errors = NULL;
+	
+	HRESULT hr = D3DXCreateEffectFromFileA(
+	d3ddev, // Pointeur vers l'interface du périphérique Direct3D
+	shaderPath->c_str(), // Nom du fichier HLSL
+	NULL, // Tableau des macros de préprocesseur (optionnel)
+	NULL, // Interface de rappel pour les messages (optionnel)
+	D3DXSHADER_PACKMATRIX_COLUMNMAJOR | D3DXSHADER_DEBUG, // Options de compilation
+	NULL, // Interface de gestion de compilation (optionnel)
+	&shaderBuff, // Pointeur vers l'effet créé
+	&errors // Pointeur vers le buffer d'erreur (optionnel)
+	);
 
-	if (file)
+	if(hr == D3D_OK)
 	{
-		file.seekg(0, file.end);
-		int length = file.tellg();
-		file.seekg(0, file.beg);
-		char* _Str = new char[length + 1];
-		file.read(_Str, length);
-		_Str[length] = 0;
-
-		LPD3DXEFFECT shaderBuff; 
-
-		HRESULT hr = D3DXCreateEffectFromFileA(d3ddev, shaderPath->c_str(), NULL, NULL, NULL, NULL,&shaderBuff,NULL);
-
-		if (hr == D3D_OK)
-		{
-			shaderBuff->SetTechnique("Default");
-
-			unsigned int i = 0;
-
-			shaderBuff->Begin(&i,0);
-
-			shaderBuff->SetMatrix("var", 0);
-
-			shaderBuff->CommitChanges();
-
-			for (int ip = 0; ip < i; i++)
-			{
-				shaderBuff->BeginPass(ip);
-
-				/// <summary>
-				/// draw 
-				/// </summary>
-				/// <param name="shaderPath"></param>
-				/// <returns></returns>
-
-				shaderBuff->EndPass();
-			}
-
-			shaderBuff->End();
-
-
-		}
-
-		HRESULT Buffer = D3DXCompileShader((LPCSTR)shaderPath, strlen(shaderPath->c_str()), NULL, NULL, "main_vertex", "vs_3_0", 0, &code_v, &listing_v, ppConstantTable_OUT);
-		if (FAILED(Buffer))
-			Utils::DebugLogMessage("Error Buffer");
-
-		d3ddev->CreateVertexShader((DWORD*)Buffer, ppShader);
-
-		d3ddev->SetVertexShader(*ppShader);
-
-		return *new Shader(NULL);
+		shaderBuff->SetTechnique(shaderBuff->GetTechniqueByName("Render"));
 	}
+	
+	/*if (FAILED(hre))
+	{
+		if (errors != NULL)
+		{
+			MessageBoxA(NULL, (char*)errors->GetBufferPointer(), "Error", MB_OK);
+			errors->Release();
+		}
+		return resultMesh;
+	}
+
+	// Appliquer le shader sur le mesh
+	D3DXMATRIX matWorldViewProj; // Calculer la matrice de transformation du monde à l'espace projeté
+	
+	shaderBuff->SetMatrix("worldViewProj", &matWorldViewProj);*/
+	
+	return resultMesh;
+
 }
 
 /// <summary>
@@ -415,8 +429,6 @@ Mesh* Moteur::ImportingModel(std::string path)
 			}
 		}
 	}
-	
-	
 	
 	materialBuffer->Release();
 
