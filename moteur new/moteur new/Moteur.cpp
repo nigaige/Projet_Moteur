@@ -332,7 +332,7 @@ Shader Moteur::LoadShader(std::string* shaderPath)
 
 			shaderBuff->Begin(&i,0);
 
-			shaderBuff->SetMatrix("var", );
+			shaderBuff->SetMatrix("var", 0);
 
 			shaderBuff->CommitChanges();
 
