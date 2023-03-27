@@ -11,19 +11,19 @@ struct VS_OUTPUT {
 VS_OUTPUT main(VS_INPUT input) {
     VS_OUTPUT output;
 
-    // Transformer la position du sommet dans l'espace projeté
     output.position = mul(input.position, worldViewProj);
 
     return output;
 }
 
 float4 mainPS() : COLOR{
-    return float4(1.0f, 0.0f, 0.0f, 1.0f); // Rouge
+    return float4(1.0f, 1.0f, 0.0f, 1.0f);
 }
 
-technique Render {
+technique Default
+{
     pass P0 {
-        VertexShader = compile vs_2_0 main();
-        PixelShader = compile ps_2_0 mainPS();
+        VertexShader = null; //compile vs_3_0 main();
+        PixelShader = compile ps_3_0 mainPS();
     }
 }

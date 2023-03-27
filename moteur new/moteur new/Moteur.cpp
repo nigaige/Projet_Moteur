@@ -7,6 +7,8 @@ float Moteur::s_deltaTime_ = 0;
 
 LPD3DXEFFECT shaderBuff;
 D3DXMATRIX matWorldViewProj;
+D3DXHANDLE m_hT;
+D3DXHANDLE m_hMat;
 
 // this is the main message handler for the program
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -83,6 +85,7 @@ void Moteur::Init()
 
 	d3ddev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	d3ddev->SetRenderState(D3DRS_AMBIENT, 0xffffffff); // turn off the 3D lighting
+	d3ddev->SetRenderState(D3DRS_SHADEMODE, D3DSHADE_GOURAUD); // turn off the 3D lighting
 
 
 	initD3D();
@@ -140,7 +143,7 @@ void Moteur::initD3D()
 
 	d3ddev->SetRenderState(D3DRS_LIGHTING, TRUE);    // turn off the 3D lighting
 	d3ddev->SetRenderState(D3DRS_ZENABLE, TRUE);
-	d3ddev->SetRenderState(D3DRS_AMBIENT, 0xffffffff);
+	//d3ddev->SetRenderState(D3DRS_AMBIENT, 0xffffffff);
 
 
 	camera_ = new GameObject();
@@ -171,51 +174,65 @@ void Moteur::render(void)
 	// SET UP THE PIPELINE
 	setUpCamera();
 
-
 	for (GameObject* go : GOList) {
 		
 		if (go->meshToDraw().size() == 0) continue;
-		d3ddev->SetTransform(D3DTS_WORLD, go->transform()->displayValue());    // set the projection
 
 		for (Mesh* m : go->meshToDraw()) {
-			
+
 			if (m->importedMesh() == NULL)
 			{
+				d3ddev->SetTransform(D3DTS_WORLD, go->transform()->displayValue());    // set the projection
 				d3ddev->SetStreamSource(0, m->Vbuffer(), 0, sizeof(CUSTOMVERTEX));
 				d3ddev->DrawPrimitive(m->primitivMethode(), 0, m->Primitiv());
-			}
-
-			else
+			}else
 			{
-				/*for (DWORD i = 0; i < m->matCount(); i++) 
-				{
-					d3ddev->SetMaterial(&m->meshMaterials()[i]);
-					if (m->meshTexture() != NULL)
-					{
-						d3ddev->SetTexture(0, m->meshTexture()[i]);
-					}
+
+				D3DXMATRIX matWPV = *go->transform()->displayValue();
+				matWPV *= *cameraComponent->matView();
+				matWPV *= *cameraComponent->matProj();
+
+
+
+
+
 				
-					m->importedMesh()->DrawSubset(i);
-				}*/
+				UINT passCount;
+				shaderBuff->Begin(&passCount, NULL); // Démarrer le traitement du shader
 
-
-				for (DWORD i = 0; i < m->matCount(); i++)
+				for (int ipass = 0; ipass < passCount; ipass++) 
 				{
-					d3ddev->SetMaterial(&m->meshMaterials()[i]);
-					if (m->meshTexture() != NULL)
+					shaderBuff->BeginPass(ipass); // Sélectionner la première passe de la technique
+
+					shaderBuff->SetMatrix(m_hMat, &matWPV);
+					shaderBuff->CommitChanges();
+
+					for (DWORD i = 0; i < m->matCount(); i++)
 					{
-						d3ddev->SetTexture(0, m->meshTexture()[i]);
+						d3ddev->SetMaterial(&m->meshMaterials()[i]);
+						/*if (m->meshTexture() != NULL)
+						{
+							shaderBuff->SetTexture(0, m->meshTexture()[i]);
+						}*/
+						m->importedMesh()->DrawSubset(i);
 					}
 
-					shaderBuff->CommitChanges();
-					shaderBuff->Begin(NULL, NULL); // Démarrer le traitement du shader
-					shaderBuff->BeginPass(0); // Sélectionner la première passe de la technique
-
-					m->importedMesh()->DrawSubset(i); 
-
-					shaderBuff->EndPass(); // Terminer la passe
-					shaderBuff->End(); // Terminer le traitement du shader
+					shaderBuff->EndPass();
 				}
+
+				shaderBuff->End(); 
+				 // Terminer la passe
+				// Terminer le traitement du shader
+				//for (DWORD i = 0; i < m->matCount(); i++)
+				//{
+				//	/*d3ddev->SetMaterial(&m->meshMaterials()[i]);
+				//	if (m->meshTexture() != NULL)
+				//	{
+				//		d3ddev->SetTexture(0, m->meshTexture()[i]);
+				//	}*/
+
+				//	
+				//}
 			}
 		}
 	}
@@ -257,7 +274,7 @@ void Moteur::setUpCamera() {//TODO Transform input
 
 
 	d3ddev->SetTransform(D3DTS_VIEW, cameraComponent->transform()->displayValue());
-
+	cameraComponent->matView(&matView);
 
 	D3DXMATRIX matProjection;     // the projection transform matrix
 
@@ -267,6 +284,7 @@ void Moteur::setUpCamera() {//TODO Transform input
 		cameraComponent->nearViewPlane(),    // the near view-plane
 		cameraComponent->farViewPlane());    // the far view-plane
 
+	cameraComponent->matView(&matProjection);
 	d3ddev->SetTransform(D3DTS_PROJECTION, &matProjection);    // set the projection
 }
 
@@ -290,14 +308,12 @@ void Moteur::rmGamObject(GameObject* go)
 			return;
 		}
 	}
-
 }
 
 
 void Moteur::addMesh(Mesh* me)
 {
 	MeList.push_back(me);
-
 }
 
 void Moteur::rmMesh(Mesh* me)
@@ -333,7 +349,8 @@ Mesh* Moteur::LoadShader(std::string* shaderPath)
 	
 	
 	
-	Mesh* resultMesh = new Mesh(D3DPT_TRIANGLELIST);
+	Mesh* resultMesh = ImportingModel("./Mesh/Cube.x"); 
+	/*new Mesh(D3DPT_TRIANGLELIST);
 	HRESULT hrMesh = D3DXLoadMeshFromXA("./Mesh/Cube.x", D3DXMESH_MANAGED, d3ddev, NULL, &materialBuffer, NULL, &numMaterial, &mesh); //Import mesh in meshImp
 	if (FAILED(hrMesh))
 		Utils::DebugLogMessage("Failed import model");
@@ -341,8 +358,9 @@ Mesh* Moteur::LoadShader(std::string* shaderPath)
 	
 	resultMesh->importedMesh(mesh);
 	resultMesh->materialBuffer(materialBuffer);
-	resultMesh->matCount(1);
+	resultMesh->matCount(numMaterial);
 
+	*/
 	ID3DXBuffer* errors = NULL;
 	
 	HRESULT hr = D3DXCreateEffectFromFileA(
@@ -358,7 +376,11 @@ Mesh* Moteur::LoadShader(std::string* shaderPath)
 
 	if(hr == D3D_OK)
 	{
-		shaderBuff->SetTechnique(shaderBuff->GetTechniqueByName("Render"));
+		m_hT = shaderBuff->GetTechniqueByName("Default");
+		//shaderBuff->SetTechnique();
+		//D3DXHANDLE
+		m_hMat = shaderBuff->GetParameterByName(m_hT, "worldViewProj");
+		int a = 0;
 	}
 	
 	/*if (FAILED(hre))

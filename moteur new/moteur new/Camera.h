@@ -6,7 +6,8 @@ private:
 	D3DXVECTOR3 pAt;
 	D3DXVECTOR3 pUp;
 
-	D3DXMATRIX* matView = new D3DXMATRIX();
+	D3DXMATRIX matView_;
+	D3DXMATRIX matProj_;
 
 	int i_fov_;
 	float i_nearViewPlane_;
@@ -23,5 +24,10 @@ public:
 	void nearViewPlane(float newNearVIewPlane);
 	float farViewPlane();
 	void farViewPlane(float newFarViewPlane);
+
+	void matView(D3DXMATRIX* matView)										{ matView_ = *matView; }
+	void matProj(D3DXMATRIX* matProj)										{ matProj_ = *matProj; }
+	D3DXMATRIX* matView()													{ return &matView_; }
+	D3DXMATRIX* matProj()													{ return &matView_; }
 };
 
