@@ -17,28 +17,29 @@ const int FIXED_UPDATE_INTERVAL = 16; // 16ms, equivalent to 60fps
 #pragma endregion
 
 int main(Moteur* moteur)
-{	
+{
 	moteur->camera()->transform()->posZ(20.0f);
 	moteur->camera()->transform()->posY(-5.0f);
 
 	Mesh* meshCube;
-	meshCube = moteur->ImportingModel("./Mesh/BONGUSV2.x");
+	meshCube = moteur->ImportingModel("./Mesh/cylinder2.x");
 	Mesh* meshPlayer;
-	meshPlayer = moteur->ImportingModel("./Mesh/test.x");
+	meshPlayer = moteur->ImportingModel("./Mesh/BONGUSV2.x");
 
 	GameObject* player = new GameObject;
 
 	GameObject* a[10];
 	for (int x = 0; x < 10; ++x) {
-		
+
 		MoveForward* roadcomponent = new MoveForward();
 
 		a[x] = new GameObject();
 		a[x]->addComponent(roadcomponent);
 		a[x]->addComponent(meshCube);
 
-		a[x]->addComponent(new GoTester());		
-		a[x]->transform()->addRoll(M_PI*0.5);
+		a[x]->addComponent(new GoTester());
+		a[x]->transform()->addRoll(M_PI * 0.5);		
+		a[x]->transform()->scale(D3DXVECTOR3(2.f, 2.f, 2.f));
 		a[x]->transform()->scaleY(5);
 		a[x]->transform()->posY(x * 10);
 		moteur->addGameObject(a[x]);
