@@ -9,7 +9,7 @@
 #include <vector>
 #include <fstream>
 #include <cassert>
-
+#include <map>
 
 #include <d3d9.h>
 #include <d3dx9.h>
@@ -57,6 +57,9 @@ class Camera;
 class Moteur;
 class Shader;
 class Material;
+class States;
+
+class StateMachine;
 
 class RigidBody;
 class Collider;
@@ -73,7 +76,8 @@ class ColliderManager;
 #include "Mesh.h"
 #include "Shader.h"
 #include "Camera.h"
-
+#include "States.h"
+#include "StateMachine.h"
 
 #include "RigidBody.h"
 #include "Collider.h"

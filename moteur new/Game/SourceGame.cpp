@@ -45,6 +45,13 @@ int main(Moteur* moteur)
 
 	}
 
+	StateMachine* SM = new StateMachine();
+	enum Test
+	{
+		BONJOUR,
+		AUREVOIR
+	};
+	SM->TEST(Test::BONJOUR);
 
 	moteur->gameLoop();
 

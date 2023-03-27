@@ -22,12 +22,12 @@ public:
 	//TODO DESTRUCTOR DELETE THE COMPONENT
 
 	//	GET/SET
-	Transform* transform() { return transform_; }
-	void transform(Transform* trans) { transform_ = trans; }
-	RigidBody* rb() { return rb_; }
+	Transform* transform()				{ return transform_; }
+	void transform(Transform* trans)	{ transform_ = trans; }
+	RigidBody* rb()						{ return rb_; }
 
-	bool toDisplay() { return toDisplay_; }
-	void toDisplay(bool display) { toDisplay_ = display; }
+	bool toDisplay()					{ return toDisplay_; }
+	void toDisplay(bool display)		{ toDisplay_ = display; }
 
 
 
