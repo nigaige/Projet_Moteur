@@ -205,7 +205,8 @@ void Moteur::render(void)
 	for (GameObject* go : GOList) {
 		
 		if (go->meshToDraw().size() == 0) continue;
-		d3ddev->SetTransform(D3DTS_WORLD, go->transform()->displayValue());    // set the projection
+		D3DXMATRIX rendu = go->worldMatrix();
+		d3ddev->SetTransform(D3DTS_WORLD, &rendu);    // set the projection
 
 		for (Mesh* m : go->meshToDraw()) {
 			
@@ -261,20 +262,12 @@ void Moteur::setUpCamera() {//TODO Transform input
 
 	//d3ddev->SetTransform(D3DTS_VIEW, cameraComponent->updateCamera());
 
-
-	D3DXVECTOR3 pEye(0.0f, 0.0f, 20.0f);
-	D3DXVECTOR3 pAt(0.0f, 0.0f, 0.0f);
-	D3DXVECTOR3 pUp(0.0f, 1.0f, 0.0f);
-	D3DXMATRIX matView;    // the view transform matrix
-
-	D3DXMatrixLookAtLH(&matView,
-		&pEye,    // the camera position
-		&pAt,    // the look-at position
-		&pUp);    // the up direction
+	D3DXMATRIX matView = cameraComponent->gameObject()->worldMatrix();
+	//D3DXMATRIX matView = *cameraComponent->transform()->displayValue();
 
 
-	d3ddev->SetTransform(D3DTS_VIEW, cameraComponent->transform()->displayValue());
 
+	d3ddev->SetTransform(D3DTS_VIEW, &matView );
 
 	D3DXMATRIX matProjection;     // the projection transform matrix
 

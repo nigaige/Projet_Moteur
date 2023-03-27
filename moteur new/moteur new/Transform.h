@@ -16,9 +16,11 @@ class Transform
 {
 private:
 	D3DXVECTOR3 v_position_;
+	D3DXVECTOR3 v_anchorPoint_position_;
 	D3DXVECTOR3 v_scale_;
 
 	D3DXMATRIX m_position_;
+	D3DXMATRIX m_anchorPoint_position_;
 	D3DXMATRIX m_scale_;
 	D3DXQUATERNION q_rotation_;
 
@@ -45,6 +47,7 @@ public:
 	void posZ(float z);
 	void updatePosition();
 
+
 	//----------Scale-----------
 	D3DXVECTOR3 scale();
 	void scale(D3DVECTOR newPos);
@@ -64,7 +67,7 @@ public:
 	D3DXVECTOR3* up();
 	D3DXQUATERNION genRotation(float roll = NULL, float pitch = NULL, float yaw = NULL);
 	void setARotation(float roll = NULL, float pitch = NULL, float yaw = NULL);
-	void getARotation(float roll = NULL, float pitch=NULL, float yaw = NULL);
+	void getARotation(float roll = NULL, float pitch = NULL, float yaw = NULL);
 
 	//---------FINAL-------------
 	void updateFinal();
@@ -82,4 +85,3 @@ public:
 
 
 };
-

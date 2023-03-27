@@ -4,6 +4,7 @@
 class GameObject
 {
 private:
+	GameObject* parent_ = nullptr;
 	Transform* transform_;
 	std::vector<Component*> componentList;
 	bool toDisplay_ = false;
@@ -15,6 +16,8 @@ private:
 public:
 	GameObject();
 	GameObject(Transform* T);
+	GameObject(Transform* T, GameObject* parent);
+	GameObject(GameObject* parent);
 	~GameObject();
 
 	void update();
@@ -24,10 +27,16 @@ public:
 	//	GET/SET
 	Transform* transform() { return transform_; }
 	void transform(Transform* trans) { transform_ = trans; }
+	D3DXMATRIX worldMatrix();
+
 	RigidBody* rb() { return rb_; }
 
 	bool toDisplay() { return toDisplay_; }
 	void toDisplay(bool display) { toDisplay_ = display; }
+
+	void parent(GameObject* go) { parent_ = go; }
+	GameObject* parent() { return parent_; }
+
 
 
 
@@ -38,7 +47,6 @@ public:
 	Component* getComponent(int index);
 
 	int countComponent();
-
 
 
 

@@ -16,7 +16,6 @@ public:
 	Camera(int Fov, float nearVIewPlane, float farViewPlane);
 	~Camera();
 	D3DXMATRIX* updateCamera();
-
 	int fov();
 	void setFov(int newfov);
 	float nearViewPlane();

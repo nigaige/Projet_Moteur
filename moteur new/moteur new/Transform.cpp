@@ -11,6 +11,9 @@ Transform::Transform()
 	v_position_.y = 0;
 	v_position_.z = 0;
 	updatePosition();
+	v_position_.x = v_position_.x;
+	v_position_.y = v_position_.y;
+	v_position_.z = v_position_.z;
 	v_forward_ = new FORWARD;
 	v_up_ = new UP;
 	v_right_ = new RIGHT;
@@ -29,10 +32,10 @@ Transform::~Transform()
 
 //----------position--------
 D3DXVECTOR3 Transform::position()			{return v_position_;}
-void Transform::position(D3DVECTOR newPos)	{ v_position_ = newPos; updatePosition();}
+void Transform::position(D3DVECTOR newPos) { v_position_ = newPos; updatePosition(); }
 void Transform::posX(float x)				{ v_position_.x = x; updatePosition(); }
 void Transform::posY(float y)				{ v_position_.y = y; updatePosition(); }
-void Transform::posZ(float z)				{ v_position_.z = z; updatePosition(); }
+void Transform::posZ(float z) { v_position_.z = z; updatePosition(); }
 void Transform::updatePosition() {
 	D3DXMatrixTranslation(&m_position_, v_position_.x, v_position_.y, v_position_.z);
 	updateFinal();
@@ -148,8 +151,8 @@ void Transform::getARotation(float roll, float pitch, float yaw){
 //-------------FINAL------------
 void Transform::updateFinal(){
 	m_Transform_ = m_scale_;
-	m_Transform_ *= m_position_;
 	m_Transform_ *= m_rotation_;
+	m_Transform_ *= m_position_;
 }
 
 D3DXMATRIX* Transform::displayValue()
