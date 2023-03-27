@@ -39,7 +39,8 @@ int main(Moteur* moteur)
 
 		a[x]->addComponent(new GoTester());		
 		a[x]->transform()->addRoll(M_PI*0.5);
-		a[x]->transform()->scaleY(5);
+		a[x]->transform()->scaleY(1);
+		a[x]->transform()->scale(D3DXVECTOR3(0.2f, 0.2f, 0.2f));
 		a[x]->transform()->posY(x * 10);
 		moteur->addGameObject(a[x]);
 

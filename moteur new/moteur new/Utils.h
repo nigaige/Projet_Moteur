@@ -32,6 +32,8 @@ struct triangle {
 #define GRAVITY 1
 
 #define EPSILON (FLT_EPSILON * 2)
+#define MESHFILE 
+#define TEXTFILE "./Texture/"
 
 enum States
 {
