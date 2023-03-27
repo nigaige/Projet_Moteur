@@ -11,6 +11,11 @@
 
 const int FIXED_UPDATE_INTERVAL = 16; // 16ms, equivalent to 60fps
 
+#pragma region test area
+
+void triggerHapened(Collider* other) { Utils::DebugLogMessage("Weeeeee"); }
+
+#pragma endregion
 
 
 
@@ -18,6 +23,54 @@ const int FIXED_UPDATE_INTERVAL = 16; // 16ms, equivalent to 60fps
 
 int main(Moteur* moteur)
 {	
+
+#pragma region Init
+	
+	
+	moteur->camera()->transform()->posZ(20.0f);
+	GameObject* kinematicCube = new GameObject();
+	GameObject* nonKinematicCube = new GameObject();
+	Mesh* m_cube = moteur->ImportingModel("./Mesh/Cube.x");
+
+	kinematicCube->addComponent(m_cube);
+	nonKinematicCube->addComponent(m_cube);
+
+	kinematicCube->addComponent(new GoTester());
+
+	RigidBody* rb = new RigidBody();
+	rb->isKinematic(true);
+	rb->hasGravity(false);
+	kinematicCube->addComponent(rb);
+	kinematicCube->transform()->posY(-5.0f);
+	//kinematicCube->transform()->posX(-2.0f);
+
+	nonKinematicCube->addComponent(new RigidBody());
+
+	ColliderCube* sph1 = new ColliderCube(new D3DXVECTOR3(0, 0, 0), new D3DXVECTOR3(1, 1, 1));
+	ColliderCube* sph2 = new ColliderCube(new D3DXVECTOR3(0, 0, 0), new D3DXVECTOR3(1, 1, 1));
+	sph1->isTrigger(true);
+	sph2->triggerCallback(triggerHapened);
+	moteur->colliderManager()->addCollider(sph2);
+	moteur->colliderManager()->addCollider(sph1);
+
+	nonKinematicCube->addComponent(sph1);
+	kinematicCube->addComponent(sph2);
+
+
+
+	moteur->addGameObject(nonKinematicCube);
+	moteur->addGameObject(kinematicCube);
+
+
+
+
+
+#pragma endregion
+
+
+#pragma region GameInit
+
+	/*
 	moteur->camera()->transform()->posZ(20.0f);
 	moteur->camera()->transform()->posY(-5.0f);
 
@@ -45,12 +98,18 @@ int main(Moteur* moteur)
 
 	}
 
-
+	*/
+#pragma endregion
 	moteur->gameLoop();
 
-	delete moteur;
 
-	//return msg.wParam;
+#pragma region end game
+
+
+
+#pragma endregion
+
+	delete moteur;
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(1));
 

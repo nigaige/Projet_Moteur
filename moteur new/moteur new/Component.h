@@ -9,7 +9,6 @@ protected:
 	Transform* transform_ =nullptr;
 	ComponentType type_ = COMPONENT;
 public:
-	//TODO GAMEOBJECT OWNER
 	Component(bool isActive = true);
 	~Component();
 
@@ -23,5 +22,6 @@ public:
 
 	void setActive(bool a = true) { active = a; };
 	virtual void update() {};
+	virtual void fixedUpdate() {};
 };
 

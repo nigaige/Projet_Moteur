@@ -18,6 +18,7 @@ public:
 	~GameObject();
 
 	void update();
+	void fixedUpdate();
 
 	//TODO DESTRUCTOR DELETE THE COMPONENT
 
@@ -33,7 +34,7 @@ public:
 
 	void addComponent(Component* comp);
 	bool rmComponent(Component* comp);
-	void rmComponent(int index);
+	bool rmComponent(int index);
 
 	Component* getComponent(int index);
 

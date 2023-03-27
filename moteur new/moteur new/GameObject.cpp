@@ -33,6 +33,17 @@ void GameObject::update()
 	}
 }
 
+void GameObject::fixedUpdate()
+{
+	if (rb_ != nullptr) {
+		rb_->fixedUpdate();
+	}
+	for (Component* comp : componentList) {
+		if (comp->type() == RIGIDBODY)continue;
+		comp->fixedUpdate();
+	}
+}
+
 void GameObject::addComponent(Component* comp)
 {
 
@@ -66,10 +77,11 @@ bool GameObject::rmComponent(Component* comp)
 
 }
 
-void GameObject::rmComponent(int index)
+bool GameObject::rmComponent(int index)
 {
-	//TODO RETURN BOOL
+	if (index < 0 || index >= componentList.size()) return false;
 	componentList.erase(componentList.begin() + index, componentList.begin() + index + 1);
+	return true;
 }
 
 Component* GameObject::getComponent(int index)

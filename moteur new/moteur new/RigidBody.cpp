@@ -10,13 +10,13 @@ void RigidBody::speed(D3DXVECTOR3* speed)
 	*speed_ = *speed;
 
 }
-void RigidBody::gravity()
+void RigidBody::applyGravity()
 {
-	*speed_ += Moteur::s_deltaTime_ * mass_ * DOWN;
+	*speed_ += Moteur::s_deltaTime_ * mass_ * gravity_ * DOWN ;
 }
 
 void RigidBody::update() {
 	if (isKinematic_) return;
-	gravity();
+	if (hasGravity_) applyGravity();
 	transform_->position(transform_->position() + *speed_);
 }

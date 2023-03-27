@@ -10,15 +10,27 @@ void ColliderManager::manageCollision()//TODO change to eat a vector when manage
 {
 	//TODO check doubl kinematic
 	int index = 0;
-	int size = colliderList.size();
+	size_t size = colliderList.size();
+	D3DXVECTOR3* colValue = new D3DXVECTOR3();
 	for (Collider* col : colliderList) {
 		if (index == size - 1) break;//last collider of array doesn't check anything else
 		for (int i = index+1; i < size; i++) {
-			D3DXVECTOR3* colValue = isColliding(col, colliderList[i]);
+			
+			if (col->gameObject()->rb()->isKinematic()) {
+				colValue = isColliding(colliderList[i], col);
+			}else {
+				colValue = isColliding(col, colliderList[i]);
+			}
 			if (colValue != nullptr) {
-				//TODO deal with kinematic
-				col->isColliding(colliderList[i], colValue);
-				colliderList[i]->isColliding(col, colValue);
+				if (col->isTrigger() || colliderList[i]->isTrigger()) {//case with at least a trigger
+					col->CollisionCallBack(colliderList[i]);
+					colliderList[i]->CollisionCallBack(col);
+				}
+				else {//case with both collider
+					colliderList[i]->isColliding(col, colValue);
+					*colValue = -*colValue;
+					col->isColliding(colliderList[i], colValue);
+				}
 			}
 		}
 		index++;
@@ -49,11 +61,17 @@ D3DXVECTOR3* ColliderManager::isColliding(Collider* c1, Collider* c2)
 	else if (c1->type() == CUBE && c2->type() == CUBE) {
 		ColliderCube* cube1 = Utils::castToType<ColliderCube>(c1);
 		ColliderCube* cube2 = Utils::castToType<ColliderCube>(c2);
+		//test if cube colliede each other
 		if (collisionCubeCube(cube1,cube2)) {
+			if (cube1->isTrigger() || cube2->isTrigger())return new D3DXVECTOR3();
+
+
+
+			//If yes, do a raycast from cube 1 toward it's direction
+
 			D3DXVECTOR3 dir;
 			D3DXVec3Normalize(&dir, cube1->gameObject()->rb()->speed());
 			dir *= -10;
-			;
 			for (triangle tri: cube2->faces()) {
 				D3DXVECTOR3* pintersect = new D3DXVECTOR3();
 				D3DXVECTOR3 point = *cube1->center() + cube1->gameObject()->transform()->position();
@@ -67,11 +85,33 @@ D3DXVECTOR3* ColliderManager::isColliding(Collider* c1, Collider* c2)
 					dist,
 					true
 				)) {
-					D3DXVECTOR3* N = nullptr;
+					D3DXVECTOR3* N = new D3DXVECTOR3();
 					D3DXVec3Normalize (N,Utils::triangleNormal(&tri));
-					//N = N * (-*dist);
-					*N = *N * D3DXVec3Length (cube1->gameObject()->rb()->speed());
-					int a = 0;
+					*N = - *N * D3DXVec3Length (cube1->gameObject()->rb()->speed());
+					return N;
+				}
+			}
+
+			D3DXVec3Normalize(&dir, cube2->gameObject()->rb()->speed());
+			dir *= -10;
+			for (triangle tri : cube1->faces()) {
+				D3DXVECTOR3* pintersect = new D3DXVECTOR3();
+				D3DXVECTOR3 point = *cube2->center() + cube2->gameObject()->transform()->position();
+				float* dist = new float(0);
+				if (Utils::raycast(
+					&point,
+					&dir,
+					Utils::offsetTirangle(tri, cube1->gameObject()->transform()->position()),
+					pintersect,
+					NULL,
+					dist,
+					true
+				)) {
+					D3DXVECTOR3* N = new D3DXVECTOR3();
+					D3DXVec3Normalize(N, Utils::triangleNormal(&tri));
+					*N = -*N * D3DXVec3Length(cube2->gameObject()->rb()->speed());
+
+
 					return N;
 				}
 			}

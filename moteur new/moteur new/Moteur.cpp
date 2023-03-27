@@ -180,7 +180,7 @@ void Moteur::gameLoop()
 		auto currentTime = std::chrono::high_resolution_clock::now();
 		auto deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastUpdateTime);
 		s_deltaTime_ = deltaTime.count();
-		if (s_deltaTime_ >= FIXED_UPDATE_INTERVAL)	//TODO fix deltatime
+		if (s_deltaTime_ >= FIXED_UPDATE_INTERVAL)	
 		{
 			fixedUpdate();
 			lastUpdateTime = currentTime;
@@ -250,28 +250,17 @@ void Moteur::update(void)
 
 void Moteur::fixedUpdate(void)
 {
+	for (GameObject* go : GOList) {
+		go->fixedUpdate();
+	}
 }
 
 
-void Moteur::setUpCamera() {//TODO Transform input
+void Moteur::setUpCamera() {
 
 	// select which vertex format we are using
 
 	d3ddev->SetFVF(CUSTOMFVF);
-
-	//d3ddev->SetTransform(D3DTS_VIEW, cameraComponent->updateCamera());
-
-
-	D3DXVECTOR3 pEye(0.0f, 0.0f, 20.0f);
-	D3DXVECTOR3 pAt(0.0f, 0.0f, 0.0f);
-	D3DXVECTOR3 pUp(0.0f, 1.0f, 0.0f);
-	D3DXMATRIX matView;    // the view transform matrix
-
-	D3DXMatrixLookAtLH(&matView,
-		&pEye,    // the camera position
-		&pAt,    // the look-at position
-		&pUp);    // the up direction
-
 
 	d3ddev->SetTransform(D3DTS_VIEW, cameraComponent->transform()->displayValue());
 
@@ -300,14 +289,13 @@ void Moteur::addGameObject(GameObject* go)
 
 void Moteur::rmGamObject(GameObject* go)
 {
-	delete go;
 	for (int i = 0; i < GOList.size(); i++) {
 		if (GOList[i] == go) {
 			GOList.erase(GOList.begin() + i, GOList.begin() + i + 1);
 			return;
 		}
 	}
-
+	delete go;
 }
 
 
@@ -319,13 +307,13 @@ void Moteur::addMesh(Mesh* me)
 
 void Moteur::rmMesh(Mesh* me)
 {
-	delete me;
 	for (int i = 0; i < MeList.size(); i++) {
 		if (MeList[i] == me) {
 			MeList.erase(MeList.begin() + i, MeList.begin() + i + 1);
 			return;
 		}
 	}
+	delete me;
 }
 
 

@@ -1,6 +1,14 @@
 #pragma once
 #include "Utils.h"
 
+void DefaultCallback(Collider* other) {}
+
+
+
+Collider::Collider() {
+	triggerCallback_ = DefaultCallback;
+}
+
 void Collider::isColliding(Collider* other, D3DXVECTOR3* distance)
 {
 	RigidBody* rb = gameobject_->rb();
@@ -13,5 +21,9 @@ void Collider::isColliding(Collider* other, D3DXVECTOR3* distance)
 
 	D3DXVECTOR3 offset =  speed + dist;
 	rb->speed(&offset);
-	int a = 0;
+}
+
+void Collider::CollisionCallBack(Collider* other)
+{
+	triggerCallback_(other);
 }

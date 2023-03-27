@@ -22,7 +22,7 @@ void Mesh::addvector(D3DXVECTOR3* v)
 }
 
 void Mesh::deduceTriangle() {
-    int size = vertex_.size();
+    size_t size = vertex_.size();
     switch (primitivMethode_)
     {
     case D3DPT_POINTLIST:

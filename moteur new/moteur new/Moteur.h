@@ -52,10 +52,10 @@ public:
 	void rmMesh(Mesh* me);
 
 	//---------------GAMELOOOP
-	void gameLoop();															//TODO
+	void gameLoop();															
 	void render(void);
-	void update(void);															//TODO MANAGE GLOBAL TIME
-	void fixedUpdate(void);															//TODO MANAGE GLOBAL TIME
+	void update(void);															
+	void fixedUpdate(void);															
 
 	Shader LoadShader(std::string* shaderPath);
 
@@ -65,7 +65,7 @@ public:
 	
 
 
-	static float s_deltaTime_;//TODO merge
+	static float s_deltaTime_;
 	static Input* inputManager_;
 
 

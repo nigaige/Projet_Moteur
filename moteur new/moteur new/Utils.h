@@ -135,7 +135,7 @@ inline void Utils::DeleteVector(std::vector<T*> vect)
 template<typename T>
 inline bool Utils::isOfType(void* val)
 {
-	return dynamic_cast<T*>(val) != nullptr;	//TODO DYNAMIC...?
+	return dynamic_cast<T*>(val) != nullptr;	
 }
 
 template<typename T>
