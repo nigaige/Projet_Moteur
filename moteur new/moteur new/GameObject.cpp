@@ -24,7 +24,11 @@ GameObject::~GameObject()
 
 void GameObject::update()
 {
+	if (rb_ != nullptr) {
+		rb_->update();
+	}
 	for (Component* comp : componentList) {
+		if (comp->type() == RIGIDBODY)continue;
 		comp->update();
 	}
 }
@@ -81,4 +85,14 @@ int GameObject::countComponent()
 std::vector<Mesh*> GameObject::meshToDraw()
 {
 	return MeshList;
+}
+
+Component* GameObject::findComponent(ComponentType type)
+{
+	for (Component* comp : componentList)
+	{
+		if (comp->type() == type) {
+			return comp;
+		}
+	}
 }

@@ -48,6 +48,9 @@ public:
 
 	template <typename T>
 	T* findComponent();
+	
+	Component* findComponent(ComponentType type);
+
 	template <typename T>
 	bool isOfType(Component* comp);
 	template <typename T>

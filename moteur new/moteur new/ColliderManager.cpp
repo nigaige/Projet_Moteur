@@ -67,10 +67,12 @@ D3DXVECTOR3* ColliderManager::isColliding(Collider* c1, Collider* c2)
 					dist,
 					true
 				)) {
-					D3DXVECTOR3 N = *Utils::triangleNormal(&tri);
-					N = N *  (- *dist);
+					D3DXVECTOR3* N = nullptr;
+					D3DXVec3Normalize (N,Utils::triangleNormal(&tri));
+					//N = N * (-*dist);
+					*N = *N * D3DXVec3Length (cube1->gameObject()->rb()->speed());
 					int a = 0;
-					return &N;
+					return N;
 				}
 			}
 		}

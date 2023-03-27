@@ -41,6 +41,11 @@ enum States
 	RELEASED
 };
 
+enum ComponentType {
+	COMPONENT,
+	RIGIDBODY
+
+};
 class GameObject;
 class Component;
 class Mesh;

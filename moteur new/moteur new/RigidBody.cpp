@@ -2,6 +2,7 @@
 
 RigidBody::RigidBody()
 {
+	type_ = RIGIDBODY;
 }
 
 void RigidBody::speed(D3DXVECTOR3* speed)
