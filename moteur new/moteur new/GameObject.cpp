@@ -24,21 +24,33 @@ GameObject::~GameObject()
 
 void GameObject::update()
 {
+	if (rb_ != nullptr) {
+		rb_->update();
+	}
 	for (Component* comp : componentList) {
+		if (comp->type() == RIGIDBODY)continue;
 		comp->update();
 	}
 }
 
 void GameObject::addComponent(Component* comp)
 {
-	componentList.push_back(comp);
 
 	if (isOfType<Mesh>(comp)) {
 		MeshList.push_back(castToType<Mesh>(comp));
-	}else {
+	}
+	else {
+		if (isOfType<Collider>(comp)) {
+			ColliderList.push_back(castToType<Collider>(comp));
+		}
+		else if (isOfType<RigidBody>(comp)) {
+			if (rb_ != nullptr) return;
+			rb_ = castToType<RigidBody>(comp);
+		}
 		comp->gameObject(this);
 		comp->transform(transform_);
 	}
+	componentList.push_back(comp);
 }
 
 bool GameObject::rmComponent(Component* comp)
@@ -73,4 +85,14 @@ int GameObject::countComponent()
 std::vector<Mesh*> GameObject::meshToDraw()
 {
 	return MeshList;
+}
+
+Component* GameObject::findComponent(ComponentType type)
+{
+	for (Component* comp : componentList)
+	{
+		if (comp->type() == type) {
+			return comp;
+		}
+	}
 }

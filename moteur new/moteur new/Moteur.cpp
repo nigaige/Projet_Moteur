@@ -5,9 +5,8 @@
 
 
 Input* Moteur::inputManager_ = new Input();
-float Moteur::s_deltaTime_ = 0;
 const int FIXED_UPDATE_INTERVAL = 16; // 16ms, equivalent to 60fps
-
+float Moteur::s_deltaTime_ = 0.01f;
 
 // this is the main message handler for the program
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -177,13 +176,13 @@ void Moteur::gameLoop()
 			break;
 		auto currentTime = std::chrono::high_resolution_clock::now();
 		auto deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastUpdateTime);
-		if (deltaTime.count() >= FIXED_UPDATE_INTERVAL)
+		s_deltaTime_ = deltaTime.count();
+		if (s_deltaTime_ >= FIXED_UPDATE_INTERVAL)	//TODO fix deltatime
 		{
 			fixedUpdate();
 			lastUpdateTime = currentTime;
 		}
 	}
-	//----------------------------FixedUpdate-----------------------------------//
 
 }
 

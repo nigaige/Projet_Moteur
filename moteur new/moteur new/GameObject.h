@@ -8,6 +8,8 @@ private:
 	std::vector<Component*> componentList;
 	bool toDisplay_ = false;
 	std::vector<Mesh*> MeshList;
+	std::vector<Collider*> ColliderList;
+	RigidBody* rb_ = nullptr;
 
 
 public:
@@ -22,6 +24,7 @@ public:
 	//	GET/SET
 	Transform* transform() { return transform_; }
 	void transform(Transform* trans) { transform_ = trans; }
+	RigidBody* rb() { return rb_; }
 
 	bool toDisplay() { return toDisplay_; }
 	void toDisplay(bool display) { toDisplay_ = display; }
@@ -45,6 +48,9 @@ public:
 
 	template <typename T>
 	T* findComponent();
+	
+	Component* findComponent(ComponentType type);
+
 	template <typename T>
 	bool isOfType(Component* comp);
 	template <typename T>

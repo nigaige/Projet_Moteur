@@ -8,6 +8,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <cassert>
 
 
 #include <d3d9.h>
@@ -16,6 +17,10 @@
 
 #define CUSTOMFVF (D3DFVF_XYZ  | D3DFVF_DIFFUSE)
 struct CUSTOMVERTEX { FLOAT X, Y, Z; DWORD COLOR; };
+
+struct triangle {
+	D3DXVECTOR3 A, B, C;
+};
 
 // define the screen resolution
 #define SCREEN_WIDTH 800
@@ -26,6 +31,7 @@ struct CUSTOMVERTEX { FLOAT X, Y, Z; DWORD COLOR; };
 
 #define GRAVITY 1
 
+#define EPSILON (FLT_EPSILON * 2)
 
 enum States
 {
@@ -35,6 +41,11 @@ enum States
 	RELEASED
 };
 
+enum ComponentType {
+	COMPONENT,
+	RIGIDBODY
+
+};
 class GameObject;
 class Component;
 class Mesh;
@@ -86,6 +97,10 @@ public:
 
 	static float DegToRad(float Angle);
 	static float RadToDeg(float Rad);
+
+
+	static D3DXVECTOR3* clamp(D3DXVECTOR3* vect, float max);
+
     template <typename T>
     static void DeleteVector(std::vector<T*> );
 
@@ -96,6 +111,13 @@ public:
 
 
 	static float distance(D3DXVECTOR3 pos1, D3DXVECTOR3 pos2);
+
+
+	static float raycast(D3DXVECTOR3* pPoint, D3DXVECTOR3* pDir, triangle* pTri, D3DXVECTOR3* pIntersect, D3DXVECTOR3* pBary, FLOAT* pT, bool isPlane);
+
+	static triangle* offsetTirangle(triangle tri, D3DXVECTOR3 offset);
+
+	static D3DXVECTOR3* triangleNormal(triangle* T);
 
 };
 

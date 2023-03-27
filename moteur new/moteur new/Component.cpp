@@ -1,9 +1,12 @@
 #include "Utils.h"
 
+
+
 Component::Component(bool isActive)
 {
 	transform_ = new Transform();
 	active = isActive;
+	
 }
 
 
