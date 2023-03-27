@@ -197,42 +197,40 @@ void Moteur::render(void)
 
 
 				
-				UINT passCount;
-				shaderBuff->Begin(&passCount, NULL); // Démarrer le traitement du shader
+				//UINT passCount;
+				//shaderBuff->Begin(&passCount, NULL);
 
-				for (int ipass = 0; ipass < passCount; ipass++) 
+				//for (int ipass = 0; ipass < passCount; ipass++) 
+				//{
+				//	shaderBuff->BeginPass(ipass); // Sélectionner la première passe de la technique
+
+				//	shaderBuff->SetMatrix(m_hMat, &matWPV);
+				//	shaderBuff->CommitChanges();
+
+				//	for (DWORD i = 0; i < m->matCount(); i++)
+				//	{
+				//		d3ddev->SetMaterial(&m->meshMaterials()[i]);
+				//		/*if (m->meshTexture() != NULL)
+				//		{
+				//			shaderBuff->SetTexture(0, m->meshTexture()[i]);
+				//		}*/
+				//		m->importedMesh()->DrawSubset(i);
+				//	}
+
+				//	shaderBuff->EndPass();
+				//}
+
+				//shaderBuff->End(); 
+
+				for (DWORD i = 0; i < m->matCount(); i++)
 				{
-					shaderBuff->BeginPass(ipass); // Sélectionner la première passe de la technique
-
-					shaderBuff->SetMatrix(m_hMat, &matWPV);
-					shaderBuff->CommitChanges();
-
-					for (DWORD i = 0; i < m->matCount(); i++)
+					d3ddev->SetMaterial(&m->meshMaterials()[i]);
+					if (m->meshTexture() != NULL)
 					{
-						d3ddev->SetMaterial(&m->meshMaterials()[i]);
-						/*if (m->meshTexture() != NULL)
-						{
-							shaderBuff->SetTexture(0, m->meshTexture()[i]);
-						}*/
-						m->importedMesh()->DrawSubset(i);
+						d3ddev->SetTexture(0, m->meshTexture()[i]);
 					}
-
-					shaderBuff->EndPass();
 				}
 
-				shaderBuff->End(); 
-				 // Terminer la passe
-				// Terminer le traitement du shader
-				//for (DWORD i = 0; i < m->matCount(); i++)
-				//{
-				//	/*d3ddev->SetMaterial(&m->meshMaterials()[i]);
-				//	if (m->meshTexture() != NULL)
-				//	{
-				//		d3ddev->SetTexture(0, m->meshTexture()[i]);
-				//	}*/
-
-				//	
-				//}
 			}
 		}
 	}
@@ -379,7 +377,7 @@ Mesh* Moteur::LoadShader(std::string* shaderPath)
 		m_hT = shaderBuff->GetTechniqueByName("Default");
 		//shaderBuff->SetTechnique();
 		//D3DXHANDLE
-		m_hMat = shaderBuff->GetParameterByName(m_hT, "worldViewProj");
+		//m_hMat = shaderBuff->GetParameterByName(m_hT, "worldViewProj");
 		int a = 0;
 	}
 	
@@ -435,16 +433,16 @@ Mesh* Moteur::ImportingModel(std::string path)
 	if (resultMesh->meshMaterials() != NULL)
 	{
 		for (DWORD i = 0; i < resultMesh->matCount(); i++)
+		{
+			resultMesh->meshMaterials()[i] = materials[i].MatD3D;
+			resultMesh->meshMaterials()[i].Ambient = resultMesh->meshMaterials()[i].Diffuse;
+			if (materials[i].pTextureFilename != NULL && *materials[i].pTextureFilename != 0)
 			{
-				resultMesh->meshMaterials()[i] = materials[i].MatD3D;
-				resultMesh->meshMaterials()[i].Ambient = resultMesh->meshMaterials()[i].Diffuse;
-				if (materials[i].pTextureFilename != NULL)
+				if (FAILED(D3DXCreateTextureFromFileA(d3ddev, materials[i].pTextureFilename, &resultMesh->meshTexture()[i])))
 				{
-					if (FAILED(D3DXCreateTextureFromFileA(d3ddev, materials[i].pTextureFilename, &resultMesh->meshTexture()[i])))
-					{
-						Utils::DebugLogMessage("ERROR");
-					}
+					Utils::DebugLogMessage("ERROR");
 				}
+			}
 			else
 			{
 				resultMesh->meshTexture()[i] = NULL;

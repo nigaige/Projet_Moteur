@@ -29,8 +29,12 @@ int main()
 	moteur->camera()->transform()->posZ(20.0f);
 	Singe = new GameObject();
 	//burbur = moteur->ImportingModel("./Mesh/Cube.x");
+
 	std::string path = "C:/Users/Asabi/Documents/GitHub/Projet_Moteur_Lib/moteur new/Game/Shader/red.hlsl";
-	burbur = moteur->LoadShader(&path);
+	std::string pathModel = "./Mesh/Cube.x";
+
+	//burbur = moteur->LoadShader(&path);
+	burbur = moteur->ImportingModel(pathModel);
 
 	Singe->addComponent(burbur);
 
