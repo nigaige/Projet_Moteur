@@ -1,13 +1,13 @@
 #pragma once
-class States
+class BaseStates
 {
 	protected :
 
 	public:
-		States()				{ };
+		BaseStates()				{ };
 		virtual void Enter()	= 0;
 		virtual void Exit()		= 0;
 		virtual void Update()	= 0;
-		virtual ~States()		{ };
+		virtual ~BaseStates()		{ };
 };
 

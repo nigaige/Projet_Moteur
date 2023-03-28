@@ -7,12 +7,12 @@ class StateMachine : public Component
 {
 
 	protected :
-		States* currentState_;
-		States* lastState_;
+		BaseStates* currentState_;
+		BaseStates* lastState_;
 
-		States* globalState_;
+		BaseStates* globalState_;
 
-		std::map<int, States* > statesMap;
+		std::map<int, BaseStates* > statesMap;
 
 
 
@@ -21,16 +21,16 @@ class StateMachine : public Component
 		StateMachine();
 			
 		//GETTER / SETTER
-		States* currentState() { return currentState_; }
-		States* lastState() { return lastState_; }
-		States* globalState() { return globalState_; }
+		BaseStates* currentState() { return currentState_; }
+		BaseStates* lastState() { return lastState_; }
+		BaseStates* globalState() { return globalState_; }
 
 
-		void globalState(States* newGlobal) { globalState_ = newGlobal; }
+		void globalState(BaseStates* newGlobal) { globalState_ = newGlobal; }
 
 
 		
-		void SetStates(int SizeEnum, States* listState[]);
+		void SetStates(int SizeEnum, BaseStates* listState[]);
 		void ChangeState(int StateId);
 
 

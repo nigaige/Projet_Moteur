@@ -7,30 +7,30 @@ StateMachine::StateMachine()
 void StateMachine::Update()
 {
 
-	globalState->Update();
+	globalState_->Update();
 
-	currentState->Update();
+	currentState_->Update();
 }
 
-void StateMachine::Add(int SizeEnum,States* listState[])
+void StateMachine::SetStates(int SizeEnum, BaseStates* listState[])
 {
 	if (SizeEnum+1 != sizeof(listState) / sizeof(States*))
 		return;
 	
 	for (int i = 0; i < SizeEnum; i++)
-		statesMap.insert(std::pair<int, States*>(i, listState[i]));
+		statesMap.insert(std::pair<int, BaseStates*>(i, listState[i]));
 }
 
 void StateMachine::ChangeState(int StateId)
 {
 	//std::map<int, States*>::iterator it;
-	lastState = currentState;
+	lastState_ = currentState_;
 
-	currentState = statesMap.find(StateId)->second;
+	currentState_ = statesMap.find(StateId)->second;
 
-	lastState->Exit();
+	lastState_->Exit();
 
-	currentState->Enter();
+	currentState_->Enter();
 
 }
 

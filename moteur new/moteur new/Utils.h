@@ -57,7 +57,7 @@ class Camera;
 class Moteur;
 class Shader;
 class Material;
-class States;
+class BaseStates;
 
 class StateMachine;
 
