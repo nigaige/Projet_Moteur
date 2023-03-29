@@ -59,19 +59,13 @@ public:
 	void render(void);
 	void update(void);															
 	void fixedUpdate(void);															
+	void renderMaterial(Mesh* mesh);										//TODO MANAGE GLOBAL TIME
 
-	Shader LoadShader(std::string* shaderPath);
+	Shader* LoadShader(std::string* shaderPath);									//TODO Mettre la method dans le mesh
 
 	Mesh* ImportingModel(std::string path);
 
-
-	
-
-
 	static float s_deltaTime_;
 	static Input* inputManager_;
-
-
-
 };
 

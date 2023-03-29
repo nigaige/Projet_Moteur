@@ -20,6 +20,7 @@ private:
 
 	D3DMATERIAL9* meshMaterials_ = nullptr;
 	LPDIRECT3DTEXTURE9* meshTexture_ = nullptr;
+	Shader* shader_ = nullptr;
 
 public:
 	Mesh(D3DPRIMITIVETYPE primitivMethode);
@@ -49,12 +50,13 @@ public:
 	void meshTexture(LPDIRECT3DTEXTURE9* textures)	{ meshTexture_ = textures; }
 	LPDIRECT3DTEXTURE9* meshTexture()				{ return meshTexture_; }
 
-
-
 	LPDIRECT3DINDEXBUFFER9 Ibuffer()				{ return Ibuffer_; }
 	LPDIRECT3DVERTEXBUFFER9 Vbuffer()				{ return Vbuffer_; }
 	void Ibuffer(LPDIRECT3DINDEXBUFFER9 buff)		{ Ibuffer_ = buff; }
 	void Vbuffer(LPDIRECT3DVERTEXBUFFER9 buff)		{ Vbuffer_ = buff; }
+
+	Shader* shader()								{ return shader_; }
+	void shader(Shader* shader)						{ shader_ = shader; }
 
 	void deduceTriangle();
 

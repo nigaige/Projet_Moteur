@@ -3,16 +3,20 @@
 class Shader
 {
 private:
-	IDirect3DVertexShader9** _ppShader = nullptr;
+	LPD3DXEFFECT shaderBuffer_ = nullptr;
+
+	D3DXHANDLE handleTechnique_ = nullptr;
+	D3DXHANDLE handleMatrixWVP_ = nullptr;
 
 public:
 
-	Shader(IDirect3DVertexShader9** ppShader);
+	Shader(LPD3DXEFFECT shaderBuffer);
 	~Shader();
 
-	//Charge le shader grâce à un contenu.
-	void LoadShader(LPD3DXBUFFER shaderContent_);
+	LPD3DXEFFECT shaderBuffer()						{ return shaderBuffer_; }
+	D3DXHANDLE* handleTechnique()					{ return &handleTechnique_; }
+	D3DXHANDLE* handleMatrixWVP()					{ return &handleMatrixWVP_; }
 
-	//Charge le shader grâce au chemin.
-	void LoadShader(std::string* shaderPath);
+	void SetMatrix(D3DXMATRIX* wvpMat);
+
 };

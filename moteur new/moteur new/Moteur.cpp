@@ -9,16 +9,18 @@ const int FIXED_UPDATE_INTERVAL = 16; // 16ms, equivalent to 60fps
 float Moteur::s_deltaTime_ = 0.01f;
 ID3DXFont* Moteur::font = nullptr;
 
+
+
 // this is the main message handler for the program
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
-	case WM_DESTROY:
-	{
-		PostQuitMessage(0);
-		return 0;
-	} break;
+		case WM_DESTROY:
+		{
+			PostQuitMessage(0);
+			return 0;
+		} break;
 	}
 
 	return DefWindowProc(hWnd, message, wParam, lParam);
@@ -63,6 +65,18 @@ void Moteur::Init()
 
 	ShowWindow(hWnd, nCmdShow);
 
+	initD3D();
+
+	camera_ = new GameObject();
+	cameraComponent = new Camera(45, 1.0f, 100.0f);
+	camera_->addComponent(cameraComponent);
+
+	colliderManager_ = new ColliderManager();
+
+}
+
+void Moteur::initD3D()
+{
 	d3d = Direct3DCreate9(D3D_SDK_VERSION);
 
 	D3DPRESENT_PARAMETERS d3dpp;
@@ -79,19 +93,13 @@ void Moteur::Init()
 	d3d->CreateDevice(D3DADAPTER_DEFAULT,
 		D3DDEVTYPE_HAL,
 		hWnd,
-		D3DCREATE_HARDWARE_VERTEXPROCESSING,
+		D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_PUREDEVICE,
 		&d3dpp,
 		&d3ddev);
 
-	d3ddev->SetRenderState(D3DRS_LIGHTING, FALSE);
-	d3ddev->SetRenderState(D3DRS_AMBIENT, 0xffffffff); // turn off the 3D lighting
-
-
-	initD3D();
-
-	colliderManager_ = new ColliderManager();
-
-
+	d3ddev->SetRenderState(D3DRS_LIGHTING, TRUE);
+	d3ddev->SetRenderState(D3DRS_ZENABLE, TRUE);
+	d3ddev->SetRenderState(D3DRS_AMBIENT, 0xffffffff);
 }
 
 void Moteur::loadMeshInScene(Mesh* MeshToLoad) {
@@ -116,47 +124,6 @@ void Moteur::loadMeshInScene(Mesh* MeshToLoad) {
 	v_buffer->Unlock();
 
 	MeshToLoad->Vbuffer(v_buffer);
-}
-
-
-void Moteur::initD3D()
-{
-	d3d = Direct3DCreate9(D3D_SDK_VERSION);
-
-	D3DPRESENT_PARAMETERS d3dpp;
-
-	ZeroMemory(&d3dpp, sizeof(d3dpp));
-	d3dpp.Windowed = TRUE;
-	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
-	d3dpp.hDeviceWindow = hWnd;
-	d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
-	d3dpp.BackBufferWidth = SCREEN_WIDTH;
-	d3dpp.BackBufferHeight = SCREEN_HEIGHT;
-	d3dpp.EnableAutoDepthStencil = TRUE;    // automatically run the z-buffer for us
-	d3dpp.AutoDepthStencilFormat = D3DFMT_D24S8;    // 16-bit pixel format for the z-buffer
-
-	// create a device class using this information and the info from the d3dpp stuct
-	d3d->CreateDevice(D3DADAPTER_DEFAULT,
-		D3DDEVTYPE_HAL,
-		hWnd,
-		/*D3DCREATE_SOFTWARE_VERTEXPROCESSING*/D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_PUREDEVICE,
-		&d3dpp,
-		&d3ddev);
-
-	d3ddev->SetRenderState(D3DRS_LIGHTING, TRUE);    // turn off the 3D lighting
-	d3ddev->SetRenderState(D3DRS_ZENABLE, TRUE);
-	d3ddev->SetRenderState(D3DRS_AMBIENT, 0xffffffff);
-//	d3ddev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);    // both sides of the triangles
-	d3ddev->SetRenderState(D3DRS_ZENABLE, TRUE);    // turn on the z-buffer
-
-	camera_ = new GameObject();
-	cameraComponent = new Camera(45, 1.0f, 100.0f);
-	camera_->addComponent(cameraComponent);
-
-	initText = new InitText();
-	font = initText->initText(d3ddev);
-	if (FAILED(font))
-		Utils::DebugLogMessage("Failed import font");
 }
 
 void Moteur::cleanD3D(void)
@@ -195,6 +162,22 @@ void Moteur::gameLoop()
 
 }
 
+void Moteur::renderMaterial(Mesh* mesh)
+{
+	for (DWORD i = 0; i < mesh->matCount(); i++)
+	{
+		d3ddev->SetMaterial(&mesh->meshMaterials()[i]);
+		if (mesh->meshTexture() != NULL)
+		{
+			if (mesh->shader() == NULL)
+				d3ddev->SetTexture(0, mesh->meshTexture()[i]);
+			else
+				mesh->shader()->shaderBuffer()->SetTexture(0, mesh->meshTexture()[i]);
+		}
+		mesh->importedMesh()->DrawSubset(i);
+	}
+}
+
 void Moteur::render(void)
 {
 	
@@ -207,35 +190,50 @@ void Moteur::render(void)
 	// SET UP THE PIPELINE
 	setUpCamera();
 
-
 	for (GameObject* go : GOList) {
 		
 		if (go->meshToDraw().size() == 0) continue;
 		D3DXMATRIX rendu = go->worldMatrix();
 		d3ddev->SetTransform(D3DTS_WORLD, &rendu);    // set the projection
 
-		for (Mesh* m : go->meshToDraw()) {
-			
-			if (m->importedMesh() == NULL)
-			{
-				d3ddev->SetStreamSource(0, m->Vbuffer(), 0, sizeof(CUSTOMVERTEX));
-				d3ddev->DrawPrimitive(m->primitivMethode(), 0, m->Primitiv());
-			}
+		for (Mesh* mesh : go->meshToDraw()) {
 
-			else
+			if (mesh->importedMesh() == NULL)
 			{
-				for (DWORD i = 0; i < m->matCount(); i++) 
+				d3ddev->SetTransform(D3DTS_WORLD, go->transform()->displayValue());    // set the projection
+				d3ddev->SetStreamSource(0, mesh->Vbuffer(), 0, sizeof(CUSTOMVERTEX));
+				d3ddev->DrawPrimitive(mesh->primitivMethode(), 0, mesh->Primitiv());
+			}else
+			{
+				if (mesh->shader() != NULL)
 				{
-					d3ddev->SetMaterial(&m->meshMaterials()[i]);
-					if (m->meshTexture() != NULL)
+					D3DXMATRIX matWPV = *go->transform()->displayValue();  //TODO worldMat
+					matWPV *= *cameraComponent->matView();
+					matWPV *= *cameraComponent->matProj();
+
+
+					UINT passCount;
+					mesh->shader()->shaderBuffer()->Begin(&passCount, NULL);
+
+					for (int ipass = 0; ipass < passCount; ipass++)
 					{
-						d3ddev->SetTexture(0, m->meshTexture()[i]);
+						mesh->shader()->shaderBuffer()->BeginPass(ipass); // Sélectionner la première passe de la technique
+
+						mesh->shader()->SetMatrix(&matWPV);
+						mesh->shader()->shaderBuffer()->CommitChanges();
+
+						renderMaterial(mesh);
+
+						mesh->shader()->shaderBuffer()->EndPass();
 					}
-				
-					m->importedMesh()->DrawSubset(i);
+
+					mesh->shader()->shaderBuffer()->End();
+				}
+				else 
+				{
+					renderMaterial(mesh);
 				}
 			}
-			
 		}
 
 			go->findComponent<Text>()->update();
@@ -282,6 +280,7 @@ void Moteur::setUpCamera() {
 
 
 	d3ddev->SetTransform(D3DTS_VIEW, &matView );
+	cameraComponent->matView(&matView);
 
 	D3DXMATRIX matProjection;     // the projection transform matrix
 
@@ -291,6 +290,7 @@ void Moteur::setUpCamera() {
 		cameraComponent->nearViewPlane(),    // the near view-plane
 		cameraComponent->farViewPlane());    // the far view-plane
 
+	cameraComponent->matView(&matProjection);
 	d3ddev->SetTransform(D3DTS_PROJECTION, &matProjection);    // set the projection
 }
 
@@ -320,7 +320,6 @@ void Moteur::rmGamObject(GameObject* go)
 void Moteur::addMesh(Mesh* me)
 {
 	MeList.push_back(me);
-
 }
 
 void Moteur::rmMesh(Mesh* me)
@@ -340,38 +339,32 @@ void Moteur::rmMesh(Mesh* me)
 /// </summary>
 /// <param name="shaderPath">String shaderPath of .hlsl file</param>
 /// <returns>Shader* new Shader()</returns>
-Shader Moteur::LoadShader(std::string* shaderPath)
+Shader* Moteur::LoadShader(std::string* shaderPath)
 {
-	ID3DXBuffer* listing_f = NULL;
-	ID3DXBuffer* listing_v = NULL;
-	ID3DXBuffer* code_f = NULL;
-	ID3DXBuffer* code_v = NULL;
-	LPD3DXCONSTANTTABLE* ppConstantTable_OUT = NULL;
-	LPD3DXBUFFER shaderContent_ = NULL;
-	IDirect3DVertexShader9** ppShader = nullptr;
+	LPD3DXEFFECT shaderBuff;
+	D3DXHANDLE m_hT;
+	D3DXHANDLE m_hMat;
+	ID3DXBuffer* errors = NULL;
+	
+	HRESULT hr = D3DXCreateEffectFromFileA(
+	d3ddev, // Pointeur vers l'interface du périphérique Direct3D
+	shaderPath->c_str(), // Nom du fichier HLSL
+	NULL, // Tableau des macros de préprocesseur (optionnel)
+	NULL, // Interface de rappel pour les messages (optionnel)
+	D3DXSHADER_PACKMATRIX_COLUMNMAJOR | D3DXSHADER_DEBUG, // Options de compilation
+	NULL, // Interface de gestion de compilation (optionnel)
+	&shaderBuff, // Pointeur vers l'effet créé
+	&errors // Pointeur vers le buffer d'erreur (optionnel)
+	);
 
-	std::ifstream file;
-
-	//file.open("C:/Users/asabi/Desktop/text.hlsl", std::ios_base::binary);
-	//file.open(*shaderPath, std::ios_base::binary);
-
-	if (file)
+	if(hr == D3D_OK)
 	{
-		file.seekg(0, file.end);
-		int length = file.tellg();
-		file.seekg(0, file.beg);
-		char* _Str = new char[length + 1];
-		file.read(_Str, length);
-		_Str[length] = 0;
-
-		HRESULT Buffer = D3DXCompileShader((LPCSTR)_Str, strlen(_Str), NULL, NULL, "main_vertex", "vs_3_0", 0, &code_v, &listing_v, ppConstantTable_OUT);
-
-		d3ddev->CreateVertexShader((DWORD*)Buffer, ppShader);
-
-		d3ddev->SetVertexShader(*ppShader);
-
-		return *new Shader(NULL);
+		m_hT = shaderBuff->GetTechniqueByName("Default");
+		m_hMat = shaderBuff->GetParameterByName(m_hT, "worldViewProj");
+		int a = 0;
 	}
+
+	return new Shader(shaderBuff);
 }
 
 /// <summary>
@@ -385,15 +378,15 @@ Mesh* Moteur::ImportingModel(std::string path)
 	LPD3DXBUFFER materialBuffer = NULL;
 	DWORD numMaterial = 0;
 	LPD3DXMESH mesh = nullptr;
-	
-	
-	
+
+
+
 	Mesh* resultMesh = new Mesh(D3DPT_TRIANGLELIST);
 	HRESULT hr = D3DXLoadMeshFromXA(path.c_str(), D3DXMESH_MANAGED, d3ddev, NULL, &materialBuffer, NULL, &numMaterial, &mesh); //Import mesh in meshImp
 	if (FAILED(hr))
 		Utils::DebugLogMessage("Failed import model");
-	
-	
+
+
 	resultMesh->importedMesh(mesh);
 	resultMesh->materialBuffer(materialBuffer);
 	resultMesh->matCount(numMaterial);
@@ -407,26 +400,26 @@ Mesh* Moteur::ImportingModel(std::string path)
 	if (resultMesh->meshMaterials() != NULL)
 	{
 		for (DWORD i = 0; i < resultMesh->matCount(); i++)
+		{
+			resultMesh->meshMaterials()[i] = materials[i].MatD3D;
+			resultMesh->meshMaterials()[i].Ambient = resultMesh->meshMaterials()[i].Diffuse;
+			if (materials[i].pTextureFilename != NULL)
 			{
-				resultMesh->meshMaterials()[i] = materials[i].MatD3D;
-				resultMesh->meshMaterials()[i].Ambient = resultMesh->meshMaterials()[i].Diffuse;
-				if (materials[i].pTextureFilename != NULL)
+				if (FAILED(D3DXCreateTextureFromFileA(d3ddev, materials[i].pTextureFilename, &resultMesh->meshTexture()[i])))
 				{
-					//TODO put filename
-					if (FAILED(D3DXCreateTextureFromFileA(d3ddev, materials[i].pTextureFilename, &resultMesh->meshTexture()[i])))
-					{
-						Utils::DebugLogMessage("ERROR");
-					}
+					Utils::DebugLogMessage("IMAGE NOT FOUND");
+					resultMesh->meshTexture()[i] = NULL;
 				}
+			}
 			else
 			{
 				resultMesh->meshTexture()[i] = NULL;
 			}
 		}
 	}
-	
-	
-	
+
+
+
 	materialBuffer->Release();
 
 	return resultMesh;

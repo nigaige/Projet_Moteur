@@ -29,6 +29,18 @@ int main(Moteur* moteur)
 	GameObject* kinematicCube = new GameObject();
 	GameObject* nonKinematicCube = new GameObject();
 	Mesh* m_cube = moteur->ImportingModel("./Mesh/Cube.x");
+	Singe = new GameObject();
+	//burbur = moteur->ImportingModel("./Mesh/Cube.x");
+
+	std::string path = "C:/Users/Asabi/Documents/GitHub/Projet_Moteur_Lib/moteur new/Game/Shader/red.hlsl";
+	std::string pathModel = "./Mesh/CUBEN.x";
+
+	//burbur = moteur->LoadShader(&path);
+	burbur = moteur->ImportingModel(pathModel);
+
+	Shader* redShader = moteur->LoadShader(&path);
+
+	//burbur->shader(redShader);
 
 	kinematicCube->addComponent(m_cube);
 	nonKinematicCube->addComponent(m_cube);
@@ -53,6 +65,11 @@ int main(Moteur* moteur)
 
 	nonKinematicCube->addComponent(sph1);
 	kinematicCube->addComponent(sph2);
+
+	
+
+
+
 
 
 
