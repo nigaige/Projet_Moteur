@@ -19,7 +19,7 @@ int main(Moteur* moteur)
 	moteur->camera()->transform()->posZ(20.0f);
 	moteur->camera()->transform()->posY(-5.0f);
 
-
+	
 
 
 	Mesh* meshCube;
