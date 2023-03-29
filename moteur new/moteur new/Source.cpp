@@ -74,16 +74,16 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	Mesh* forme = new Mesh(D3DPT_TRIANGLELIST);
 	
 	GameObject* GoImported = new GameObject();
-	Mesh* MeshImported = M->ImportingModel("./Mesh/CUBEN.x");
+	Mesh* MeshImported = M->ImportingModel("./Mesh/CubeRouge.x");
 
 
-	for (int i = 0; i < sizeof(vertices)/ sizeof(CUSTOMVERTEX); i++) {
+	/*for (int i = 0; i < sizeof(vertices)/ sizeof(CUSTOMVERTEX); i++) {
 		forme->addVertex(vertices + i);
 	}
 	forme->deduceTriangle();
 	M->loadMeshInScene(forme);
 	triangle->addComponent(forme);
-	M->addGameObject(triangle);
+	M->addGameObject(triangle);*/
 
 	//triangle->addComponent(new GoTester(M->inputManager()));
 
