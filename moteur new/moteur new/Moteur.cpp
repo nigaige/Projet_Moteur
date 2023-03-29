@@ -205,7 +205,8 @@ void Moteur::render(void)
 	for (GameObject* go : GOList) {
 		
 		if (go->meshToDraw().size() == 0) continue;
-		d3ddev->SetTransform(D3DTS_WORLD, go->transform()->displayValue());    // set the projection
+		D3DXMATRIX rendu = go->worldMatrix();
+		d3ddev->SetTransform(D3DTS_WORLD, &rendu);    // set the projection
 
 		for (Mesh* m : go->meshToDraw()) {
 			
@@ -262,8 +263,14 @@ void Moteur::setUpCamera() {
 
 	d3ddev->SetFVF(CUSTOMFVF);
 
-	d3ddev->SetTransform(D3DTS_VIEW, cameraComponent->transform()->displayValue());
+	//d3ddev->SetTransform(D3DTS_VIEW, cameraComponent->updateCamera());
 
+	D3DXMATRIX matView = cameraComponent->gameObject()->worldMatrix();
+	//D3DXMATRIX matView = *cameraComponent->transform()->displayValue();
+
+
+
+	d3ddev->SetTransform(D3DTS_VIEW, &matView );
 
 	D3DXMATRIX matProjection;     // the projection transform matrix
 

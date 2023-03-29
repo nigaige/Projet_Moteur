@@ -1,13 +1,11 @@
 
-#include <Utils.h>
-#include <chrono>
-#include <thread>
-#include "GoTester.h"
-#include "MoveForward.h"
 
 #ifdef _DEBUG
 #include <crtdbg.h>
 #endif
+
+#include "Utils.h";
+
 
 const int FIXED_UPDATE_INTERVAL = 16; // 16ms, equivalent to 60fps
 
@@ -74,32 +72,56 @@ int main(Moteur* moteur)
 	moteur->camera()->transform()->posZ(20.0f);
 	moteur->camera()->transform()->posY(-5.0f);
 
-	Mesh* meshCube;
-	meshCube = moteur->ImportingModel("./Mesh/BONGUSV2.x");
-	Mesh* meshPlayer;
-	meshPlayer = moteur->ImportingModel("./Mesh/test.x");
+	
 
-	GameObject* player = new GameObject;
+
+	Mesh* meshCube;
+	meshCube = moteur->ImportingModel("./Mesh/cylinder2.x");
+	Mesh* anchormesh;
+	anchormesh = moteur->ImportingModel("./Mesh/cubeRose.x");
+	Mesh* meshPlayer;
+	meshPlayer = moteur->ImportingModel("./Mesh/BONGUSV2.x");
+
+	GameObject* playerParentRoad = new GameObject();
+	GameObject* playerParentRoll = new GameObject(playerParentRoad);
+	GameObject* player = new GameObject(playerParentRoll);
+//	GameObject* player = new GameObject();
 
 	GameObject* a[10];
 	for (int x = 0; x < 10; ++x) {
-		
 		MoveForward* roadcomponent = new MoveForward();
 
 		a[x] = new GameObject();
 		a[x]->addComponent(roadcomponent);
 		a[x]->addComponent(meshCube);
 
-		a[x]->addComponent(new GoTester());		
-		a[x]->transform()->addRoll(M_PI*0.5);
+		a[x]->transform()->addRoll(M_PI * 0.5);		
+		a[x]->transform()->position((D3DXVECTOR3(-0.5f, -0.f, -0.f)));
+		a[x]->transform()->scale(D3DXVECTOR3(2.f, 2.f, 2.f));
 		a[x]->transform()->scaleY(5);
-		a[x]->transform()->posY(x * 10);
+		a[x]->transform()->posZ(x * 10);
 		moteur->addGameObject(a[x]);
+	}	
+*/
 
-	}
+	player->addComponent(meshPlayer);
+	player->transform()->scale(D3DXVECTOR3(0.1f, 0.1f, 0.1f));
 
-	*/
-#pragma endregion
+	playerParentRoad->addComponent(anchormesh);
+	playerParentRoll->addComponent(new playerRolling);
+	//playerParent->transform()->posY(4.f);
+	playerParentRoll->transform()->posY(3.f);
+	player->transform()->posY(-0.5f);
+	player->addComponent(new playerRoll);
+	playerParentRoad->addComponent(new playerRoll);
+	moteur->camera()->addComponent(new playerRoll);
+
+	//moteur->camera()->parent(playerParentRoad);
+
+
+	moteur->addGameObject(playerParentRoad);
+	moteur->addGameObject(playerParentRoll);
+	moteur->addGameObject(player);
 	moteur->gameLoop();
 
 

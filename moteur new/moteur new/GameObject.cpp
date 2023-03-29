@@ -9,6 +9,18 @@ GameObject::GameObject(Transform* T)
 	transform_ = T;
 }
 
+GameObject::GameObject(Transform* T, GameObject* parent)
+{
+	transform_ = T;
+	parent_ = parent;
+}
+
+GameObject::GameObject(GameObject* parent)
+{
+	transform_ = new Transform();
+	parent_ = parent;
+}
+
 GameObject::~GameObject()
 {
 	//Mesh can be ref in other gameobject so we don't destroy them
@@ -42,6 +54,17 @@ void GameObject::fixedUpdate()
 		if (comp->type() == RIGIDBODY)continue;
 		comp->fixedUpdate();
 	}
+}
+
+D3DXMATRIX GameObject::worldMatrix()
+{
+	if (parent_ == nullptr) {
+		return *transform_->displayValue();
+	}
+	//D3DXMATRIX world =  *parent_->worldMatrix()*transform_->displayValue() * ;
+	D3DXMATRIX world = parent_->worldMatrix();
+	world = *transform_->displayValue() * world;
+	return world;
 }
 
 void GameObject::addComponent(Component* comp)
