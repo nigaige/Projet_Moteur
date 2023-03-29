@@ -31,7 +31,7 @@ int main()
 	//burbur = moteur->ImportingModel("./Mesh/Cube.x");
 
 	std::string path = "C:/Users/Asabi/Documents/GitHub/Projet_Moteur_Lib/moteur new/Game/Shader/red.hlsl";
-	std::string pathModel = "./Mesh/CubeRose.x";
+	std::string pathModel = "./Mesh/CUBEN.x";
 
 	//burbur = moteur->LoadShader(&path);
 	burbur = moteur->ImportingModel(pathModel);
@@ -115,7 +115,3 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	return 0;
 }
-
-
-#pragma endregion
-

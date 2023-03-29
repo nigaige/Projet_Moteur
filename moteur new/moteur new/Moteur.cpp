@@ -60,6 +60,18 @@ void Moteur::Init()
 
 	ShowWindow(hWnd, nCmdShow);
 
+	initD3D();
+
+	camera_ = new GameObject();
+	cameraComponent = new Camera(45, 1.0f, 100.0f);
+	camera_->addComponent(cameraComponent);
+
+	colliderManager_ = new ColliderManager();
+
+}
+
+void Moteur::initD3D()
+{
 	d3d = Direct3DCreate9(D3D_SDK_VERSION);
 
 	D3DPRESENT_PARAMETERS d3dpp;
@@ -76,25 +88,13 @@ void Moteur::Init()
 	d3d->CreateDevice(D3DADAPTER_DEFAULT,
 		D3DDEVTYPE_HAL,
 		hWnd,
-		D3DCREATE_HARDWARE_VERTEXPROCESSING,
+		D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_PUREDEVICE,
 		&d3dpp,
 		&d3ddev);
 
-	d3ddev->SetRenderState(D3DRS_LIGHTING, TRUE);    // turn off the 3D lighting
+	d3ddev->SetRenderState(D3DRS_LIGHTING, TRUE);
 	d3ddev->SetRenderState(D3DRS_ZENABLE, TRUE);
-	//d3ddev->SetRenderState(D3DRS_AMBIENT, 0xffffffff);
-	//    d3ddev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);    // both sides of the triangles
-	//d3ddev->SetRenderState(D3DRS_ZENABLE, TRUE);    // turn on the z-buffer
-
-	/*d3ddev->SetRenderState(D3DRS_LIGHTING, FALSE);
-	d3ddev->SetRenderState(D3DRS_AMBIENT, 0xffffffff); // turn off the 3D lighting
-	d3ddev->SetRenderState(D3DRS_SHADEMODE, D3DSHADE_GOURAUD); // turn off the 3D lighting*/
-
-
-	initD3D();
-
-	colliderManager_ = new ColliderManager();
-
+	d3ddev->SetRenderState(D3DRS_AMBIENT, 0xffffffff);
 }
 
 void Moteur::loadMeshInScene(Mesh* MeshToLoad) {
@@ -119,41 +119,6 @@ void Moteur::loadMeshInScene(Mesh* MeshToLoad) {
 	v_buffer->Unlock();
 
 	MeshToLoad->Vbuffer(v_buffer);
-}
-
-
-void Moteur::initD3D()
-{
-	d3d = Direct3DCreate9(D3D_SDK_VERSION);
-
-	D3DPRESENT_PARAMETERS d3dpp;
-
-	ZeroMemory(&d3dpp, sizeof(d3dpp));
-	d3dpp.Windowed = TRUE;
-	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
-	d3dpp.hDeviceWindow = hWnd;
-	d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
-	d3dpp.BackBufferWidth = SCREEN_WIDTH;
-	d3dpp.BackBufferHeight = SCREEN_HEIGHT;
-
-	// create a device class using this information and the info from the d3dpp stuct
-	d3d->CreateDevice(D3DADAPTER_DEFAULT,
-		D3DDEVTYPE_HAL,
-		hWnd,
-		/*D3DCREATE_SOFTWARE_VERTEXPROCESSING*/D3DCREATE_HARDWARE_VERTEXPROCESSING | D3DCREATE_PUREDEVICE,
-		&d3dpp,
-		&d3ddev);
-
-	d3ddev->SetRenderState(D3DRS_LIGHTING, TRUE);    // turn off the 3D lighting
-	d3ddev->SetRenderState(D3DRS_ZENABLE, TRUE);
-	//d3ddev->SetRenderState(D3DRS_AMBIENT, 0xffffffff);
-
-
-	camera_ = new GameObject();
-	cameraComponent = new Camera(45, 1.0f, 100.0f);
-	camera_->addComponent(cameraComponent);
-	
-
 }
 
 void Moteur::cleanD3D(void)
@@ -372,15 +337,15 @@ Mesh* Moteur::ImportingModel(std::string path)
 	LPD3DXBUFFER materialBuffer = NULL;
 	DWORD numMaterial = 0;
 	LPD3DXMESH mesh = nullptr;
-	
-	
-	
+
+
+
 	Mesh* resultMesh = new Mesh(D3DPT_TRIANGLELIST);
 	HRESULT hr = D3DXLoadMeshFromXA(path.c_str(), D3DXMESH_MANAGED, d3ddev, NULL, &materialBuffer, NULL, &numMaterial, &mesh); //Import mesh in meshImp
 	if (FAILED(hr))
 		Utils::DebugLogMessage("Failed import model");
-	
-	
+
+
 	resultMesh->importedMesh(mesh);
 	resultMesh->materialBuffer(materialBuffer);
 	resultMesh->matCount(numMaterial);
@@ -397,11 +362,12 @@ Mesh* Moteur::ImportingModel(std::string path)
 		{
 			resultMesh->meshMaterials()[i] = materials[i].MatD3D;
 			resultMesh->meshMaterials()[i].Ambient = resultMesh->meshMaterials()[i].Diffuse;
-			if (materials[i].pTextureFilename != NULL && *materials[i].pTextureFilename != 0)
+			if (materials[i].pTextureFilename != NULL)
 			{
 				if (FAILED(D3DXCreateTextureFromFileA(d3ddev, materials[i].pTextureFilename, &resultMesh->meshTexture()[i])))
 				{
-					Utils::DebugLogMessage("ERROR");
+					Utils::DebugLogMessage("IMAGE NOT FOUND");
+					resultMesh->meshTexture()[i] = NULL;
 				}
 			}
 			else
@@ -410,7 +376,9 @@ Mesh* Moteur::ImportingModel(std::string path)
 			}
 		}
 	}
-	
+
+
+
 	materialBuffer->Release();
 
 	return resultMesh;
