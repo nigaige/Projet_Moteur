@@ -1,8 +1,13 @@
 #include "Utils.h"
 
-Shader::Shader(IDirect3DVertexShader9** ppShader)
+Shader::Shader(LPD3DXEFFECT shaderBuffer)
 {
-    _ppShader = ppShader;
+    shaderBuffer_ = shaderBuffer;
 }
 
 Shader::~Shader() {}
+
+void Shader::SetMatrix(D3DXMATRIX* wvpMat)
+{
+    shaderBuffer_->SetMatrix(handleMatrixWVP_, wvpMat);
+}

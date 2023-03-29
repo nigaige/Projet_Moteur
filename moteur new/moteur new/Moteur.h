@@ -54,9 +54,10 @@ public:
 	//---------------GAMELOOOP
 	void gameLoop();															//TODO
 	void render(void);
+	void renderMaterial(Mesh* mesh);
 	void update(void);															//TODO MANAGE GLOBAL TIME
 
-	Mesh* LoadShader(std::string* shaderPath);									//TODO Mettre la method dans le mesh
+	Shader* LoadShader(std::string* shaderPath);									//TODO Mettre la method dans le mesh
 
 	Mesh* ImportingModel(std::string path);
 

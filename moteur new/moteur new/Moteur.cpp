@@ -5,21 +5,18 @@
 Input* Moteur::inputManager_ = new Input();
 float Moteur::s_deltaTime_ = 0;
 
-LPD3DXEFFECT shaderBuff;
-D3DXMATRIX matWorldViewProj;
-D3DXHANDLE m_hT;
-D3DXHANDLE m_hMat;
+
 
 // this is the main message handler for the program
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
-	case WM_DESTROY:
-	{
-		PostQuitMessage(0);
-		return 0;
-	} break;
+		case WM_DESTROY:
+		{
+			PostQuitMessage(0);
+			return 0;
+		} break;
 	}
 
 	return DefWindowProc(hWnd, message, wParam, lParam);
@@ -83,9 +80,15 @@ void Moteur::Init()
 		&d3dpp,
 		&d3ddev);
 
-	d3ddev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	d3ddev->SetRenderState(D3DRS_LIGHTING, TRUE);    // turn off the 3D lighting
+	d3ddev->SetRenderState(D3DRS_ZENABLE, TRUE);
+	//d3ddev->SetRenderState(D3DRS_AMBIENT, 0xffffffff);
+	//    d3ddev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);    // both sides of the triangles
+	//d3ddev->SetRenderState(D3DRS_ZENABLE, TRUE);    // turn on the z-buffer
+
+	/*d3ddev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	d3ddev->SetRenderState(D3DRS_AMBIENT, 0xffffffff); // turn off the 3D lighting
-	d3ddev->SetRenderState(D3DRS_SHADEMODE, D3DSHADE_GOURAUD); // turn off the 3D lighting
+	d3ddev->SetRenderState(D3DRS_SHADEMODE, D3DSHADE_GOURAUD); // turn off the 3D lighting*/
 
 
 	initD3D();
@@ -164,6 +167,22 @@ void Moteur::gameLoop()
 
 }
 
+void Moteur::renderMaterial(Mesh* mesh)
+{
+	for (DWORD i = 0; i < mesh->matCount(); i++)
+	{
+		d3ddev->SetMaterial(&mesh->meshMaterials()[i]);
+		if (mesh->meshTexture() != NULL)
+		{
+			if (mesh->shader() == NULL)
+				d3ddev->SetTexture(0, mesh->meshTexture()[i]);
+			else
+				mesh->shader()->shaderBuffer()->SetTexture(0, mesh->meshTexture()[i]);
+		}
+		mesh->importedMesh()->DrawSubset(i);
+	}
+}
+
 void Moteur::render(void)
 {
 	
@@ -178,59 +197,43 @@ void Moteur::render(void)
 		
 		if (go->meshToDraw().size() == 0) continue;
 
-		for (Mesh* m : go->meshToDraw()) {
+		for (Mesh* mesh : go->meshToDraw()) {
 
-			if (m->importedMesh() == NULL)
+			if (mesh->importedMesh() == NULL)
 			{
 				d3ddev->SetTransform(D3DTS_WORLD, go->transform()->displayValue());    // set the projection
-				d3ddev->SetStreamSource(0, m->Vbuffer(), 0, sizeof(CUSTOMVERTEX));
-				d3ddev->DrawPrimitive(m->primitivMethode(), 0, m->Primitiv());
+				d3ddev->SetStreamSource(0, mesh->Vbuffer(), 0, sizeof(CUSTOMVERTEX));
+				d3ddev->DrawPrimitive(mesh->primitivMethode(), 0, mesh->Primitiv());
 			}else
 			{
-
-				D3DXMATRIX matWPV = *go->transform()->displayValue();
-				matWPV *= *cameraComponent->matView();
-				matWPV *= *cameraComponent->matProj();
-
-
-
-
-
-				
-				//UINT passCount;
-				//shaderBuff->Begin(&passCount, NULL);
-
-				//for (int ipass = 0; ipass < passCount; ipass++) 
-				//{
-				//	shaderBuff->BeginPass(ipass); // Sélectionner la première passe de la technique
-
-				//	shaderBuff->SetMatrix(m_hMat, &matWPV);
-				//	shaderBuff->CommitChanges();
-
-				//	for (DWORD i = 0; i < m->matCount(); i++)
-				//	{
-				//		d3ddev->SetMaterial(&m->meshMaterials()[i]);
-				//		/*if (m->meshTexture() != NULL)
-				//		{
-				//			shaderBuff->SetTexture(0, m->meshTexture()[i]);
-				//		}*/
-				//		m->importedMesh()->DrawSubset(i);
-				//	}
-
-				//	shaderBuff->EndPass();
-				//}
-
-				//shaderBuff->End(); 
-
-				for (DWORD i = 0; i < m->matCount(); i++)
+				if (mesh->shader() != NULL)
 				{
-					d3ddev->SetMaterial(&m->meshMaterials()[i]);
-					if (m->meshTexture() != NULL)
-					{
-						d3ddev->SetTexture(0, m->meshTexture()[i]);
-					}
-				}
+					D3DXMATRIX matWPV = *go->transform()->displayValue();
+					matWPV *= *cameraComponent->matView();
+					matWPV *= *cameraComponent->matProj();
 
+
+					UINT passCount;
+					mesh->shader()->shaderBuffer()->Begin(&passCount, NULL);
+
+					for (int ipass = 0; ipass < passCount; ipass++)
+					{
+						mesh->shader()->shaderBuffer()->BeginPass(ipass); // Sélectionner la première passe de la technique
+
+						mesh->shader()->SetMatrix(&matWPV);
+						mesh->shader()->shaderBuffer()->CommitChanges();
+
+						renderMaterial(mesh);
+
+						mesh->shader()->shaderBuffer()->EndPass();
+					}
+
+					mesh->shader()->shaderBuffer()->End();
+				}
+				else 
+				{
+					renderMaterial(mesh);
+				}
 			}
 		}
 	}
@@ -241,7 +244,6 @@ void Moteur::render(void)
 
 void Moteur::update(void)
 {
-
 	Moteur::inputManager_->InputUpdate();
 	camera_->update();
 	for (GameObject* go : GOList) {
@@ -331,34 +333,11 @@ void Moteur::rmMesh(Mesh* me)
 /// </summary>
 /// <param name="shaderPath">String shaderPath of .hlsl file</param>
 /// <returns>Shader* new Shader()</returns>
-Mesh* Moteur::LoadShader(std::string* shaderPath)
+Shader* Moteur::LoadShader(std::string* shaderPath)
 {
-	ID3DXBuffer* listing_f = NULL;
-	ID3DXBuffer* listing_v = NULL;
-	ID3DXBuffer* code_f = NULL;
-	ID3DXBuffer* code_v = NULL;
-	LPD3DXCONSTANTTABLE* ppConstantTable_OUT = NULL;
-	LPD3DXBUFFER shaderContent_ = NULL;
-	IDirect3DVertexShader9** ppShader = nullptr;
-
-	LPD3DXBUFFER materialBuffer = NULL;
-	DWORD numMaterial = 0;
-	LPD3DXMESH mesh = nullptr;
-	
-	
-	
-	Mesh* resultMesh = ImportingModel("./Mesh/Cube.x"); 
-	/*new Mesh(D3DPT_TRIANGLELIST);
-	HRESULT hrMesh = D3DXLoadMeshFromXA("./Mesh/Cube.x", D3DXMESH_MANAGED, d3ddev, NULL, &materialBuffer, NULL, &numMaterial, &mesh); //Import mesh in meshImp
-	if (FAILED(hrMesh))
-		Utils::DebugLogMessage("Failed import model");
-	
-	
-	resultMesh->importedMesh(mesh);
-	resultMesh->materialBuffer(materialBuffer);
-	resultMesh->matCount(numMaterial);
-
-	*/
+	LPD3DXEFFECT shaderBuff;
+	D3DXHANDLE m_hT;
+	D3DXHANDLE m_hMat;
 	ID3DXBuffer* errors = NULL;
 	
 	HRESULT hr = D3DXCreateEffectFromFileA(
@@ -375,29 +354,11 @@ Mesh* Moteur::LoadShader(std::string* shaderPath)
 	if(hr == D3D_OK)
 	{
 		m_hT = shaderBuff->GetTechniqueByName("Default");
-		//shaderBuff->SetTechnique();
-		//D3DXHANDLE
-		//m_hMat = shaderBuff->GetParameterByName(m_hT, "worldViewProj");
+		m_hMat = shaderBuff->GetParameterByName(m_hT, "worldViewProj");
 		int a = 0;
 	}
-	
-	/*if (FAILED(hre))
-	{
-		if (errors != NULL)
-		{
-			MessageBoxA(NULL, (char*)errors->GetBufferPointer(), "Error", MB_OK);
-			errors->Release();
-		}
-		return resultMesh;
-	}
 
-	// Appliquer le shader sur le mesh
-	D3DXMATRIX matWorldViewProj; // Calculer la matrice de transformation du monde à l'espace projeté
-	
-	shaderBuff->SetMatrix("worldViewProj", &matWorldViewProj);*/
-	
-	return resultMesh;
-
+	return new Shader(shaderBuff);
 }
 
 /// <summary>

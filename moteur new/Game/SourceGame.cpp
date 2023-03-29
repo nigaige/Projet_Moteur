@@ -31,10 +31,14 @@ int main()
 	//burbur = moteur->ImportingModel("./Mesh/Cube.x");
 
 	std::string path = "C:/Users/Asabi/Documents/GitHub/Projet_Moteur_Lib/moteur new/Game/Shader/red.hlsl";
-	std::string pathModel = "./Mesh/Cube.x";
+	std::string pathModel = "./Mesh/CubeRose.x";
 
 	//burbur = moteur->LoadShader(&path);
 	burbur = moteur->ImportingModel(pathModel);
+
+	Shader* redShader = moteur->LoadShader(&path);
+
+	//burbur->shader(redShader);
 
 	Singe->addComponent(burbur);
 
