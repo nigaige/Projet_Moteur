@@ -79,6 +79,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Utils.cpp">
+          <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InitText.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -129,6 +135,12 @@
       <Filter>Header Files\Gameobject\Component</Filter>
     </ClInclude>
     <ClInclude Include="TimeManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InitText.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

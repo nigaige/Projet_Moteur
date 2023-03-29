@@ -122,6 +122,10 @@ int main(Moteur* moteur)
 	moteur->addGameObject(playerParentRoad);
 	moteur->addGameObject(playerParentRoll);
 	moteur->addGameObject(player);
+	GameObject* score = new GameObject();
+	score->addComponent( new Text());
+	moteur->addGameObject(score);
+
 	moteur->gameLoop();
 
 

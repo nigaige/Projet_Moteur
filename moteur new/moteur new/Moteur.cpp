@@ -7,6 +7,7 @@
 Input* Moteur::inputManager_ = new Input();
 const int FIXED_UPDATE_INTERVAL = 16; // 16ms, equivalent to 60fps
 float Moteur::s_deltaTime_ = 0.01f;
+ID3DXFont* Moteur::font = nullptr;
 
 // this is the main message handler for the program
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -52,6 +53,7 @@ Moteur::~Moteur()
 {
 	Utils::DeleteVector(GOList);
 	Utils::DeleteVector(MeList);
+	if (font) { font->Release(); font = 0; }
 	cleanD3D();
 
 }
@@ -88,6 +90,7 @@ void Moteur::Init()
 	initD3D();
 
 	colliderManager_ = new ColliderManager();
+
 
 }
 
@@ -149,8 +152,11 @@ void Moteur::initD3D()
 	camera_ = new GameObject();
 	cameraComponent = new Camera(45, 1.0f, 100.0f);
 	camera_->addComponent(cameraComponent);
-	
 
+	initText = new InitText();
+	font = initText->initText(d3ddev);
+	if (FAILED(font))
+		Utils::DebugLogMessage("Failed import font");
 }
 
 void Moteur::cleanD3D(void)
@@ -231,7 +237,12 @@ void Moteur::render(void)
 			}
 			
 		}
+
+			go->findComponent<Text>()->update();
+		
 	}
+
+	
 	d3ddev->EndScene();
 
 	d3ddev->Present(NULL, NULL, NULL, NULL);

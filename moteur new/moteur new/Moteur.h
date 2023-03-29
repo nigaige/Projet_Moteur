@@ -22,7 +22,8 @@ private:
 	GameObject* camera_;
 	Camera* cameraComponent;
 
-	
+	InitText* initText;
+	static ID3DXFont* font;
 
 public:
 
@@ -50,6 +51,8 @@ public:
 	void rmGamObject(GameObject* go);
 	void addMesh(Mesh* me);
 	void rmMesh(Mesh* me);
+
+	static ID3DXFont* getFont() { return font;  };
 
 	//---------------GAMELOOOP
 	void gameLoop();															
