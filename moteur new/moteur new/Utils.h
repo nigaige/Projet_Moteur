@@ -11,6 +11,8 @@
 #include <cassert>
 #include <chrono>
 #include <map>
+#include <string>
+
 
 #include <d3d9.h>
 #include <d3dx9.h>
@@ -71,6 +73,7 @@ class ColliderSphere;
 class ColliderCube;
 class ColliderManager;
 
+class Parser;
 
 #include "GameObject.h"
 #include "Component.h"
@@ -91,6 +94,7 @@ class ColliderManager;
 #include "ColliderCube.h"
 #include "ColliderManager.h"
 
+#include "Parser.h"
 
 // include the Direct3D Library files
 #pragma comment (lib, "d3d9.lib")

@@ -37,7 +37,10 @@ int main(Moteur* moteur)
 	
 	moteur->camera()->transform()->posZ(20.0f);
 	moteur->camera()->transform()->posY(-5.0f);
+	Parser* P = new Parser();
 
+	P->Filename("TESTIMPORT.txt");
+	P->ParseAll();
 	
 
 
@@ -120,7 +123,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 
 	Utils util;
-	util.DebugLogMessage("ok");
+	
 
 	moteur = new Moteur(hInstance,
 		hPrevInstance,
