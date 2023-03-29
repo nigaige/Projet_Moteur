@@ -23,58 +23,7 @@ int main(Moteur* moteur)
 {	
 
 #pragma region Init
-	
-	
-	moteur->camera()->transform()->posZ(20.0f);
-	GameObject* kinematicCube = new GameObject();
-	GameObject* nonKinematicCube = new GameObject();
-	Mesh* m_cube = moteur->ImportingModel("./Mesh/Cube.x");
-	Singe = new GameObject();
-	//burbur = moteur->ImportingModel("./Mesh/Cube.x");
 
-	std::string path = "C:/Users/Asabi/Documents/GitHub/Projet_Moteur_Lib/moteur new/Game/Shader/red.hlsl";
-	std::string pathModel = "./Mesh/CUBEN.x";
-
-	//burbur = moteur->LoadShader(&path);
-	burbur = moteur->ImportingModel(pathModel);
-
-	Shader* redShader = moteur->LoadShader(&path);
-
-	//burbur->shader(redShader);
-
-	kinematicCube->addComponent(m_cube);
-	nonKinematicCube->addComponent(m_cube);
-
-	kinematicCube->addComponent(new GoTester());
-
-	RigidBody* rb = new RigidBody();
-	rb->isKinematic(true);
-	rb->hasGravity(false);
-	kinematicCube->addComponent(rb);
-	kinematicCube->transform()->posY(-5.0f);
-	//kinematicCube->transform()->posX(-2.0f);
-
-	nonKinematicCube->addComponent(new RigidBody());
-
-	ColliderCube* sph1 = new ColliderCube(new D3DXVECTOR3(0, 0, 0), new D3DXVECTOR3(1, 1, 1));
-	ColliderCube* sph2 = new ColliderCube(new D3DXVECTOR3(0, 0, 0), new D3DXVECTOR3(1, 1, 1));
-	sph1->isTrigger(true);
-	sph2->triggerCallback(triggerHapened);
-	moteur->colliderManager()->addCollider(sph2);
-	moteur->colliderManager()->addCollider(sph1);
-
-	nonKinematicCube->addComponent(sph1);
-	kinematicCube->addComponent(sph2);
-
-	
-
-
-
-
-
-
-	moteur->addGameObject(nonKinematicCube);
-	moteur->addGameObject(kinematicCube);
 
 
 
@@ -85,7 +34,7 @@ int main(Moteur* moteur)
 
 #pragma region GameInit
 
-	/*
+	
 	moteur->camera()->transform()->posZ(20.0f);
 	moteur->camera()->transform()->posY(-5.0f);
 
@@ -119,7 +68,7 @@ int main(Moteur* moteur)
 		a[x]->transform()->posZ(x * 10);
 		moteur->addGameObject(a[x]);
 	}	
-*/
+
 
 	player->addComponent(meshPlayer);
 	player->transform()->scale(D3DXVECTOR3(0.1f, 0.1f, 0.1f));
@@ -139,21 +88,9 @@ int main(Moteur* moteur)
 	moteur->addGameObject(playerParentRoad);
 	moteur->addGameObject(playerParentRoll);
 	moteur->addGameObject(player);
-	GameObject* score = new GameObject();
+	/*GameObject* score = new GameObject();
 	score->addComponent( new Text());
-	moteur->addGameObject(score);
-
-	enum Test
-	{
-		PHASE1,
-		PHASE2
-	};
-	
-	SM->setStates(PHASE2, listState);
-
-	GameObject* SMGO = new GameObject;
-	SMGO->addComponent(SM);
-	moteur->addGameObject(SMGO);
+	moteur->addGameObject(score);*/
 	
 	moteur->gameLoop();
 
