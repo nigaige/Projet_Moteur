@@ -57,7 +57,8 @@ class Camera;
 class Moteur;
 class Shader;
 class Material;
-
+class Text;
+class InitText;
 class RigidBody;
 class Collider;
 class ColliderSphere;
@@ -73,6 +74,8 @@ class ColliderManager;
 #include "Mesh.h"
 #include "Shader.h"
 #include "Camera.h"
+#include "Text.h"
+#include "InitText.h"
 
 
 #include "RigidBody.h"

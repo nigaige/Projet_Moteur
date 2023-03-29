@@ -46,6 +46,10 @@ int main(Moteur* moteur)
 	}
 
 
+	GameObject* score = new GameObject();
+	score->addComponent( new Text());
+	moteur->addGameObject(score);
+
 	moteur->gameLoop();
 
 	delete moteur;
