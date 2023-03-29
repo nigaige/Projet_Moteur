@@ -148,6 +148,8 @@ void Moteur::gameLoop()
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
+		//updateobject
+		render();
 		update();
 
 		if (msg.message == WM_QUIT)
@@ -160,6 +162,7 @@ void Moteur::gameLoop()
 			fixedUpdate();
 			lastUpdateTime = currentTime;
 		}
+		updateTransform();
 	}
 
 }
@@ -195,8 +198,7 @@ void Moteur::render(void)
 	for (GameObject* go : GOList) {
 		
 		if (go->meshToDraw().size() == 0) continue;
-		D3DXMATRIX rendu = go->worldMatrix();
-		d3ddev->SetTransform(D3DTS_WORLD, &rendu);    // set the projection
+		d3ddev->SetTransform(D3DTS_WORLD, go->transform()->worldValue());    // set the projection
 
 		for (Mesh* mesh : go->meshToDraw()) {
 
@@ -250,7 +252,6 @@ void Moteur::render(void)
 
 void Moteur::update(void)
 {
-	render();
 
 	Moteur::inputManager_->InputUpdate();
 	camera_->update();
@@ -264,6 +265,15 @@ void Moteur::fixedUpdate(void)
 {
 	for (GameObject* go : GOList) {
 		go->fixedUpdate();
+
+	}
+}
+
+void Moteur::updateTransform(void)
+{
+	camera_->updateTransform();
+	for (GameObject* go : GOList) {
+		go->updateTransform();
 	}
 }
 
@@ -276,7 +286,7 @@ void Moteur::setUpCamera() {
 
 	//d3ddev->SetTransform(D3DTS_VIEW, cameraComponent->updateCamera());
 
-	D3DXMATRIX matView = cameraComponent->gameObject()->worldMatrix();
+	D3DXMATRIX* matView = cameraComponent->gameObject()->worldMatrix();
 	//D3DXMATRIX matView = *cameraComponent->transform()->displayValue();
 
 

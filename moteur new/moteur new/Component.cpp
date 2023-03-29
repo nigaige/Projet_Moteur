@@ -16,6 +16,7 @@ Component::~Component()
 
 void Component::gameObject(GameObject* go)
 {
+	transform_ = go->transform();
 	gameobject_ = go;
 
 }

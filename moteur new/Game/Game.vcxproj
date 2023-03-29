@@ -139,7 +139,6 @@
     <ClCompile Include="playerRolling.cpp" />
     <ClCompile Include="SourceGame.cpp" />
     <ClCompile Include="MoveForward.cpp" />
-    <ClCompile Include="UtilsGame.cpp" />
     <ClCompile Include="wall.cpp" />
   </ItemGroup>
   <ItemGroup>

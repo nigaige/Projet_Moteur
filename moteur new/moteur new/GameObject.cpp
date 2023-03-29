@@ -1,24 +1,28 @@
 #include "Utils.h"
 
 GameObject::GameObject(){
-	transform_ = new Transform();
+	transform_ = new Transform(this);
 }
 
 GameObject::GameObject(Transform* T)
 {
-	transform_ = T;
+	*transform_ = *T;
+	transform_->gameObject(this);
 }
 
 GameObject::GameObject(Transform* T, GameObject* parent)
 {
-	transform_ = T;
+	*transform_ = *T;
+	transform_->gameObject(this);
 	parent_ = parent;
+	parent->addChild(this);
 }
 
 GameObject::GameObject(GameObject* parent)
 {
-	transform_ = new Transform();
+	transform_ = new Transform(this);
 	parent_ = parent;
+	parent->addChild(this);
 }
 
 GameObject::~GameObject()
@@ -32,6 +36,9 @@ GameObject::~GameObject()
 	Utils::DeleteVector(componentList);
 	MeshList.clear();
 	delete transform_;
+
+
+
 }
 
 void GameObject::update()
@@ -56,15 +63,41 @@ void GameObject::fixedUpdate()
 	}
 }
 
-D3DXMATRIX GameObject::worldMatrix()
+D3DXMATRIX* GameObject::updateTransform()
 {
-	if (parent_ == nullptr) {
-		return *transform_->displayValue();
+	return transform_->updateFinal(parent_);
+}
+
+void GameObject::setChildTransformToUpdate()
+{
+	int a = 0;
+	if (childList_.size() == 0) return;
+	for (GameObject* go : childList_) {
+		go->transform()->toUpdate();
+		go->setChildTransformToUpdate();
 	}
-	//D3DXMATRIX world =  *parent_->worldMatrix()*transform_->displayValue() * ;
-	D3DXMATRIX world = parent_->worldMatrix();
-	world = *transform_->displayValue() * world;
-	return world;
+}
+
+D3DXMATRIX* GameObject::worldMatrix()
+{
+	return transform_->worldValue();
+}
+
+void GameObject::addChild(GameObject* go)
+{
+	//TODO make sure only one occurence
+	childList_.push_back(go);
+}
+
+bool GameObject::rmChild(GameObject* go)
+{
+	for (int i = 0; i < childList_.size(); i++) {
+		if (childList_[i] == go) {
+			childList_.erase(childList_.begin() + i, childList_.begin() + i + 1);
+			return true;
+		}
+	}
+	return false;
 }
 
 void GameObject::addComponent(Component* comp)

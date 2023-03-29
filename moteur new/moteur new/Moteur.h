@@ -60,8 +60,10 @@ public:
 	void update(void);															
 	void fixedUpdate(void);															
 	void renderMaterial(Mesh* mesh);										//TODO MANAGE GLOBAL TIME
+	void updateTransform(void);
 
-	Shader* LoadShader(std::string* shaderPath);									//TODO Mettre la method dans le mesh
+	Shader* LoadShader(std::string* shaderPath);	
+
 
 	Mesh* ImportingModel(std::string path);
 
