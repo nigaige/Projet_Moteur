@@ -88,6 +88,8 @@ void Moteur::initD3D()
 	d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
 	d3dpp.BackBufferWidth = SCREEN_WIDTH;
 	d3dpp.BackBufferHeight = SCREEN_HEIGHT;
+	d3dpp.AutoDepthStencilFormat = D3DFMT_D24S8;
+	d3dpp.EnableAutoDepthStencil = TRUE;
 
 	// create a device class using this information and the info from the d3dpp stuct
 	d3d->CreateDevice(D3DADAPTER_DEFAULT,
@@ -100,6 +102,7 @@ void Moteur::initD3D()
 	d3ddev->SetRenderState(D3DRS_LIGHTING, TRUE);
 	d3ddev->SetRenderState(D3DRS_ZENABLE, TRUE);
 	d3ddev->SetRenderState(D3DRS_AMBIENT, 0xffffffff);
+	d3ddev->SetRenderState(D3DRS_ZENABLE, TRUE);
 }
 
 void Moteur::loadMeshInScene(Mesh* MeshToLoad) {
