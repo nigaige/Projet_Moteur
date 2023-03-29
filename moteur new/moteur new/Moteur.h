@@ -16,6 +16,7 @@ private:
 	//Mesh* triangle;
 	std::vector<GameObject*> GOList;
 	std::vector<Mesh*> MeList;
+	std::vector<Ui*> uiElement;
 
 	ColliderManager* colliderManager_;
 
@@ -48,6 +49,7 @@ public:
 	GameObject* camera();
 
 	void addGameObject(GameObject* go);
+	void addUiComponent(Ui* ui);
 	void rmGamObject(GameObject* go);
 	void addMesh(Mesh* me);
 	void rmMesh(Mesh* me);

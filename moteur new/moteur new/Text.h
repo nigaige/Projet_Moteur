@@ -1,5 +1,5 @@
 #pragma once
-class Text : public Component
+class Text 
 {
 private:
 	ID3DXFont* font = Moteur::getFont();

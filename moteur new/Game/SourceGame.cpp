@@ -74,7 +74,7 @@ int main(Moteur* moteur)
 	player->transform()->scale(D3DXVECTOR3(0.1f, 0.1f, 0.1f));
 
 	playerParentRoad->addComponent(anchormesh);
-	playerParentRoll->addComponent(new playerRolling);
+	playerParentRoll->addComponent(new PlayerRolling());
 	//playerParent->transform()->posY(4.f);
 	playerParentRoll->transform()->posY(3.f);
 	player->transform()->posY(-0.5f);
@@ -88,9 +88,12 @@ int main(Moteur* moteur)
 	moteur->addGameObject(playerParentRoad);
 	moteur->addGameObject(playerParentRoll);
 	moteur->addGameObject(player);
-	/*GameObject* score = new GameObject();
-	score->addComponent( new Text());
-	moteur->addGameObject(score);*/
+
+	RECT fRectangle;
+	SetRect(&fRectangle, 0, 0, 400, 600);
+
+	std::string message = "omegalul ça marche";
+	moteur->addUiComponent(new Ui(fRectangle, message));
 	
 	moteur->gameLoop();
 

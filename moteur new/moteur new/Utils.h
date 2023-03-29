@@ -70,6 +70,7 @@ class Collider;
 class ColliderSphere;
 class ColliderCube;
 class ColliderManager;
+class Ui;
 
 
 #include "GameObject.h"
@@ -90,6 +91,7 @@ class ColliderManager;
 #include "ColliderSphere.h"
 #include "ColliderCube.h"
 #include "ColliderManager.h"
+#include "Ui.h"
 
 
 // include the Direct3D Library files

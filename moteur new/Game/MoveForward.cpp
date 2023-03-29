@@ -5,7 +5,7 @@ void MoveForward::update()
 {
 	Utils util;
 	util.DebugLogMessage("ok");
-	transform()->posZ(transform()->position().z - .50f);
+	transform()->posZ(transform()->position().z - velocity_);
 
 	if (transform()->position().z < -20.0f)
 	{
