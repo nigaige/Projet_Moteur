@@ -102,7 +102,6 @@ void Moteur::initD3D()
 	d3ddev->SetRenderState(D3DRS_LIGHTING, TRUE);
 	d3ddev->SetRenderState(D3DRS_ZENABLE, TRUE);
 	d3ddev->SetRenderState(D3DRS_AMBIENT, 0xffffffff);
-	d3ddev->SetRenderState(D3DRS_ZENABLE, TRUE);
 }
 
 void Moteur::loadMeshInScene(Mesh* MeshToLoad) {
