@@ -15,7 +15,7 @@ void triggerHapened(Collider* other) { Utils::DebugLogMessage("Weeeeee"); }
 
 #pragma endregion
 
-
+void calltest() { Utils::DebugLogMessage("Reussi"); };
 
 #pragma endregion
 
@@ -143,6 +143,18 @@ int main(Moteur* moteur)
 	score->addComponent( new Text());
 	moteur->addGameObject(score);
 
+	enum Test
+	{
+		PHASE1,
+		PHASE2
+	};
+	
+	SM->setStates(PHASE2, listState);
+
+	GameObject* SMGO = new GameObject;
+	SMGO->addComponent(SM);
+	moteur->addGameObject(SMGO);
+	
 	moteur->gameLoop();
 
 

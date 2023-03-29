@@ -140,15 +140,18 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Moteur.cpp" />
+    <ClCompile Include="ObjectState.cpp" />
     <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ColliderSphere.cpp" />
     <ClCompile Include="Text.cpp" />
+    <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseStates.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="ColliderCube.h" />
@@ -161,9 +164,11 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Moteur.h" />
     <ClInclude Include="ColliderSphere.h" />
+    <ClInclude Include="ObjectState.h" />
     <ClInclude Include="RigidBody.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Text.h" />
+    <ClInclude Include="StateMachine.h" />
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Utils.h" />

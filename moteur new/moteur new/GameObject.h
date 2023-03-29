@@ -32,8 +32,8 @@ public:
 
 	RigidBody* rb() { return rb_; }
 
-	bool toDisplay() { return toDisplay_; }
-	void toDisplay(bool display) { toDisplay_ = display; }
+	bool toDisplay()					{ return toDisplay_; }
+	void toDisplay(bool display)		{ toDisplay_ = display; }
 
 	void parent(GameObject* go) { parent_ = go; }
 	GameObject* parent() { return parent_; }

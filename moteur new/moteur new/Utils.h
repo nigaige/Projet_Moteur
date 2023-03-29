@@ -10,7 +10,7 @@
 #include <fstream>
 #include <cassert>
 #include <chrono>
-
+#include <map>
 
 #include <d3d9.h>
 #include <d3dx9.h>
@@ -49,6 +49,8 @@ enum ComponentType {
 	RIGIDBODY
 
 };
+
+
 class GameObject;
 class Component;
 class Mesh;
@@ -60,6 +62,9 @@ class Shader;
 class Material;
 class Text;
 class InitText;
+class BaseStates;
+class ObjectState;
+class StateMachine;
 class RigidBody;
 class Collider;
 class ColliderSphere;
@@ -77,8 +82,9 @@ class ColliderManager;
 #include "Camera.h"
 #include "Text.h"
 #include "InitText.h"
-
-
+#include "BaseStates.h"
+#include "ObjectState.h"
+#include "StateMachine.h"
 #include "RigidBody.h"
 #include "Collider.h"
 #include "ColliderSphere.h"
@@ -125,6 +131,9 @@ public:
 
 	static D3DXVECTOR3* triangleNormal(triangle* T);
 
+	template <typename T>
+	static int GetKeyViaValue(std::map<int, T*>, T* value);
+
 };
 
 template<typename T>
@@ -146,4 +155,17 @@ template<typename T>
 inline T* Utils::castToType(void* val)
 {
 	return static_cast<T*>(val);
+}
+template <typename T>
+inline int Utils::GetKeyViaValue(std::map<int, T*> mappy, T* value)
+{
+	int key;
+	for (auto& i : mappy) {
+		if (i.second == value) {
+			key = i.first;
+			break; // to stop searching
+		}
+	}
+	return key;
+
 }
