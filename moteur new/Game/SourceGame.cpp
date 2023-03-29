@@ -22,11 +22,27 @@ int main(Moteur* moteur)
 
 #pragma region Init
 
+	Mesh* WallMesh = moteur->ImportingModel("./Mesh/cube.x");
+
+	Shader* Red = moteur->LoadShader("./Shader/Red.hlsl");
+	Shader* Green = moteur->LoadShader("./Shader/Green.hlsl");
+	Shader* Blue = moteur->LoadShader("./Shader/Blue.hlsl");
+	Shader* Yellow = moteur->LoadShader("./Shader/Yellow.hlsl");
+	Shader* Pink = moteur->LoadShader("./Shader/Pink.hlsl");
+
+	GameObject* Wall = new GameObject();
 
 
+	Wall* Wall_ = new Wall(moteur, Yellow, WallMesh);
 
+	Wall_->transform()->position((D3DXVECTOR3(0.f, 4.f, 0.f)));
+	//Wall_->transform()->addRollPitchYaw(0.f, 0.f, 0.f);
+	Wall_->transform()->scale((D3DXVECTOR3(1.5f, 4.f, 0.5f)));
 
-
+	//Wall* Wall2_ = new Wall(moteur, Pink, WallMesh);
+	//Wall2_->transform()->position((D3DXVECTOR3(0.f, 4.f, 0.f)));
+	////Wall_->transform()->addRollPitchYaw()
+	//Wall2_->transform()->scale((D3DXVECTOR3(1.5f, 4.f, 0.5f)));
 #pragma endregion
 
 

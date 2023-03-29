@@ -61,7 +61,7 @@ public:
 	void fixedUpdate(void);															
 	void renderMaterial(Mesh* mesh);										//TODO MANAGE GLOBAL TIME
 
-	Shader* LoadShader(std::string* shaderPath);									//TODO Mettre la method dans le mesh
+	Shader* LoadShader(std::string shaderPath);									//TODO Mettre la method dans le mesh
 
 	Mesh* ImportingModel(std::string path);
 

@@ -341,7 +341,7 @@ void Moteur::rmMesh(Mesh* me)
 /// </summary>
 /// <param name="shaderPath">String shaderPath of .hlsl file</param>
 /// <returns>Shader* new Shader()</returns>
-Shader* Moteur::LoadShader(std::string* shaderPath)
+Shader* Moteur::LoadShader(std::string shaderPath)
 {
 	LPD3DXEFFECT shaderBuff;
 	D3DXHANDLE m_hT;
@@ -350,7 +350,7 @@ Shader* Moteur::LoadShader(std::string* shaderPath)
 	
 	HRESULT hr = D3DXCreateEffectFromFileA(
 	d3ddev, // Pointeur vers l'interface du périphérique Direct3D
-	shaderPath->c_str(), // Nom du fichier HLSL
+	shaderPath.c_str(), // Nom du fichier HLSL
 	NULL, // Tableau des macros de préprocesseur (optionnel)
 	NULL, // Interface de rappel pour les messages (optionnel)
 	D3DXSHADER_PACKMATRIX_COLUMNMAJOR | D3DXSHADER_DEBUG, // Options de compilation
@@ -364,9 +364,14 @@ Shader* Moteur::LoadShader(std::string* shaderPath)
 		m_hT = shaderBuff->GetTechniqueByName("Default");
 		m_hMat = shaderBuff->GetParameterByName(m_hT, "worldViewProj");
 		int a = 0;
+		return new Shader(shaderBuff);
+	}
+	else 
+	{
+		Utils::DebugLogMessage("Error on Shader import");
+		return NULL;
 	}
 
-	return new Shader(shaderBuff);
 }
 
 /// <summary>
