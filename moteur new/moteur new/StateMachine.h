@@ -1,5 +1,5 @@
 #pragma once
-#include "Utils.h"
+
 
 
 class StateMachine : public Component
@@ -7,10 +7,11 @@ class StateMachine : public Component
 {
 
 	protected :
-		BaseStates* currentState_;
-		BaseStates* lastState_;
+		BaseStates* currentState_ = nullptr;
+		BaseStates* lastState_ = nullptr;
+		BaseStates* globalState_= nullptr;
 
-		BaseStates* globalState_;
+
 
 		std::map<int, BaseStates* > statesMap;
 
@@ -18,23 +19,25 @@ class StateMachine : public Component
 
 	public :
 	
-		StateMachine();
+		
+		StateMachine(BaseStates* current = NULL, BaseStates* last = NULL, BaseStates* global = NULL,std::map<int, BaseStates* > map=std::map<int, BaseStates* >());
 			
 		//GETTER / SETTER
 		BaseStates* currentState() { return currentState_; }
 		BaseStates* lastState() { return lastState_; }
 		BaseStates* globalState() { return globalState_; }
-
+		
+		int currentStateKey();
+		int lastStateKey();
+		int globalStateKey();
 
 		void globalState(BaseStates* newGlobal) { globalState_ = newGlobal; }
+		void setStates(int SizeEnum, std::vector<BaseStates*> listState,int FirstState =0);
+		//
+		void nextState();
 
-
-		
-		void SetStates(int SizeEnum, BaseStates* listState[]);
-		void ChangeState(int StateId);
-
-
-		void Update();
+		void changeState(int StateId);
+		void update();
 
 		
 

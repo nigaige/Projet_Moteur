@@ -12,7 +12,7 @@
 const int FIXED_UPDATE_INTERVAL = 16; // 16ms, equivalent to 60fps
 
 
-
+void calltest() { Utils::DebugLogMessage("Reussi"); };
 
 #pragma endregion
 
@@ -46,13 +46,30 @@ int main(Moteur* moteur)
 	}
 
 	StateMachine* SM = new StateMachine();
+	ObjectState* State1 = new ObjectState();
+	ObjectState* State2 = new ObjectState();
+	State1->SetName("P1");
+	State2->SetName("P2");
+	
+	
+	State1->SetUpdateCallback(calltest);
+	std::vector<BaseStates*> listState;
+	listState.push_back(State1);
+	listState.push_back(State2);
+	
+
 	enum Test
 	{
-		BONJOUR,
-		AUREVOIR
+		PHASE1,
+		PHASE2
 	};
-	SM->TEST(Test::BONJOUR);
+	
+	SM->setStates(PHASE2, listState);
 
+	GameObject* SMGO = new GameObject;
+	SMGO->addComponent(SM);
+	moteur->addGameObject(SMGO);
+	
 	moteur->gameLoop();
 
 	delete moteur;

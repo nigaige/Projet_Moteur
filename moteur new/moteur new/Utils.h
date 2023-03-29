@@ -48,6 +48,8 @@ enum ComponentType {
 	RIGIDBODY
 
 };
+
+
 class GameObject;
 class Component;
 class Mesh;
@@ -58,6 +60,8 @@ class Moteur;
 class Shader;
 class Material;
 class BaseStates;
+class ObjectState;
+
 
 class StateMachine;
 
@@ -76,7 +80,9 @@ class ColliderManager;
 #include "Mesh.h"
 #include "Shader.h"
 #include "Camera.h"
-#include "States.h"
+#include "BaseStates.h"
+#include "ObjectState.h"
+
 #include "StateMachine.h"
 
 #include "RigidBody.h"
@@ -125,6 +131,9 @@ public:
 
 	static D3DXVECTOR3* triangleNormal(triangle* T);
 
+	template <typename T>
+	static int GetKeyViaValue(std::map<int, T*>, T* value);
+
 };
 
 template<typename T>
@@ -146,4 +155,17 @@ template<typename T>
 inline T* Utils::castToType(void* val)
 {
 	return static_cast<T*>(val);
+}
+template <typename T>
+inline int Utils::GetKeyViaValue(std::map<int, T*> mappy, T* value)
+{
+	int key;
+	for (auto& i : mappy) {
+		if (i.second == value) {
+			key = i.first;
+			break; // to stop searching
+		}
+	}
+	return key;
+
 }
