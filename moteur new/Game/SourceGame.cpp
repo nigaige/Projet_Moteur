@@ -4,7 +4,7 @@
 #include <crtdbg.h>
 #endif
 
-#include "Utils.h";
+#include "Utils.h"
 
 
 const int FIXED_UPDATE_INTERVAL = 16; // 16ms, equivalent to 60fps
@@ -29,11 +29,45 @@ int main(Moteur* moteur)
 	Mesh* meshPlayer;
 	meshPlayer = moteur->ImportingModel("./Mesh/BONGUSV2.x");
 
-	GameObject* playerParentRoad = new GameObject();
-	GameObject* playerParentRoll = new GameObject(playerParentRoad);
-	GameObject* player = new GameObject(playerParentRoll);
-//	GameObject* player = new GameObject();
 
+	GameObject* roadCenter = new GameObject();
+	GameObject* rollCenter = new GameObject();
+	GameObject* player = new GameObject();
+
+	player->addComponent(meshPlayer);
+	player->transform()->scale(D3DXVECTOR3(0.1f, 0.1f, 0.1f));
+	player->transform()->posY(-0.5f);
+	player->parent(rollCenter);
+
+	rollCenter->parent(roadCenter);
+	rollCenter->transform()->posY(3.f);
+	player->addComponent(new playerRolling);
+
+	roadCenter->addComponent(new playerRoll);
+
+
+
+
+	/*
+	playerParentRoll->addComponent(new playerRolling);
+	//playerParent->transform()->posY(4.f);
+	playerParentRoll->transform()->posY(3.f);
+	player->addComponent(new playerRoll);
+	playerParentRoad->addComponent(new playerRoll);
+	moteur->camera()->addComponent(new playerRoll);
+
+	//moteur->camera()->parent(playerParentRoad);
+
+
+	moteur->addGameObject(playerParentRoll);*/
+
+
+	moteur->addGameObject(roadCenter);
+	moteur->addGameObject(player);
+
+
+	//ROAD
+	
 	GameObject* a[10];
 	for (int x = 0; x < 10; ++x) {
 		MoveForward* roadcomponent = new MoveForward();
@@ -49,26 +83,9 @@ int main(Moteur* moteur)
 		a[x]->transform()->posZ(x * 10);
 		moteur->addGameObject(a[x]);
 	}	
+	
 
 
-	player->addComponent(meshPlayer);
-	player->transform()->scale(D3DXVECTOR3(0.1f, 0.1f, 0.1f));
-
-	playerParentRoad->addComponent(anchormesh);
-	playerParentRoll->addComponent(new playerRolling);
-	//playerParent->transform()->posY(4.f);
-	playerParentRoll->transform()->posY(3.f);
-	player->transform()->posY(-0.5f);
-	player->addComponent(new playerRoll);
-	playerParentRoad->addComponent(new playerRoll);
-	moteur->camera()->addComponent(new playerRoll);
-
-	//moteur->camera()->parent(playerParentRoad);
-
-
-	moteur->addGameObject(playerParentRoad);
-	moteur->addGameObject(playerParentRoll);
-	moteur->addGameObject(player);
 	moteur->gameLoop();
 
 	delete moteur;
@@ -92,7 +109,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 
 	Utils util;
-	util.DebugLogMessage("ok");
 
 	moteur = new Moteur(hInstance,
 		hPrevInstance,

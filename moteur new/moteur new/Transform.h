@@ -32,12 +32,18 @@ private:
 
 
 	D3DXMATRIX m_Transform_;//Final Value
+	D3DXMATRIX m_TransformWorld_;
+
+	bool updated = true;
+	GameObject* gameObject_ = nullptr;
 
 public:
-	Transform();
+	Transform(GameObject* gameObject = nullptr);
 	~Transform();//TODO
 
-	//TODO function add value
+	void gameObject(GameObject* go) { gameObject_ = go; }
+
+
 
 	//----------position--------
 	D3DXVECTOR3 position();
@@ -70,9 +76,13 @@ public:
 	void getARotation(float roll = NULL, float pitch = NULL, float yaw = NULL);
 
 	//---------FINAL-------------
-	void updateFinal();
-
-	D3DXMATRIX* displayValue();//Final Value
+	void toUpdate() { 
+		updated = false;
+		if (gameObject_ != nullptr)	gameObject_->setChildTransformToUpdate();
+	}
+	D3DXMATRIX* updateFinal(GameObject* parent = nullptr);
+	D3DXMATRIX* displayValue();	//Final Value
+	D3DXMATRIX* worldValue();	//Final Value in world coordinate
 
 
 	//-------UTILS--------------

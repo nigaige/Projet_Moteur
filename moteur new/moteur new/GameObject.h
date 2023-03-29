@@ -5,6 +5,7 @@ class GameObject
 {
 private:
 	GameObject* parent_ = nullptr;
+	std::vector<GameObject*> childList_;
 	Transform* transform_;
 	std::vector<Component*> componentList;
 	bool toDisplay_ = false;
@@ -21,23 +22,30 @@ public:
 	~GameObject();
 
 	void update();
+	D3DXMATRIX* updateTransform();
 
 	//TODO DESTRUCTOR DELETE THE COMPONENT
 
 	//	GET/SET
 	Transform* transform() { return transform_; }
 	void transform(Transform* trans) { transform_ = trans; }
-	D3DXMATRIX worldMatrix();
+	void setChildTransformToUpdate();
+
+	D3DXMATRIX* worldMatrix();
 
 	RigidBody* rb() { return rb_; }
 
 	bool toDisplay() { return toDisplay_; }
 	void toDisplay(bool display) { toDisplay_ = display; }
 
-	void parent(GameObject* go) { parent_ = go; }
+	void parent(GameObject* go) { 
+		parent_ = go; 
+		parent_->addChild(this);
+	}
 	GameObject* parent() { return parent_; }
 
-
+	void addChild(GameObject* go);
+	bool rmChild(GameObject* go);
 
 
 	void addComponent(Component* comp);

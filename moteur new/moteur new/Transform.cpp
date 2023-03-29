@@ -1,7 +1,8 @@
 #include "Utils.h"
 
-Transform::Transform()
+Transform::Transform(GameObject* gameObject)
 {
+	gameObject_ = gameObject;
 	D3DXMatrixIdentity(&m_Transform_);
 	v_scale_.x = 1;
 	v_scale_.y = 1;
@@ -38,7 +39,7 @@ void Transform::posY(float y)				{ v_position_.y = y; updatePosition(); }
 void Transform::posZ(float z) { v_position_.z = z; updatePosition(); }
 void Transform::updatePosition() {
 	D3DXMatrixTranslation(&m_position_, v_position_.x, v_position_.y, v_position_.z);
-	updateFinal();
+	toUpdate();
 }
 
 //----------Scale-----------
@@ -49,7 +50,7 @@ void Transform::scaleY(float y)				{ v_scale_.y = y; updateScale(); }
 void Transform::scaleZ(float z)				{ v_scale_.z = z; updateScale(); }
 void Transform::updateScale() {
 	D3DXMatrixScaling(&m_scale_, v_scale_.x, v_scale_.y, v_scale_.z);
-	updateFinal();
+	toUpdate();
 }
 
 //---------Rotation---------
@@ -125,7 +126,7 @@ void Transform::setARotation(float roll, float pitch, float yaw)
 	v_forward_->x = m_rotation_._31;
 	v_forward_->y = m_rotation_._32;
 	v_forward_->z = m_rotation_._33;
-	updateFinal();
+	toUpdate();
 
 }
 
@@ -144,20 +145,31 @@ void Transform::getARotation(float roll, float pitch, float yaw){
 	v_forward_->y	= m_rotation_._32;
 	v_forward_->z	= m_rotation_._33;
 
-	updateFinal();
+	toUpdate();
 }
 
 
 //-------------FINAL------------
-void Transform::updateFinal(){
+D3DXMATRIX* Transform::updateFinal(GameObject* parent){
+	if (updated) return &m_TransformWorld_;
 	m_Transform_ = m_scale_;
 	m_Transform_ *= m_rotation_;
 	m_Transform_ *= m_position_;
+	m_TransformWorld_ = m_Transform_;
+	if (parent != nullptr) {
+		m_TransformWorld_ *= *parent->updateTransform();
+	}
+	updated = true;
+	return &m_TransformWorld_;
 }
 
 D3DXMATRIX* Transform::displayValue()
 {
 	return &m_Transform_;
+}
+D3DXMATRIX* Transform::worldValue()
+{
+	return &m_TransformWorld_;
 }
 //-------UTILS---------
 std::string Transform::toString()

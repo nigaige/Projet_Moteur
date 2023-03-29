@@ -56,7 +56,7 @@ public:
 	void render(void);
 	void update(void);															//TODO MANAGE GLOBAL TIME
 	void fixedUpdate(void);															//TODO MANAGE GLOBAL TIME
-
+	void updateTransform(void);
 	Shader LoadShader(std::string* shaderPath);
 
 	Mesh* ImportingModel(std::string path);

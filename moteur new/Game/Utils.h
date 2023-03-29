@@ -21,5 +21,6 @@ class MoverForward;
 #include "MoveForward.h"
 #include "playerRoll.h"
 #include "playerRolling.h"
-
+#include "MoveForward.h"
+#include "player.h"
 
