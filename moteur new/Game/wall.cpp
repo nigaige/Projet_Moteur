@@ -1,1 +1,7 @@
-#include "wall.h"
+#include "Utils.h"
+
+
+void Wall::update() 
+{
+
+}

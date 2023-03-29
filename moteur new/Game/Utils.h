@@ -12,6 +12,7 @@
 class playerRoll;
 class playerRolling;
 class MoverForward;
+class Wall;
 
 
 
@@ -21,5 +22,6 @@ class MoverForward;
 #include "MoveForward.h"
 #include "playerRoll.h"
 #include "playerRolling.h"
+#include "wall.h"
 
 

@@ -1,10 +1,8 @@
-
-
 #ifdef _DEBUG
 #include <crtdbg.h>
 #endif
 
-#include "Utils.h";
+#include "Utils.h"
 
 
 const int FIXED_UPDATE_INTERVAL = 16; // 16ms, equivalent to 60fps

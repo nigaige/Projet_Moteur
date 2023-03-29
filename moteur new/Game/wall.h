@@ -1,5 +1,8 @@
 #pragma once
-class wall
+class Wall : public Component
 {
+
+public :
+	void update(); 
 };
 
