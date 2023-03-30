@@ -19,7 +19,7 @@ void InitGame::init()
 	anchormesh = moteur_->ImportingModel("./Mesh/cubeRose.x");
 	Mesh* meshPlayer;
 	meshPlayer = moteur_->ImportingModel("./Mesh/BONGUSV2.x");
-
+	
 	GameObject* playerParentRoad = new GameObject();
 	GameObject* playerParentRoll = new GameObject(playerParentRoad);
 	GameObject* player = new GameObject(playerParentRoll);
@@ -44,7 +44,6 @@ void InitGame::init()
 
 	player->addComponent(meshPlayer);
 	player->transform()->scale(D3DXVECTOR3(0.1f, 0.1f, 0.1f));
-
 	playerParentRoad->addComponent(anchormesh);
 	playerParentRoll->addComponent(new PlayerRolling());
 	//playerParent->transform()->posY(4.f);
