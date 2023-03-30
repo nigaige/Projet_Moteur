@@ -36,7 +36,7 @@ void InitGame::init()
 	player->addComponent(new PlayerRolling());
 
 	roadCenter->addComponent(new playerRoll);
-
+	
 
 
 	//ROAD
