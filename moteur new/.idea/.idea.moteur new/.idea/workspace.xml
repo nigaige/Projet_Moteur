@@ -5,11 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b4bc57b-d997-45c1-9e78-c4d6c5a14624" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.moteur new/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.moteur new/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/Game.vcxproj" beforeDir="false" afterPath="$PROJECT_DIR$/Game/Game.vcxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/Shader/Color.hlsl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/Shader/redCube.hlsl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/TESTIMPORT.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Game/SourceGame.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Game/SourceGame.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/moteur new/Moteur.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/moteur new/Moteur.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/moteur new/Moteur.h" beforeDir="false" afterPath="$PROJECT_DIR$/moteur new/Moteur.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
