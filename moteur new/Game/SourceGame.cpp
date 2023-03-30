@@ -43,7 +43,7 @@ int main(Moteur* moteur)
 #pragma region GameInit
 
 
-/*	Mesh* CubeMesh = moteur->ImportingModel("./Mesh/cube.x");
+	Mesh* CubeMesh = moteur->ImportingModel("./Mesh/cube.x");
 	Mesh* Playermesh = moteur->ImportingModel("./Mesh/BONGUSV2.x");
 	Mesh* CylinderMesh = moteur->ImportingModel("./Mesh/CylinderRail.x");
 
@@ -51,7 +51,7 @@ int main(Moteur* moteur)
 	Shader* Green = moteur->LoadShader("./Shader/Green.hlsl");
 	Shader* Blue = moteur->LoadShader("./Shader/Blue.hlsl");
 	Shader* Yellow = moteur->LoadShader("./Shader/Yellow.hlsl");
-	Shader* Pink = moteur->LoadShader("./Shader/Pink.hlsl");*/
+	Shader* Pink = moteur->LoadShader("./Shader/Pink.hlsl");
 
 
 
@@ -75,7 +75,7 @@ int main(Moteur* moteur)
 	
 
 	
-/*
+
 	GameObject* a[10];
 	for (int x = 0; x < 10; ++x) {
 		//MoveForward* roadcomponent = new MoveForward();
@@ -106,9 +106,11 @@ int main(Moteur* moteur)
 
 	RigidBody* rb = new RigidBody();
 
+
+
 	moteur->addGameObject(PlayerGo);
 
-	moteur->camera()->parent(PlayerGo);*/
+	moteur->camera()->parent(PlayerGo);
 
 	moteur->gameLoop();
 
