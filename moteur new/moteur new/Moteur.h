@@ -27,6 +27,7 @@ private:
 	static ID3DXFont* font;
 
 public:
+	HWND gethWnd() { return hWnd; }
 
     Moteur(HINSTANCE hInstance,
 		HINSTANCE hPrevInstance,
@@ -51,10 +52,12 @@ public:
 	void addGameObject(GameObject* go);
 	void addUiComponent(Ui* ui);
 	void rmGamObject(GameObject* go);
+	void rmUiComponent(Ui* ui);
 	void addMesh(Mesh* me);
 	void rmMesh(Mesh* me);
 
 	static ID3DXFont* getFont() { return font;  };
+	
 
 	//---------------GAMELOOOP
 	void gameLoop();															

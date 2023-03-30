@@ -1,15 +1,17 @@
 #pragma once
-class Ui
+class Ui: public Component
 {
+protected:
+	RECT fRectangle_;
+	std::string message_ = "";
+
 private:
 	ID3DXFont* font = Moteur::getFont();
-	RECT fRectangle_;
-	std::string message_;
-
+	
 public:
 
+	Ui();
 	void Draw();
-	Ui(RECT frectangle, std::string message);
 	~Ui();
 };
 

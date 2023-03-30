@@ -134,6 +134,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="buttonLaunchGame.cpp" />
+    <ClCompile Include="InitGame.cpp" />
+    <ClCompile Include="initMenu.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="playerRoll.cpp" />
     <ClCompile Include="playerRolling.cpp" />
@@ -143,6 +146,9 @@
     <ClCompile Include="wall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="buttonLaunchGame.h" />
+    <ClInclude Include="InitGame.h" />
+    <ClInclude Include="initMenu.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="MoveForward.h" />
     <ClInclude Include="playerRoll.h" />

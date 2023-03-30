@@ -2,5 +2,6 @@
 class PlayerRolling: public Component
 {
 	void update();
+	
 };
 

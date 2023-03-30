@@ -12,8 +12,9 @@
 class playerRoll;
 class playerRolling;
 class MoverForward;
-
-
+class InitMenu;
+class InitGame;
+class buttonLaunchGame;
 
 
 #include <thread>
@@ -21,5 +22,10 @@ class MoverForward;
 #include "MoveForward.h"
 #include "playerRoll.h"
 #include "playerRolling.h"
+#include "initMenu.h"
+#include "InitGame.h"
+#include "buttonLaunchGame.h"
+
+
 
 

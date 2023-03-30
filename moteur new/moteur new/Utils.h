@@ -11,6 +11,8 @@
 #include <cassert>
 #include <chrono>
 #include <map>
+#include <string>
+#include <sstream>  
 
 #include <d3d9.h>
 #include <d3dx9.h>

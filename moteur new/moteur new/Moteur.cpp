@@ -51,6 +51,8 @@ Moteur::Moteur(HINSTANCE hInstance,
 
 }
 
+
+
 Moteur::~Moteur()
 {
 	Utils::DeleteVector(GOList);
@@ -107,6 +109,7 @@ void Moteur::initD3D()
 	font = initText->initText(d3ddev);
 	if (FAILED(font))
 		Utils::DebugLogMessage("Failed import font");
+
 }
 
 void Moteur::loadMeshInScene(Mesh* MeshToLoad) {
@@ -242,12 +245,12 @@ void Moteur::render(void)
 				}
 			}
 		}
-		for (Ui* ui : uiElement) 
-		{
-			ui->Draw();
-		}
-	}
 
+	}
+	for (Ui* ui : uiElement) 
+	{
+		ui->Draw();
+	}
 	
 	d3ddev->EndScene();
 
@@ -327,6 +330,16 @@ void Moteur::rmGamObject(GameObject* go)
 		}
 	}
 	delete go;
+}
+void Moteur::rmUiComponent(Ui* ui)
+{
+	for (int i = 0; i < uiElement.size(); i++) {
+		if (uiElement[i] == ui) {
+			uiElement.erase(uiElement.begin() + i, uiElement.begin() + i + 1);
+			return;
+		}
+	}
+	delete ui;
 }
 
 
