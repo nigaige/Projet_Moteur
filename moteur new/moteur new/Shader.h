@@ -7,10 +7,11 @@ private:
 
 	D3DXHANDLE handleTechnique_ = nullptr;
 	D3DXHANDLE handleMatrixWVP_ = nullptr;
+	std::string path_;
 
 public:
 
-	Shader(LPD3DXEFFECT shaderBuffer);
+	Shader(std::string path);
 	~Shader();
 
 	LPD3DXEFFECT shaderBuffer()						{ return shaderBuffer_; }
@@ -19,4 +20,6 @@ public:
 
 	void SetMatrix(D3DXMATRIX* wvpMat);
 
+
+	void LoadShader(LPDIRECT3DDEVICE9* d3ddev);
 };

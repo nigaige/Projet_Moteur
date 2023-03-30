@@ -135,6 +135,8 @@ public:
 
 	static D3DXVECTOR3* triangleNormal(triangle* T);
 
+	static std::vector<std::string> split(std::string s, std::string delimiter);
+
 	template <typename T>
 	static int GetKeyViaValue(std::map<int, T*>, T* value);
 

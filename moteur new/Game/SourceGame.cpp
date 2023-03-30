@@ -41,10 +41,12 @@ int main(Moteur* moteur)
 
 	P->Filename("TESTIMPORT.txt");
 	P->ParseAll();
-	
+	moteur->setGoList(P->GOlist);
+	moteur->setMeList(P->MElist);
 
 
-	Mesh* meshCube;
+
+	/*Mesh* meshCube;
 	meshCube = moteur->ImportingModel("./Mesh/cylinder2.x");
 	Mesh* anchormesh;
 	anchormesh = moteur->ImportingModel("./Mesh/cubeRose.x");

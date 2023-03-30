@@ -164,17 +164,17 @@ void Moteur::gameLoop()
 
 }
 
-void Moteur::renderMaterial(Mesh* mesh)
+void Moteur::renderMaterial(GameObject* go,Mesh* mesh)
 {
 	for (DWORD i = 0; i < mesh->matCount(); i++)
 	{
 		d3ddev->SetMaterial(&mesh->meshMaterials()[i]);
 		if (mesh->meshTexture() != NULL)
 		{
-			if (mesh->shader() == NULL)
+			if (go->shaderFinder(mesh) == NULL)
 				d3ddev->SetTexture(0, mesh->meshTexture()[i]);
 			else
-				mesh->shader()->shaderBuffer()->SetTexture(0, mesh->meshTexture()[i]);
+				go->shaderFinder(mesh)->shaderBuffer()->SetTexture(0, mesh->meshTexture()[i]);
 		}
 		mesh->importedMesh()->DrawSubset(i);
 	}
@@ -199,7 +199,7 @@ void Moteur::render(void)
 		d3ddev->SetTransform(D3DTS_WORLD, &rendu);    // set the projection
 
 		for (Mesh* mesh : go->meshToDraw()) {
-
+			mesh->loadMesh(&d3ddev);
 			if (mesh->importedMesh() == NULL)
 			{
 				d3ddev->SetTransform(D3DTS_WORLD, go->transform()->displayValue());    // set the projection
@@ -207,33 +207,34 @@ void Moteur::render(void)
 				d3ddev->DrawPrimitive(mesh->primitivMethode(), 0, mesh->Primitiv());
 			}else
 			{
-				if (mesh->shader() != NULL)
+				if (go->shaderFinder(mesh) != NULL)
 				{
+					go->shaderFinder(mesh)->LoadShader(&d3ddev);
 					D3DXMATRIX matWPV = *go->transform()->displayValue();  //TODO worldMat
 					matWPV *= *cameraComponent->matView();
 					matWPV *= *cameraComponent->matProj();
 
 
 					UINT passCount;
-					mesh->shader()->shaderBuffer()->Begin(&passCount, NULL);
+					go->shaderFinder(mesh)->shaderBuffer()->Begin(&passCount, NULL);
 
 					for (int ipass = 0; ipass < passCount; ipass++)
 					{
-						mesh->shader()->shaderBuffer()->BeginPass(ipass); // Sélectionner la première passe de la technique
+						go->shaderFinder(mesh)->shaderBuffer()->BeginPass(ipass); // Sélectionner la première passe de la technique
 
-						mesh->shader()->SetMatrix(&matWPV);
-						mesh->shader()->shaderBuffer()->CommitChanges();
+						go->shaderFinder(mesh)->SetMatrix(&matWPV);
+						go->shaderFinder(mesh)->shaderBuffer()->CommitChanges();
 
-						renderMaterial(mesh);
+						renderMaterial(go, mesh);
 
-						mesh->shader()->shaderBuffer()->EndPass();
+						go->shaderFinder(mesh)->shaderBuffer()->EndPass();
 					}
 
-					mesh->shader()->shaderBuffer()->End();
+					go->shaderFinder(mesh)->shaderBuffer()->End();
 				}
 				else 
 				{
-					renderMaterial(mesh);
+					renderMaterial(go,mesh);
 				}
 			}
 		}
@@ -335,12 +336,21 @@ void Moteur::rmMesh(Mesh* me)
 	delete me;
 }
 
-
+void Moteur::setGoList(std::vector<GameObject*> list)
+{
+	GOList.insert(GOList.end(), list.begin(), list.end());
+}
+void Moteur::setMeList(std::vector<Mesh*> list)
+{
+	MeList.insert(MeList.end(), list.begin(), list.end());
+}
 /// <summary>
 /// Return a pointeur of Shader by .hlsl pathfile
 /// </summary>
 /// <param name="shaderPath">String shaderPath of .hlsl file</param>
 /// <returns>Shader* new Shader()</returns>
+/// 
+/*
 Shader* Moteur::LoadShader(std::string* shaderPath)
 {
 	LPD3DXEFFECT shaderBuff;
@@ -367,7 +377,7 @@ Shader* Moteur::LoadShader(std::string* shaderPath)
 	}
 
 	return new Shader(shaderBuff);
-}
+}*/
 
 /// <summary>
 /// Return a pointeur of a Mesh by .x filepath

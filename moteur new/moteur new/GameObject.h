@@ -9,6 +9,7 @@ private:
 	std::vector<Component*> componentList;
 	bool toDisplay_ = false;
 	std::vector<Mesh*> MeshList;
+	std::map<Mesh*, Shader*> MeshlinkShader;
 	std::vector<Collider*> ColliderList;
 	RigidBody* rb_ = nullptr;
 
@@ -39,8 +40,8 @@ public:
 	GameObject* parent() { return parent_; }
 
 
-
-
+	Shader* shaderFinder(Mesh* Mesh);
+	void setShaderLinker(Mesh* Mesh, Shader* Shader);
 	void addComponent(Component* comp);
 	bool rmComponent(Component* comp);
 	bool rmComponent(int index);

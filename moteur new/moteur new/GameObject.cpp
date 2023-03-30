@@ -67,6 +67,16 @@ D3DXMATRIX GameObject::worldMatrix()
 	return world;
 }
 
+Shader* GameObject::shaderFinder(Mesh* Mesh)
+{
+	return MeshlinkShader.find(Mesh)->second;
+}
+
+void GameObject::setShaderLinker(Mesh* Mesh_, Shader* Shader_)
+{
+	MeshlinkShader.insert(std::pair<Mesh*, Shader*>(Mesh_, Shader_));
+}
+
 void GameObject::addComponent(Component* comp)
 {
 
