@@ -17,7 +17,7 @@ void InitGame::init()
 
 
 
-
+	/*
 	Mesh* meshCube = moteur_->ImportingModel("./Mesh/cylinder2.x");
 	Mesh* anchormesh = moteur_->ImportingModel("./Mesh/cubeRose.x");
 	Mesh* meshPlayer = moteur_->ImportingModel("./Mesh/BONGUSV2.x");
@@ -43,7 +43,7 @@ void InitGame::init()
 	player->addComponent(new PlayerRolling());
 
 	roadCenter->addComponent(new playerRoll);
-
+	
 
 
 	//ROAD
@@ -64,10 +64,10 @@ void InitGame::init()
 		moteur_->addGameObject(a[x]);
 	}
 
-
+	*/
 
 	Parser* testParsing = new Parser();
-	testParsing->Filename("FORMAIN.txt");
+	testParsing->Filename("ImportWall.txt");
 	testParsing->ParseAll();
 
 	std::vector<GameObject*> GOList = testParsing->GOlist();

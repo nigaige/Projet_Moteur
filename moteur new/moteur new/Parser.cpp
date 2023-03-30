@@ -1,31 +1,49 @@
 #include "Utils.h"
 #include<sstream>
-//using namespace std;
+Parser::Parser(bool DrawDebug)
+{
+	DrawDebug_ = DrawDebug;
+}
+
+Parser::~Parser()
+{
+	for (Shader* sh : SHlist_) delete sh;
+	for (GameObject* go : GOlist_) delete go;
+	for (Mesh* me : MElist_) delete me;
+	for (Collider* col : COlist_) delete col;
+}
+
+
 void Parser::ParseAll()
 {
 	std::ifstream File;
 	std::string line;
 
 	std::string delimiter = " ";
+
 	std::vector<std::string> vect;
+
+
 	GameObject* currentGO = nullptr;
 	Mesh* currentME = nullptr;
 	Shader* currentSH = nullptr;
+
 	D3DXVECTOR3 vectfloat = D3DXVECTOR3(0.0f,0.0f,0.0f);
-	File.open(Filename_);
+	
+	File.open(Filename_); // open the map file
 	
 	if (File.is_open())
 	{
 		while (getline(File, line))
-			
-			//
+
 			switch (line[0])
 			{
 			case '-' :
 				
 				if (line == "--Mesh:")
 				{
-					Utils::DebugLogMessage("MESH DECLARATION FINDED");
+					if(DrawDebug_)
+						Utils::DebugLogMessage("MESH DECLARATION FINDED");
 					getline(File, line);
 					currentME = new Mesh(line);
 					MElist_.push_back(currentME);
@@ -33,7 +51,8 @@ void Parser::ParseAll()
 				}
 				if (line == "--Shader:")
 				{
-					Utils::DebugLogMessage("SHADER DECLARATION FINDED");
+					if (DrawDebug_)
+						Utils::DebugLogMessage("SHADER DECLARATION FINDED");
 					getline(File, line);
 					currentSH = new Shader(line);
 					SHlist_.push_back(currentSH);
@@ -41,7 +60,8 @@ void Parser::ParseAll()
 				}
 				if (line == "--Gameobject:")
 				{
-					Utils::DebugLogMessage("GAMEOBJECT DECLARATION FINDED");
+					if (DrawDebug_)
+						Utils::DebugLogMessage("GAMEOBJECT DECLARATION FINDED");
 					currentGO = new GameObject();
 					GOlist_.push_back(currentGO);
 					break;
@@ -49,7 +69,8 @@ void Parser::ParseAll()
 				
 				break;
 			case 'T':
-				Utils::DebugLogMessage("TRANSFORM TOKEN FINDED");
+				if (DrawDebug_)
+					Utils::DebugLogMessage("TRANSFORM TOKEN FINDED");
 				delimiter = ',';
 
 				//position
@@ -68,12 +89,13 @@ void Parser::ParseAll()
 					getline(File, line);
 					vect = Utils::split(line, delimiter);
 					vectfloat = D3DXVECTOR3(std::stof(vect[0]), std::stof(vect[1]), std::stof(vect[2]));
-					currentGO->transform()->setARotation(vectfloat[0],vectfloat[1], vectfloat[3]); //todo degtorad ?
+					currentGO->transform()->setARotation(Utils::DegToRad(vectfloat[0]),Utils::DegToRad(vectfloat[1]), Utils::DegToRad(vectfloat[2])); //todo degtorad ?
 					Utils::DebugLogMessage(&line);
 					break;
 
 			case 'C':
-				Utils::DebugLogMessage("COMPONENT TOKEN FINDED");
+				if (DrawDebug_)
+					Utils::DebugLogMessage("COMPONENT TOKEN FINDED");
 				delimiter = ' ';
 				vect = Utils::split(line, delimiter);
 
@@ -89,11 +111,13 @@ void Parser::ParseAll()
 				{
 					bool op;
 					delimiter = ',';
-					Utils::DebugLogMessage("	THIS COMPONENT TOKEN IS A COLLIDER");
+					if (DrawDebug_)
+						Utils::DebugLogMessage("	THIS COMPONENT TOKEN IS A COLLIDER");
 					getline(File, line);
 					if (line == "Cube")
 					{
-						Utils::DebugLogMessage("		THIS COLLIDER IS A CUBE");
+						if (DrawDebug_)
+							Utils::DebugLogMessage("		THIS COLLIDER IS A CUBE");
 						getline(File, line);
 
 						vect = Utils::split(line, delimiter);
@@ -116,8 +140,9 @@ void Parser::ParseAll()
 						
 					}
 					if (line == "Sphere")
-					{
-						Utils::DebugLogMessage("		THIS COLLIDER IS A SPHERE");
+					{	
+						if (DrawDebug_)
+							Utils::DebugLogMessage("		THIS COLLIDER IS A SPHERE");
 						getline(File, line);
 
 						vect = Utils::split(line, delimiter);
@@ -143,7 +168,8 @@ void Parser::ParseAll()
 				}
 				if (vect[1] == "RigidBody")
 				{
-					Utils::DebugLogMessage("	THIS COMPONENT TOKEN IS A RIGIDBODY");
+					if (DrawDebug_)
+						Utils::DebugLogMessage("	THIS COMPONENT TOKEN IS A RIGIDBODY");
 					delimiter = ',';
 					RigidBody* rb = new RigidBody();
 					
@@ -162,7 +188,8 @@ void Parser::ParseAll()
 				}
 				if (vect[1] == "Shader")
 				{
-					Utils::DebugLogMessage("	THIS COMPONENT TOKEN IS A SHADER");
+					if (DrawDebug_)
+						Utils::DebugLogMessage("	THIS COMPONENT TOKEN IS A SHADER");
 					getline(File, line);
 					int indexShader = std::stoi(line);
 					getline(File, line);
@@ -171,8 +198,13 @@ void Parser::ParseAll()
 					break;
 				}
 				
+			default:	
+				Utils::DebugLogMessage("UNKNOW TOKEN");
+				break;
+			}
+			
 				
-				}
+
 
 	}
 

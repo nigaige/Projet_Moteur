@@ -8,17 +8,20 @@ private :
 	std::vector<Mesh*> MElist_;
 	std::vector<Collider*> COlist_;
 
+	bool DrawDebug_ = true;
+
 public :
-	void Filename(std::string path) { Filename_ = path; }
-	std::string Filename()			{ return Filename_; }
+	Parser(bool DrawDebug = true);
+	~Parser();
 
+	// GETTER / SETTER
+	void Filename(std::string path)		{ Filename_ = path; }
+	std::string Filename()				{ return Filename_; }
 
-
-	std::vector<Shader*> SHlist() { return SHlist_; }
-	std::vector<GameObject*> GOlist() { return GOlist_; }
-	std::vector<Mesh*> MElist() { return MElist_; }
-	std::vector<Collider*> COlist() { return COlist_; }
-
+	std::vector<Shader*> SHlist()		{ return SHlist_; }
+	std::vector<GameObject*> GOlist()	{ return GOlist_; }
+	std::vector<Mesh*> MElist()			{ return MElist_; }
+	std::vector<Collider*> COlist()		{ return COlist_; }
 
 
 	void ParseAll();
