@@ -3,10 +3,6 @@
 //using namespace std;
 void Parser::ParseAll()
 {
-	D3DXVECTOR3* Pos = new D3DXVECTOR3();
-	D3DXVECTOR3* Sca = new D3DXVECTOR3();
-	D3DXVECTOR3* Rot = new D3DXVECTOR3();
-	
 	std::ifstream File;
 	std::string line;
 	
@@ -172,7 +168,7 @@ void Parser::ParseAll()
 					int indexShader = std::stoi(line);
 					getline(File, line);
 					int indexMesh = std::stoi(line);
-					currentGO->setShaderLinker(MElist[indexMesh], SHlist[indexShader]);
+					currentGO->setShaderLinker(currentGO->GetMeshList()[indexMesh], SHlist[indexShader]);
 					break;
 				}
 				

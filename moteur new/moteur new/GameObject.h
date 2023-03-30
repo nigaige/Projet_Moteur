@@ -36,10 +36,10 @@ public:
 	bool toDisplay()					{ return toDisplay_; }
 	void toDisplay(bool display)		{ toDisplay_ = display; }
 
-	void parent(GameObject* go) { parent_ = go; }
-	GameObject* parent() { return parent_; }
+	void parent(GameObject* go)			{ parent_ = go; }
+	GameObject* parent()				{ return parent_; }
 
-
+	std::vector<Mesh*>GetMeshList()		{ return MeshList; }
 	Shader* shaderFinder(Mesh* Mesh);
 	void setShaderLinker(Mesh* Mesh, Shader* Shader);
 	void addComponent(Component* comp);

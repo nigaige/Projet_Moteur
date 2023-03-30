@@ -1,28 +1,58 @@
+
+					//Define Mesh 0
 --Mesh:
-./Mesh/BONGUSV2.x
+					//Path to Mesh
+./Mesh/BONGUSV2.x	
+					//DEfine Mesh 1
+--Mesh:
+./Mesh/BONGUSV3.x
+					//Define Shader
 --Shader:
+					//Path to Shader
 ./Shader/red.hlsl
+
+					//define GameObject
 --Gameobject:
 					//TODO PARENT
+					//Transform
 T:
-2.0,0.0,0.0;
+					//Position x,y,z
+2.0,0.0,0.0;		
+					//Scale x,y,z
 0.1,0.1,0.1;
+					//Rotation en Degree roll,pitch,yaw
 0.0,0.0,0.0;
+					//Define Component ->Mesh
 C: Mesh
+					//index of mesh see above
 0
+					//Define Component ->RigidBody
 C: RigidBody
-1,1;
+					//isKinematic,hasGravity
+1,1;	
+					//Define Component ->Collider
 C: Collider
+					//Type of collider
 Cube
+					// position of center
 1.0,1.2,0;
+					// size x,y,z
 4.0,1.0,2.0;
+					//isTrigger?
 1
+					//Define Component ->Collider
 C: Collider
 Sphere
+					// position of center
 1.0,2.0,3.0;
+					// sphere radius
 4.0;
+					//isTrigger?
 0;
+					//Define Component ->Shader in Gameobject
 C: Shader
+					//index of shader
 0;
+					//index of the mesh in the gameobject
 0;
 
