@@ -48,7 +48,8 @@ enum States
 
 enum ComponentType {
 	COMPONENT,
-	RIGIDBODY
+	RIGIDBODY,
+	COLLIDER
 
 };
 

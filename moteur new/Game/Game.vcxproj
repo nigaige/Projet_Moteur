@@ -149,11 +149,19 @@
     <ClInclude Include="InitGame.h" />
     <ClInclude Include="initMenu.h" />
     <ClInclude Include="player.h" />
+    <ClCompile Include="CreateGameObject.cpp" />
+    <ClCompile Include="LevelGenerator.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SourceGame.cpp" />
+    <ClCompile Include="MoveForward.cpp" />
+    <ClCompile Include="UtilsGame.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CreateGameObject.h" />
+    <ClInclude Include="LevelGenerator.h" />
     <ClInclude Include="MoveForward.h" />
-    <ClInclude Include="playerRoll.h" />
-    <ClInclude Include="playerRolling.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Utils.h" />
-    <ClInclude Include="wall.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="TESTIMPORT.txt" />

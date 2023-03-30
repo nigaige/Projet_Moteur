@@ -10,6 +10,7 @@ private:
 	std::string path_;
 
 public:
+	std::string name;
 
 	Shader(std::string path);
 	~Shader();

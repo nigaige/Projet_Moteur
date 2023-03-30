@@ -1,24 +1,20 @@
 #pragma once
 
-
-
-
-
-
-
-
 #include <Utils.h>
 
-class playerRoll;
-class playerRolling;
+class Player;
 class MoverForward;
 class InitMenu;
 class InitGame;
 class buttonLaunchGame;
+class CreateGameObject;
+class LevelGenerator;
 
 
 #include <thread>
+
 #include "GoTester.h"
+#include "Player.h"
 #include "MoveForward.h"
 #include "playerRoll.h"
 #include "playerRolling.h"
@@ -29,5 +25,7 @@ class buttonLaunchGame;
 #include "buttonLaunchGame.h"
 
 
+#include "CreateGameObject.h"
+#include "LevelGenerator.h"
 
 

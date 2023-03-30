@@ -193,10 +193,8 @@ void Moteur::renderMaterial(GameObject* go,Mesh* mesh)
 
 void Moteur::render(void)
 {
-	
 	d3ddev->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 	d3ddev->Clear(0, NULL, D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
-
 
 	d3ddev->BeginScene();
 
@@ -254,7 +252,7 @@ void Moteur::render(void)
 	{
 		ui->Draw();
 	}
-	
+			
 	d3ddev->EndScene();
 
 	d3ddev->Present(NULL, NULL, NULL, NULL);
@@ -286,7 +284,6 @@ void Moteur::updateTransform(void)
 		go->updateTransform();
 	}
 }
-
 
 void Moteur::setUpCamera() {
 
@@ -321,9 +318,14 @@ GameObject* Moteur::camera()
 	return camera_;
 }
 
-
 void Moteur::addGameObject(GameObject* go)
 {
+
+	for (Component* goCollider : go->findAllComponents(ComponentType::COLLIDER))
+	{
+		colliderManager_->addCollider((Collider*)goCollider);
+	}
+
 	GOList.push_back(go);
 }
 
@@ -352,7 +354,6 @@ void Moteur::rmUiComponent(Ui* ui)
 	}
 	delete ui;
 }
-
 
 void Moteur::addMesh(Mesh* me)
 {
@@ -394,7 +395,7 @@ Shader* Moteur::LoadShader(std::string* shaderPath)
 	
 	HRESULT hr = D3DXCreateEffectFromFileA(
 	d3ddev, // Pointeur vers l'interface du périphérique Direct3D
-	shaderPath->c_str(), // Nom du fichier HLSL
+	shaderPath.c_str(), // Nom du fichier HLSL
 	NULL, // Tableau des macros de préprocesseur (optionnel)
 	NULL, // Interface de rappel pour les messages (optionnel)
 	D3DXSHADER_PACKMATRIX_COLUMNMAJOR | D3DXSHADER_DEBUG, // Options de compilation
@@ -408,6 +409,12 @@ Shader* Moteur::LoadShader(std::string* shaderPath)
 		m_hT = shaderBuff->GetTechniqueByName("Default");
 		m_hMat = shaderBuff->GetParameterByName(m_hT, "worldViewProj");
 		int a = 0;
+		return new Shader(shaderBuff);
+	}
+	else 
+	{
+		Utils::DebugLogMessage("Error on Shader import");
+		return NULL;
 	}
 
 	return new Shader(shaderBuff);
