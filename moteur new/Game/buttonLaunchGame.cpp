@@ -21,7 +21,7 @@ void buttonLaunchGame::LaunchGame()
 
 }
 
-void buttonLaunchGame::fixedUpdate()
+void buttonLaunchGame::update()
 {
 
 	if (GetWindowRect(moteur_->gethWnd(), &windowSize))

@@ -158,13 +158,12 @@ void Moteur::loadMeshInScene(Mesh* MeshToLoad) {
 
 void Moteur::gameLoop()
 {
-	auto lastUpdateTime = std::chrono::high_resolution_clock::now();
 
 	MSG msg = { 0 };
 
 	while (WM_QUIT != msg.message)
 	{
-		lastUpdateTime = std::chrono::high_resolution_clock::now();
+		auto lastUpdateTime = std::chrono::high_resolution_clock::now();
 
 
 
@@ -178,12 +177,12 @@ void Moteur::gameLoop()
 			//TIME
 			auto currentTime = std::chrono::high_resolution_clock::now();
 			auto deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastUpdateTime);
-			s_deltaTime_ = deltaTime.count();
+			Moteur::s_deltaTime_ = deltaTime.count();
 
 			//UPDATE
 			update();
 			//DO FIXED UPDATE?
-			if (s_deltaTime_ >= FIXED_UPDATE_INTERVAL)
+			if (Moteur::s_deltaTime_ >= FIXED_UPDATE_INTERVAL)
 			{
 				fixedUpdate();
 				lastUpdateTime = currentTime;
@@ -203,7 +202,7 @@ void Moteur::renderMaterial(GameObject* go,Mesh* mesh)
 		d3ddev->SetMaterial(&mesh->meshMaterials()[i]);
 		if (mesh->meshTexture() != NULL)
 		{
-			if (go->shaderFinder(mesh) == NULL)
+			if (go->shaderFinder(mesh) == nullptr)
 				d3ddev->SetTexture(0, mesh->meshTexture()[i]);
 			else
 				go->shaderFinder(mesh)->shaderBuffer()->SetTexture(0, mesh->meshTexture()[i]);
@@ -230,48 +229,46 @@ void Moteur::render(void)
 		d3ddev->SetTransform(D3DTS_WORLD, go->transform()->worldValue());    // set the projection
 
 		for (Mesh* mesh : go->meshToDraw()) {
-			mesh->loadMesh(&d3ddev);
+			//Used with manual vertex
 			if (mesh->importedMesh() == NULL)
 			{
-				d3ddev->SetTransform(D3DTS_WORLD, go->transform()->displayValue());    // set the projection
 				d3ddev->SetStreamSource(0, mesh->Vbuffer(), 0, sizeof(CUSTOMVERTEX));
 				d3ddev->DrawPrimitive(mesh->primitivMethode(), 0, mesh->Primitiv());
-			}else
+
+			}else if (go->shaderFinder(mesh) != nullptr)
 			{
-				if (go->shaderFinder(mesh) != NULL)
+				D3DXMATRIX matWPV = *go->transform()->displayValue();  //TODO worldMat
+				matWPV *= *cameraComponent->matView();
+				matWPV *= *cameraComponent->matProj();
+
+
+				UINT passCount;
+				Shader* shad = go->shaderFinder(mesh);
+				shad->shaderBuffer()->Begin(&passCount, NULL);
+
+				for (int ipass = 0; ipass < passCount; ipass++)
 				{
-					go->shaderFinder(mesh)->LoadShader(&d3ddev);
-					D3DXMATRIX matWPV = *go->transform()->displayValue();  //TODO worldMat
-					matWPV *= *cameraComponent->matView();
-					matWPV *= *cameraComponent->matProj();
+					shad->shaderBuffer()->BeginPass(ipass); // Sélectionner la première passe de la technique
 
+					shad->SetMatrix(&matWPV);
+					shad->shaderBuffer()->CommitChanges();
 
-					UINT passCount;
-					go->shaderFinder(mesh)->shaderBuffer()->Begin(&passCount, NULL);
+					renderMaterial(go, mesh);
 
-					for (int ipass = 0; ipass < passCount; ipass++)
-					{
-						go->shaderFinder(mesh)->shaderBuffer()->BeginPass(ipass); // Sélectionner la première passe de la technique
-
-						go->shaderFinder(mesh)->SetMatrix(&matWPV);
-						go->shaderFinder(mesh)->shaderBuffer()->CommitChanges();
-
-						renderMaterial(go, mesh);
-
-						go->shaderFinder(mesh)->shaderBuffer()->EndPass();
-					}
-
-					go->shaderFinder(mesh)->shaderBuffer()->End();
+					shad->shaderBuffer()->EndPass();
 				}
-				else 
-				{
-					renderMaterial(go,mesh);
-				}
+
+				shad->shaderBuffer()->End();
+			}else 
+			{
+				renderMaterial(go,mesh);
 			}
+			
 		}
 
 		
 	}
+
 	for (Ui* ui : uiElement) 
 	{
 		ui->Draw();
@@ -406,17 +403,15 @@ void Moteur::setMeList(std::vector<Mesh*> list)
 /// <param name="shaderPath">String shaderPath of .hlsl file</param>
 /// <returns>Shader* new Shader()</returns>
 /// 
-/*
-Shader* Moteur::LoadShader(std::string* shaderPath)
+
+void Moteur::LoadShader(Shader* sh)
 {
 	LPD3DXEFFECT shaderBuff;
-	D3DXHANDLE m_hT;
-	D3DXHANDLE m_hMat;
 	ID3DXBuffer* errors = NULL;
 	
 	HRESULT hr = D3DXCreateEffectFromFileA(
 	d3ddev, // Pointeur vers l'interface du périphérique Direct3D
-	shaderPath->c_str(), // Nom du fichier HLSL
+	sh->path().c_str(), // Nom du fichier HLSL
 	NULL, // Tableau des macros de préprocesseur (optionnel)
 	NULL, // Interface de rappel pour les messages (optionnel)
 	D3DXSHADER_PACKMATRIX_COLUMNMAJOR | D3DXSHADER_DEBUG, // Options de compilation
@@ -427,13 +422,12 @@ Shader* Moteur::LoadShader(std::string* shaderPath)
 
 	if(hr == D3D_OK)
 	{
-		m_hT = shaderBuff->GetTechniqueByName("Default");
-		m_hMat = shaderBuff->GetParameterByName(m_hT, "worldViewProj");
-		int a = 0;
+		sh->handleTechnique(shaderBuff->GetTechniqueByName("Default"));
+		sh->handleMatrixWVP(shaderBuff->GetParameterByName(*sh->handleTechnique(), "worldViewProj"));
 	}
 
-	return new Shader(shaderBuff);
-}*/
+	sh->shaderBuffer(shaderBuff);
+}
 
 /// <summary>
 /// Return a pointeur of a Mesh by .x filepath
@@ -496,3 +490,46 @@ Mesh* Moteur::ImportingModel(std::string path)
 	return resultMesh;
 }
 
+
+void Moteur::loadMesh(Mesh* me)
+{
+	LPD3DXBUFFER materialBuffer = NULL;
+	DWORD numMaterial = 0;
+	LPD3DXMESH mesh = nullptr;
+
+	HRESULT hr = D3DXLoadMeshFromXA(me->path().c_str(), D3DXMESH_MANAGED, d3ddev, NULL, &materialBuffer, NULL, &numMaterial, &mesh); //Import mesh in meshImp
+	if (FAILED(hr))
+		Utils::DebugLogMessage("Failed import model");
+
+	me->importedMesh(mesh);
+	me->materialBuffer(materialBuffer);
+	me->matCount(numMaterial);
+
+	D3DXMATERIAL* materials = (D3DXMATERIAL*)me->materialBuffer()->GetBufferPointer();
+
+	me->meshMaterials(new D3DMATERIAL9[me->matCount()]);
+	me->meshTexture(new LPDIRECT3DTEXTURE9[me->matCount()]);
+
+	if (me->meshMaterials() != NULL)
+	{
+		for (DWORD i = 0; i < numMaterial; i++)
+		{
+			me->meshMaterials()[i] = materials[i].MatD3D;
+			me->meshMaterials()[i].Ambient = me->meshMaterials()[i].Diffuse;
+			if (materials[i].pTextureFilename != NULL)
+			{
+				if (FAILED(D3DXCreateTextureFromFileA(d3ddev, materials[i].pTextureFilename, &me->meshTexture()[i])))
+				{
+					Utils::DebugLogMessage("IMAGE NOT FOUND");
+					me->meshTexture()[i] = NULL;
+				}
+			}
+			else
+			{
+				me->meshTexture()[i] = NULL;
+			}
+		}
+	}
+
+	materialBuffer->Release();
+}

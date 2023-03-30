@@ -9,7 +9,7 @@ public:
 
 	ID3DXFont* initText(LPDIRECT3DDEVICE9 d3ddev);
 
-	~InitText() { delete font; }
+	~InitText() { }
 
 };
 

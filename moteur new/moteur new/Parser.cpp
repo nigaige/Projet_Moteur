@@ -5,13 +5,12 @@ void Parser::ParseAll()
 {
 	std::ifstream File;
 	std::string line;
-	
+
 	std::string delimiter = " ";
 	std::vector<std::string> vect;
 	GameObject* currentGO = nullptr;
 	Mesh* currentME = nullptr;
 	Shader* currentSH = nullptr;
-	std::vector<Shader*> SHlist;
 	D3DXVECTOR3 vectfloat = D3DXVECTOR3(0.0f,0.0f,0.0f);
 	File.open(Filename_);
 	
@@ -29,7 +28,7 @@ void Parser::ParseAll()
 					Utils::DebugLogMessage("MESH DECLARATION FINDED");
 					getline(File, line);
 					currentME = new Mesh(line);
-					MElist.push_back(currentME);
+					MElist_.push_back(currentME);
 					break;
 				}
 				if (line == "--Shader:")
@@ -37,14 +36,14 @@ void Parser::ParseAll()
 					Utils::DebugLogMessage("SHADER DECLARATION FINDED");
 					getline(File, line);
 					currentSH = new Shader(line);
-					SHlist.push_back(currentSH);
+					SHlist_.push_back(currentSH);
 					break;
 				}
 				if (line == "--Gameobject:")
 				{
 					Utils::DebugLogMessage("GAMEOBJECT DECLARATION FINDED");
 					currentGO = new GameObject();
-					GOlist.push_back(currentGO);
+					GOlist_.push_back(currentGO);
 					break;
 				}
 				
@@ -83,7 +82,7 @@ void Parser::ParseAll()
 					Utils::DebugLogMessage("	THIS COMPONENT TOKEN IS A MESH");
 					getline(File, line);
 					int indexMesh = std::stoi(line);
-					currentGO->addComponent(MElist[indexMesh]);
+					currentGO->addComponent(MElist_[indexMesh]);
 					break;
 				}
 				if (vect[1] == "Collider")
@@ -112,7 +111,7 @@ void Parser::ParseAll()
 
 
 						currentGO->addComponent(cc);
-						COlist.push_back(cc);
+						COlist_.push_back(cc);
 						break;
 						
 					}
@@ -136,7 +135,7 @@ void Parser::ParseAll()
 
 
 						currentGO->addComponent(cs);
-						COlist.push_back(cs);
+						COlist_.push_back(cs);
 						break;
 					}
 					
@@ -168,7 +167,7 @@ void Parser::ParseAll()
 					int indexShader = std::stoi(line);
 					getline(File, line);
 					int indexMesh = std::stoi(line);
-					currentGO->setShaderLinker(currentGO->GetMeshList()[indexMesh], SHlist[indexShader]);
+					currentGO->setShaderLinker(currentGO->GetMeshList()[indexMesh], SHlist_[indexShader]);
 					break;
 				}
 				

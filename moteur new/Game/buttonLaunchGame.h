@@ -14,7 +14,7 @@ private:
 public:
 	buttonLaunchGame(Moteur* moteur);
 	void LaunchGame();
-	void fixedUpdate();
+	void update();
 
 };
 

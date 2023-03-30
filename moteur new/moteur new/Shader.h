@@ -15,11 +15,14 @@ public:
 	~Shader();
 
 	LPD3DXEFFECT shaderBuffer()						{ return shaderBuffer_; }
+	void shaderBuffer(LPD3DXEFFECT sb)				{shaderBuffer_ = sb; }
 	D3DXHANDLE* handleTechnique()					{ return &handleTechnique_; }
 	D3DXHANDLE* handleMatrixWVP()					{ return &handleMatrixWVP_; }
+	void		handleMatrixWVP(D3DXHANDLE htm)		{ handleMatrixWVP_ = htm; }
+	void		handleTechnique(D3DXHANDLE ht)		{ handleTechnique_ = ht; }
 
 	void SetMatrix(D3DXMATRIX* wvpMat);
 
+	std::string path()								{ return path_; }
 
-	void LoadShader(LPDIRECT3DDEVICE9* d3ddev);
 };

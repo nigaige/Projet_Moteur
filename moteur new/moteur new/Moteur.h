@@ -66,11 +66,13 @@ public:
 	void fixedUpdate(void);															
 	void updateTransform(void);
 
-	Shader* LoadShader(std::string* shaderPath);	
+	void LoadShader(Shader* sh);
 	void renderMaterial(GameObject* go,Mesh* mesh);										//TODO MANAGE GLOBAL TIME
 
 
 	Mesh* ImportingModel(std::string path);
+
+	void loadMesh(Mesh* me);
 
 	static float s_deltaTime_;
 	static Input* inputManager_;

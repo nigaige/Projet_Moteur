@@ -5,6 +5,6 @@ void PlayerRolling::update()
 	transform_->addPitch(0.1f);
 }
 
-playerRolling::~playerRolling()
+PlayerRolling::~PlayerRolling()
 {
 }

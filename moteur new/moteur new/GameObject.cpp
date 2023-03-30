@@ -2,6 +2,7 @@
 
 GameObject::GameObject(){
 	transform_ = new Transform(this);
+	MeshlinkShader = std::map<Mesh*, Shader*>();
 }
 
 GameObject::GameObject(Transform* T)
@@ -110,9 +111,12 @@ bool GameObject::rmChild(GameObject* go)
 	return false;
 }
 
-Shader* GameObject::shaderFinder(Mesh* Mesh)
+Shader* GameObject::shaderFinder(Mesh* Mesh_)
 {
-	return MeshlinkShader.find(Mesh)->second;
+	if (MeshlinkShader.size() == 0) return nullptr;
+	return  MeshlinkShader.find(Mesh_)->second;
+	
+	
 }
 
 void GameObject::setShaderLinker(Mesh* Mesh_, Shader* Shader_)

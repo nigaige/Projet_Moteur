@@ -58,12 +58,15 @@ public:
 	void Ibuffer(LPDIRECT3DINDEXBUFFER9 buff)		{ Ibuffer_ = buff; }
 	void Vbuffer(LPDIRECT3DVERTEXBUFFER9 buff)		{ Vbuffer_ = buff; }
 
+	std::string path() { return path_; }
+	void path(std::string path) { path_ = path; }
+
 	
 
 	void deduceTriangle();
 
 
-	void loadMesh(LPDIRECT3DDEVICE9* d3ddev);
+
 	
 
 
