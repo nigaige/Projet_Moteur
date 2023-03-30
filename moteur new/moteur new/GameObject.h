@@ -22,6 +22,7 @@ public:
 	~GameObject();
 
 	void update();
+	void fixedUpdate();
 	D3DXMATRIX* updateTransform();
 
 	//TODO DESTRUCTOR DELETE THE COMPONENT

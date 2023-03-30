@@ -291,8 +291,8 @@ void Moteur::setUpCamera() {
 
 
 
-	d3ddev->SetTransform(D3DTS_VIEW, &matView );
-	cameraComponent->matView(&matView);
+	d3ddev->SetTransform(D3DTS_VIEW, matView );
+	cameraComponent->matView(matView);
 
 	D3DXMATRIX matProjection;     // the projection transform matrix
 
