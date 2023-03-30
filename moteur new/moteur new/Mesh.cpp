@@ -18,6 +18,18 @@ Mesh::Mesh(std::string path)
 Mesh::~Mesh()
 {
     vertex_.clear();
+
+
+    delete Ibuffer_;
+    delete Vbuffer_;
+
+    Utils::DeleteVector(vertex_);
+
+        
+    delete meshMaterials_;
+    delete meshTexture_;
+    delete shader_;
+
 }
 
 void Mesh::addVertex(CUSTOMVERTEX* v)

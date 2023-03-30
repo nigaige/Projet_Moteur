@@ -53,6 +53,10 @@ enum ComponentType {
 };
 
 
+
+
+
+
 class GameObject;
 class Component;
 class Mesh;
@@ -76,11 +80,18 @@ class Ui;
 
 class Parser;
 
+
+
+
+
+
+
+
 #include "GameObject.h"
 #include "Component.h"
 #include "Transform.h"
 #include "Input.h"
-#include "Moteur.h"
+ #include "Moteur.h"
 #include "Mesh.h"
 #include "Shader.h"
 #include "Camera.h"
@@ -119,7 +130,7 @@ public:
 
 	static D3DXVECTOR3* clamp(D3DXVECTOR3* vect, float max);
 
-    template <typename T>
+    template <class T>
     static void DeleteVector(std::vector<T*> );
 
 	template <typename T>
@@ -148,7 +159,7 @@ template<typename T>
 inline void Utils::DeleteVector(std::vector<T*> vect)
 {
     for (int i = 0; i < vect.size(); i++) {
-        delete vect[i];
+        vect[i]->~T();
     }
 	vect.clear();
 }
@@ -177,3 +188,17 @@ inline int Utils::GetKeyViaValue(std::map<int, T*> mappy, T* value)
 	return key;
 
 }
+
+// Functor for deleting pointers in vector.
+template<class T> class DeleteVector
+{
+public:
+	// Overloaded () operator.
+	// This will be called by for_each() function.
+	bool operator()(T x) const
+	{
+		// Delete pointer.
+		delete x;
+		return true;
+	}
+};

@@ -27,17 +27,27 @@ GameObject::GameObject(GameObject* parent)
 
 GameObject::~GameObject()
 {
-	//Mesh can be ref in other gameobject so we don't destroy them
-	//TODO MATERIAL
+	
+	
+	//remove manually the mesh without destroying them
 	while (true) {
 		if (rmComponent(findComponent<Mesh>())) continue;
 		break;
 	}
-	Utils::DeleteVector(componentList);
-	MeshList.clear();
+
 	delete transform_;
 
+	parent_ = nullptr;
 
+	rb_ = nullptr;
+
+
+	for (Component* co : componentList)
+		delete co;
+	for (GameObject* chi : childList_) chi = nullptr;
+
+
+	MeshList.clear();
 
 }
 
@@ -172,4 +182,18 @@ Component* GameObject::findComponent(ComponentType type)
 			return comp;
 		}
 	}
+	return nullptr;
+}
+
+std::vector<Component*> GameObject::findAllComponent(ComponentType type)
+{
+	std::vector<Component*> list;
+
+	for (Component* comp : componentList)
+	{
+		if (comp->type() == type) {
+			list.push_back(comp);
+		}
+	}
+	return list;
 }

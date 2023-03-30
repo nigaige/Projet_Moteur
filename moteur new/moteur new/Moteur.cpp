@@ -3,13 +3,9 @@
 #include <chrono>
 
 
-
-Input* Moteur::inputManager_ = new Input();
 const int FIXED_UPDATE_INTERVAL = 16; // 16ms, equivalent to 60fps
-float Moteur::s_deltaTime_ = 0.01f;
-ID3DXFont* Moteur::font = nullptr;
 
-
+Input* Moteur::inputManager_;
 
 // this is the main message handler for the program
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -20,7 +16,8 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 		{
 			PostQuitMessage(0);
 			return 0;
-		} break;
+			break;
+		}
 	}
 
 	return DefWindowProc(hWnd, message, wParam, lParam);
@@ -55,11 +52,33 @@ Moteur::Moteur(HINSTANCE hInstance,
 
 Moteur::~Moteur()
 {
-	Utils::DeleteVector(GOList);
-	Utils::DeleteVector(MeList);
-	if (font) { font->Release(); font = 0; }
-	cleanD3D();
+	for (GameObject* go : GOList)  delete go;
+	for (Mesh* me : MeList)delete me;
 
+	//for (Mesh* me : MeList)DeleteVector<Mesh*>();
+	//MeList.erase();
+
+	delete camera_;
+	cameraComponent = nullptr; //delete is handle by above line
+	delete colliderManager_;
+	delete initText;
+	delete inputManager_;
+
+	if (font) { font->Release(); font = 0; }
+
+
+	cleanD3D();
+	DestroyWindow(hWnd);
+	UnregisterClass(L"WindowClass", wc.hInstance);
+
+
+
+}
+
+void Moteur::cleanD3D(void)
+{
+	d3ddev->Release();    // close and release the 3D device
+	d3d->Release();    // close and release Direct3D
 }
 
 void Moteur::Init()
@@ -136,43 +155,45 @@ void Moteur::loadMeshInScene(Mesh* MeshToLoad) {
 	MeshToLoad->Vbuffer(v_buffer);
 }
 
-void Moteur::cleanD3D(void)
-{
-	d3ddev->Release();    // close and release the 3D device
-	d3d->Release();    // close and release Direct3D
-}
 
 void Moteur::gameLoop()
 {
-	MSG msg;
-	//----------------------------FixedUpdate-----------------------------------//
-	while (TRUE)
+	auto lastUpdateTime = std::chrono::high_resolution_clock::now();
+
+	MSG msg = { 0 };
+
+	while (WM_QUIT != msg.message)
 	{
-		auto lastUpdateTime = std::chrono::high_resolution_clock::now();
+		lastUpdateTime = std::chrono::high_resolution_clock::now();
 
 
-		while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		//updateobject
-		render();
-		update();
-
-		if (msg.message == WM_QUIT)
-			break;
-		auto currentTime = std::chrono::high_resolution_clock::now();
-		auto deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastUpdateTime);
-		s_deltaTime_ = deltaTime.count();
-		if (s_deltaTime_ >= FIXED_UPDATE_INTERVAL)	
+		else
 		{
-			fixedUpdate();
-			lastUpdateTime = currentTime;
-		}
-		updateTransform();
-	}
+			//TIME
+			auto currentTime = std::chrono::high_resolution_clock::now();
+			auto deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastUpdateTime);
+			s_deltaTime_ = deltaTime.count();
 
+			//UPDATE
+			update();
+			//DO FIXED UPDATE?
+			if (s_deltaTime_ >= FIXED_UPDATE_INTERVAL)
+			{
+				fixedUpdate();
+				lastUpdateTime = currentTime;
+			}
+			//UPDATE TRANSFORM
+			updateTransform();
+			//RENDER
+			render();
+		}
+	}
 }
 
 void Moteur::renderMaterial(GameObject* go,Mesh* mesh)
@@ -249,6 +270,7 @@ void Moteur::render(void)
 			}
 		}
 
+		
 	}
 	for (Ui* ui : uiElement) 
 	{
@@ -424,10 +446,12 @@ Mesh* Moteur::ImportingModel(std::string path)
 	LPD3DXBUFFER materialBuffer = NULL;
 	DWORD numMaterial = 0;
 	LPD3DXMESH mesh = nullptr;
-
+	
 
 
 	Mesh* resultMesh = new Mesh(D3DPT_TRIANGLELIST);
+	
+
 	HRESULT hr = D3DXLoadMeshFromXA(path.c_str(), D3DXMESH_MANAGED, d3ddev, NULL, &materialBuffer, NULL, &numMaterial, &mesh); //Import mesh in meshImp
 	if (FAILED(hr))
 		Utils::DebugLogMessage("Failed import model");
@@ -465,8 +489,9 @@ Mesh* Moteur::ImportingModel(std::string path)
 	}
 
 
-
 	materialBuffer->Release();
+
+	addMesh(resultMesh);
 
 	return resultMesh;
 }

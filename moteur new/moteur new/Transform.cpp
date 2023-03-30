@@ -28,7 +28,12 @@ Transform::Transform(GameObject* gameObject)
 
 Transform::~Transform()
 {
-	//TODO FIX
+	delete v_forward_;
+	delete v_up_;
+	delete v_right_;
+	gameObject_ = nullptr;
+
+
 }
 
 //----------position--------

@@ -116,7 +116,7 @@ D3DXVECTOR3* Utils::triangleNormal(triangle* T)
 	D3DXVECTOR3 u = T->B - T->A;
 	D3DXVECTOR3 v = T->C - T->A;
 
-	D3DXVECTOR3 N;
+	D3DXVECTOR3 N;	//TODO fix address return
 	N.x = u.y * v.z - u.z * v.y;
 	N.y = u.z * v.x - u.x * v.z;
 	N.z = u.x * v.y - u.y * v.x;

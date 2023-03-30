@@ -5,12 +5,12 @@ class Component
 protected:
 	bool active = false;
 	
-	GameObject* gameobject_ = new GameObject();
+	GameObject* gameobject_ = nullptr;
 	Transform* transform_ =nullptr;
 	ComponentType type_ = COMPONENT;
 public:
 	Component(bool isActive = true);
-	~Component();
+	virtual ~Component();
 
 	Transform* transform() { return transform_; }
 	void transform(Transform* trans);
