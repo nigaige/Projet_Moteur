@@ -131,3 +131,17 @@ Component* GameObject::findComponent(ComponentType type)
 		}
 	}
 }
+
+std::vector<Component*> GameObject::findAllComponents(ComponentType type)
+{
+	std::vector<Component*> list;
+
+	for (Component* comp : componentList)
+	{
+		if (comp->type() == type) {
+			list.push_back(comp);
+		}
+	}
+
+	return list;
+}

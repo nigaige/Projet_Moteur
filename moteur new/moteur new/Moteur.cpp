@@ -182,10 +182,8 @@ void Moteur::renderMaterial(Mesh* mesh)
 
 void Moteur::render(void)
 {
-	
 	d3ddev->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 	d3ddev->Clear(0, NULL, D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
-
 
 	d3ddev->BeginScene();
 
@@ -237,11 +235,9 @@ void Moteur::render(void)
 				}
 			}
 		}
-
-			go->findComponent<Text>()->update();
 		
+		go->findComponent<Text>()->update();
 	}
-
 	
 	d3ddev->EndScene();
 
@@ -266,7 +262,6 @@ void Moteur::fixedUpdate(void)
 		go->fixedUpdate();
 	}
 }
-
 
 void Moteur::setUpCamera() {
 
@@ -301,9 +296,14 @@ GameObject* Moteur::camera()
 	return camera_;
 }
 
-
 void Moteur::addGameObject(GameObject* go)
 {
+
+	for (Component* goCollider : go->findAllComponents(ComponentType::COLLIDER))
+	{
+		colliderManager_->addCollider((Collider*)goCollider);
+	}
+
 	GOList.push_back(go);
 }
 
@@ -317,7 +317,6 @@ void Moteur::rmGamObject(GameObject* go)
 	}
 	delete go;
 }
-
 
 void Moteur::addMesh(Mesh* me)
 {

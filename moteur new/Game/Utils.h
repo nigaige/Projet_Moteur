@@ -1,27 +1,17 @@
 #pragma once
 
-
-
-
-
-
-
-
 #include <Utils.h>
 
-class playerRoll;
-class playerRolling;
+class Player;
 class MoverForward;
-class Wall;
-
-
+class CreateGameObject;
 
 
 #include <thread>
+
 #include "GoTester.h"
+#include "Player.h"
 #include "MoveForward.h"
-#include "playerRoll.h"
-#include "playerRolling.h"
-#include "wall.h"
+#include "CreateGameObject.h"
 
 

@@ -12,7 +12,6 @@ private:
 	std::vector<Collider*> ColliderList;
 	RigidBody* rb_ = nullptr;
 
-
 public:
 	GameObject();
 	GameObject(Transform* T);
@@ -38,9 +37,6 @@ public:
 	void parent(GameObject* go) { parent_ = go; }
 	GameObject* parent() { return parent_; }
 
-
-
-
 	void addComponent(Component* comp);
 	bool rmComponent(Component* comp);
 	bool rmComponent(int index);
@@ -53,6 +49,7 @@ public:
 
 	std::vector<Mesh*> meshToDraw();
 
+	std::vector<Component*> findAllComponents(ComponentType type);
 
 
 	template <typename T>
@@ -65,6 +62,8 @@ public:
 	template <typename T>
 	T* castToType(Component* comp);
 
+	template<typename T>
+	std::vector<T> findAllComponents();
 
 
 };
@@ -98,4 +97,20 @@ template<typename T>
 inline T* GameObject::castToType(Component* comp)
 {
 	return dynamic_cast<T*>(comp);
+}
+
+template<typename T>
+inline std::vector<T> GameObject::findAllComponents()
+{
+	std::vector<T> allComponentT;
+
+	for (Component* component : componentList) 
+	{
+		if (static_cast<T>(*component) != nullptr)
+		{
+			allComponentT.push_back((T)(*component));
+		}
+	}
+
+	return allComponentT;
 }

@@ -9,6 +9,7 @@ private:
 	D3DXHANDLE handleMatrixWVP_ = nullptr;
 
 public:
+	std::string name;
 
 	Shader(LPD3DXEFFECT shaderBuffer);
 	~Shader();
