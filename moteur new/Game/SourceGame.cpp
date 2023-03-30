@@ -39,7 +39,7 @@ int main(Moteur* moteur)
 	moteur->camera()->transform()->posY(-5.0f);
 	Parser* P = new Parser();
 
-	P->Filename("TESTIMPORT.txt");
+	P->Filename("FORMAIN.txt");
 	P->ParseAll();
 	moteur->setGoList(P->GOlist);
 	moteur->setMeList(P->MElist);
@@ -90,7 +90,7 @@ int main(Moteur* moteur)
 		a[x]->transform()->scaleY(5);
 		a[x]->transform()->posZ(x * 10);
 		moteur->addGameObject(a[x]);
-	}	
+	}*/
 	
 	moteur->gameLoop();
 
