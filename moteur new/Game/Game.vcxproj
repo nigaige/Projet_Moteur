@@ -136,9 +136,7 @@
   <ItemGroup>
     <ClCompile Include="CreateGameObject.cpp" />
     <ClCompile Include="LevelGenerator.cpp" />
-    <ClCompile Include="player.cpp" />
-    <ClCompile Include="playerRoll.cpp" />
-    <ClCompile Include="playerRolling.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="SourceGame.cpp" />
     <ClCompile Include="MoveForward.cpp" />
     <ClCompile Include="UtilsGame.cpp" />
@@ -146,10 +144,8 @@
   <ItemGroup>
     <ClInclude Include="CreateGameObject.h" />
     <ClInclude Include="LevelGenerator.h" />
-    <ClInclude Include="player.h" />
     <ClInclude Include="MoveForward.h" />
-    <ClInclude Include="playerRoll.h" />
-    <ClInclude Include="playerRolling.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -21,3 +21,17 @@ GameObject* CreateGameObject::Wall(Mesh wallMesh, Shader* wallShader, D3DXVECTOR
 
 	return Wall;
 }
+
+GameObject* CreateGameObject::Floor(Mesh floorMesh)
+{
+	GameObject* floor = new GameObject();
+	floor->addComponent(&floorMesh);
+
+	floor->transform()->addRoll(M_PI * 0.5);
+	floor->transform()->position((D3DXVECTOR3(0.f, -0.f, -0.f)));
+	floor->transform()->scale(D3DXVECTOR3(2.f, 2.f, 2.f));
+	floor->transform()->scaleY(5);
+
+	return floor;
+}
+

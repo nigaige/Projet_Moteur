@@ -5,6 +5,7 @@
 class Player;
 class MoverForward;
 class CreateGameObject;
+class LevelGenerator;
 
 
 #include <thread>
@@ -13,5 +14,6 @@ class CreateGameObject;
 #include "Player.h"
 #include "MoveForward.h"
 #include "CreateGameObject.h"
+#include "LevelGenerator.h"
 
 

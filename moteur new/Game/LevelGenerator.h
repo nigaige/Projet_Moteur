@@ -1,7 +1,21 @@
 #pragma once
 class LevelGenerator
 {
-	void Levelgenerator();
+private:
+	Mesh* CubeMesh;
+	Mesh* Playermesh;
+	Mesh* CylinderMesh;
+	Moteur* moteur_;
+
+
+public:
+
+	LevelGenerator(Moteur* moteur);
 	~LevelGenerator();
+
+	void GenerateLevel();
+
+	void FirstSection();
+
 };
 
