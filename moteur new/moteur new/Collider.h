@@ -15,7 +15,7 @@ protected:
 	bool isTrigger_ = false;
 	
 	void(*triggerCallback_)(Collider*) ;
-
+	
 public:
 	Collider();
 	void isTrigger(bool isTrigger) { isTrigger_ = isTrigger; }

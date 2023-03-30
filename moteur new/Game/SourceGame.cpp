@@ -1,3 +1,5 @@
+
+
 #ifdef _DEBUG
 #include <crtdbg.h>
 #endif
@@ -22,48 +24,18 @@ int main(Moteur* moteur)
 
 #pragma region Init
 
-	
 
 
 
-	/*D3DXVECTOR3* position = new D3DXVECTOR3(0.f, 4.f, 0.f);
-	D3DXVECTOR3* rotation = new D3DXVECTOR3(0.f, 0.f, 0.f);
-	GameObject* Wall_ = CreateGameObject::Wall(*WallMesh, Red, position, rotation);
 
-	D3DXVECTOR3* position2 = new D3DXVECTOR3(4.f, 0.f, 5.f);
-	D3DXVECTOR3* rotation2 = new D3DXVECTOR3(0.f, -M_PI_2, 0.f);
-	GameObject* Wall2_ = CreateGameObject::Wall(*WallMesh, Yellow, position2, rotation2);
-
-	moteur->addGameObject(Wall_);
-	moteur->addGameObject(Wall2_);*/
 
 #pragma endregion
 
 
 #pragma region GameInit
 
-
-	Mesh* CubeMesh = moteur->ImportingModel("./Mesh/cube.x");
-	Mesh* Playermesh = moteur->ImportingModel("./Mesh/BONGUSV2.x");
-	Mesh* CylinderMesh = moteur->ImportingModel("./Mesh/CylinderRail.x");
-
-	Shader* Red = moteur->LoadShader("./Shader/Red.hlsl");
-	Shader* Green = moteur->LoadShader("./Shader/Green.hlsl");
-	Shader* Blue = moteur->LoadShader("./Shader/Blue.hlsl");
-	Shader* Yellow = moteur->LoadShader("./Shader/Yellow.hlsl");
-	Shader* Pink = moteur->LoadShader("./Shader/Pink.hlsl");
-
-
-
 	moteur->camera()->transform()->posZ(20.0f);
-	moteur->camera()->transform()->posY(-7.0f);
-
-	moteur->camera()->transform()->addRollPitchYaw(0.0f, 0.f, 0.0f);
-
-
-	//LevelGenerator* level = new LevelGenerator(moteur);
-
-	//level->GenerateLevel();
+	moteur->camera()->transform()->posY(-5.0f);
 
 
 	GameObject* Ui = new GameObject();
@@ -71,49 +43,7 @@ int main(Moteur* moteur)
 	Ui->addComponent(buttonStart);
 	moteur->addGameObject(Ui);
 	moteur->addUiComponent(buttonStart);
-	
-	
-
-	
-
-	GameObject* a[10];
-	for (int x = 0; x < 10; ++x) {
-		//MoveForward* roadcomponent = new MoveForward();
-
-		a[x] = new GameObject();
-		//a[x]->addComponent(roadcomponent);
-		a[x]->addComponent(CylinderMesh);
-
-		a[x]->transform()->addRoll(M_PI * 0.5);		
-		a[x]->transform()->position((D3DXVECTOR3(-0.5f, -0.f, -0.f)));
-		a[x]->transform()->scale(D3DXVECTOR3(2.f, 2.f, 2.f));
-		a[x]->transform()->scaleY(5);
-		a[x]->transform()->posZ(x * 10);
-		moteur->addGameObject(a[x]);
-	}	
-
-	
-	
-
-	GameObject* PlayerGo = new GameObject();
-	
-	Player* player_ = new Player();
-
-	PlayerGo->addComponent(player_);
-	PlayerGo->addComponent(Playermesh);
-
-	PlayerGo->transform()->scale(D3DXVECTOR3(0.3f, 0.3f, 0.3f));
-
-	RigidBody* rb = new RigidBody();
-
-
-
-	moteur->addGameObject(PlayerGo);
-
-	moteur->camera()->parent(PlayerGo);
-
 	moteur->gameLoop();
-
 
 
 #pragma region end game

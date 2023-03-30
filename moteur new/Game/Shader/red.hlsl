@@ -17,7 +17,7 @@ VS_OUTPUT main(VS_INPUT input) {
 }
 
 float4 mainPS() : COLOR{
-    return float4(0.90f, 0.17f, 0.24f, 1.0f);
+    return float4(1.0f, 1.0f, 0.0f, 1.0f);
 }
 
 technique Default

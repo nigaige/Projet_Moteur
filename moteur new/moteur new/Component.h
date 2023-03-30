@@ -6,7 +6,7 @@ protected:
 	bool active = false;
 	
 	GameObject* gameobject_ = new GameObject();
-	Transform* transform_ = nullptr;
+	Transform* transform_ =nullptr;
 	ComponentType type_ = COMPONENT;
 public:
 	Component(bool isActive = true);

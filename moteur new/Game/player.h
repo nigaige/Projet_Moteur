@@ -1,15 +1,5 @@
 #pragma once
-
-class Player : public Component
+class player
 {
-public: 
-
-	Player();
-
-	float z = 0.f;
-
-	void MovePlayer();
-
-	void update();
 };
 

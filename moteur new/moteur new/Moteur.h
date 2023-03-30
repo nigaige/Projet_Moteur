@@ -72,7 +72,6 @@ public:
 	Shader* LoadShader(std::string* shaderPath);	
 	void renderMaterial(GameObject* go,Mesh* mesh);										//TODO MANAGE GLOBAL TIME
 
-	Shader* LoadShader(std::string shaderPath);									//TODO Mettre la method dans le mesh
 
 	Mesh* ImportingModel(std::string path);
 
