@@ -36,12 +36,7 @@ int main(Moteur* moteur)
 
 	moteur->camera()->transform()->posZ(20.0f);
 	moteur->camera()->transform()->posY(-5.0f);
-	Parser* P = new Parser();
 
-	P->Filename("FORMAIN.txt");
-	P->ParseAll();
-	moteur->setGoList(P->GOlist);
-	moteur->setMeList(P->MElist);
 
 	GameObject* Ui = new GameObject();
 	buttonLaunchGame* buttonStart = new buttonLaunchGame(moteur);
