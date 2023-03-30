@@ -33,7 +33,7 @@ Transform::~Transform()
 
 //----------position--------
 D3DXVECTOR3 Transform::position()			{return v_position_;}
-void Transform::position(D3DVECTOR newPos) { v_position_ = newPos; updatePosition(); }
+void Transform::position(D3DXVECTOR3 newPos) { v_position_ = newPos; updatePosition(); }
 void Transform::posX(float x)				{ v_position_.x = x; updatePosition(); }
 void Transform::posY(float y)				{ v_position_.y = y; updatePosition(); }
 void Transform::posZ(float z) { v_position_.z = z; updatePosition(); }
@@ -44,7 +44,7 @@ void Transform::updatePosition() {
 
 //----------Scale-----------
 D3DXVECTOR3 Transform::scale()				{ return v_scale_; }
-void Transform::scale(D3DVECTOR newPos)		{ v_scale_ = newPos; updateScale();}
+void Transform::scale(D3DXVECTOR3 newPos)		{ v_scale_ = newPos; updateScale();}
 void Transform::scaleX(float x)				{ v_scale_.x = x; updateScale(); }
 void Transform::scaleY(float y)				{ v_scale_.y = y; updateScale(); }
 void Transform::scaleZ(float z)				{ v_scale_.z = z; updateScale(); }

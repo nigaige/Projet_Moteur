@@ -52,6 +52,9 @@ public:
 	void addMesh(Mesh* me);
 	void rmMesh(Mesh* me);
 
+	void setGoList(std::vector<GameObject*> list);
+	void setMeList(std::vector<Mesh*> list);
+
 	static ID3DXFont* getFont() { return font;  };
 
 	//---------------GAMELOOOP
@@ -59,10 +62,10 @@ public:
 	void render(void);
 	void update(void);															
 	void fixedUpdate(void);															
-	void renderMaterial(Mesh* mesh);										//TODO MANAGE GLOBAL TIME
 	void updateTransform(void);
 
 	Shader* LoadShader(std::string* shaderPath);	
+	void renderMaterial(GameObject* go,Mesh* mesh);										//TODO MANAGE GLOBAL TIME
 
 
 	Mesh* ImportingModel(std::string path);

@@ -20,10 +20,13 @@ private:
 
 	D3DMATERIAL9* meshMaterials_ = nullptr;
 	LPDIRECT3DTEXTURE9* meshTexture_ = nullptr;
-	Shader* shader_ = nullptr;
+	std::string path_;
+
 
 public:
+	Mesh();
 	Mesh(D3DPRIMITIVETYPE primitivMethode);
+	Mesh(std::string path);
 	~Mesh();
 
 	void addVertex(CUSTOMVERTEX* v);
@@ -55,15 +58,13 @@ public:
 	void Ibuffer(LPDIRECT3DINDEXBUFFER9 buff)		{ Ibuffer_ = buff; }
 	void Vbuffer(LPDIRECT3DVERTEXBUFFER9 buff)		{ Vbuffer_ = buff; }
 
-	Shader* shader()								{ return shader_; }
-	void shader(Shader* shader)						{ shader_ = shader; }
+	
 
 	void deduceTriangle();
 
 
-
+	void loadMesh(LPDIRECT3DDEVICE9* d3ddev);
 	
-
 
 
 };

@@ -47,7 +47,7 @@ public:
 
 	//----------position--------
 	D3DXVECTOR3 position();
-	void position(D3DVECTOR newPos);
+	void position(D3DXVECTOR3 newPos);
 	void posX(float x);
 	void posY(float y);
 	void posZ(float z);
@@ -56,7 +56,7 @@ public:
 
 	//----------Scale-----------
 	D3DXVECTOR3 scale();
-	void scale(D3DVECTOR newPos);
+	void scale(D3DXVECTOR3 newPos);
 	void scaleX(float x);
 	void scaleY(float y);
 	void scaleZ(float z);

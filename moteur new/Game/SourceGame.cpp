@@ -37,11 +37,16 @@ int main(Moteur* moteur)
 	
 	moteur->camera()->transform()->posZ(20.0f);
 	moteur->camera()->transform()->posY(-5.0f);
+	Parser* P = new Parser();
 
-	
+	P->Filename("TESTIMPORT.txt");
+	P->ParseAll();
+	moteur->setGoList(P->GOlist);
+	moteur->setMeList(P->MElist);
 
 
-	Mesh* meshCube;
+
+	/*Mesh* meshCube;
 	meshCube = moteur->ImportingModel("./Mesh/cylinder2.x");
 	Mesh* anchormesh;
 	anchormesh = moteur->ImportingModel("./Mesh/cubeRose.x");
@@ -115,6 +120,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 
 	Utils util;
+	
 
 	moteur = new Moteur(hInstance,
 		hPrevInstance,

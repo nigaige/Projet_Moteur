@@ -149,6 +149,9 @@
     <ClInclude Include="Utils.h" />
     <ClInclude Include="wall.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="TESTIMPORT.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

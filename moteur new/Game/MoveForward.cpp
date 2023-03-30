@@ -3,6 +3,7 @@
 void MoveForward::update()
 {
 	Utils util;
+
 	transform()->posZ(transform()->position().z - .50f);
 
 	if (transform()->position().z < -20.0f)
