@@ -14,6 +14,11 @@ Camera::Camera(int Fov, float nearVIewPlane, float farViewPlane) {
 
 
 Camera::~Camera() {
+	/*delete pEye;
+	delete pAt;
+	delete pUp;
+	delete matView_;
+	delete matProj_;*/
 
 }
 

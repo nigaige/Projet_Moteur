@@ -4,14 +4,15 @@
 
 Component::Component(bool isActive)
 {
-	transform_ = new Transform();
 	active = isActive;
-	
 }
 
 
 Component::~Component()
 {
+	gameobject_ = nullptr;
+	transform_ = nullptr;
+	
 }
 
 void Component::gameObject(GameObject* go)

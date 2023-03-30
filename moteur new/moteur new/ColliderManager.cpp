@@ -11,7 +11,7 @@ void ColliderManager::manageCollision()//TODO change to eat a vector when manage
 	//TODO check doubl kinematic
 	int index = 0;
 	size_t size = colliderList.size();
-	D3DXVECTOR3* colValue = new D3DXVECTOR3();
+	D3DXVECTOR3* colValue = nullptr;
 	for (Collider* col : colliderList) {
 		if (index == size - 1) break;//last collider of array doesn't check anything else
 		for (int i = index+1; i < size; i++) {

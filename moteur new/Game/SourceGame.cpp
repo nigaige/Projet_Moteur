@@ -38,39 +38,39 @@ int main(Moteur* moteur)
 	moteur->camera()->transform()->posZ(20.0f);
 	moteur->camera()->transform()->posY(-5.0f);
 
+
+
 	
+	Mesh* meshCube  = moteur->ImportingModel("./Mesh/cylinder2.x");
+	Mesh* anchormesh = moteur->ImportingModel("./Mesh/cubeRose.x");
+	Mesh* meshPlayer = moteur->ImportingModel("./Mesh/BONGUSV2.x");
 
 
-	Mesh* meshCube;
-	meshCube = moteur->ImportingModel("./Mesh/cylinder2.x");
-	Mesh* anchormesh;
-	anchormesh = moteur->ImportingModel("./Mesh/cubeRose.x");
-	Mesh* meshPlayer;
-	meshPlayer = moteur->ImportingModel("./Mesh/BONGUSV2.x");
 
 
 	GameObject* roadCenter = new GameObject();
 	GameObject* rollCenter = new GameObject();
 	GameObject* player = new GameObject();
+	moteur->addGameObject(roadCenter);
+	moteur->addGameObject(rollCenter);
+	moteur->addGameObject(player);
 
 	player->addComponent(meshPlayer);
+	
 	player->transform()->scale(D3DXVECTOR3(0.1f, 0.1f, 0.1f));
 	player->transform()->posY(-0.5f);
 	player->parent(rollCenter);
 
 	rollCenter->parent(roadCenter);
 	rollCenter->transform()->posY(3.f);
-	player->addComponent(new playerRolling);
+	player->addComponent(new playerRolling());
 
 	roadCenter->addComponent(new playerRoll);
 
 
-	moteur->addGameObject(roadCenter);
-	moteur->addGameObject(player);
-
 
 	//ROAD
-	
+
 	GameObject* a[10];
 	for (int x = 0; x < 10; ++x) {
 		MoveForward* roadcomponent = new MoveForward();
@@ -86,23 +86,34 @@ int main(Moteur* moteur)
 		a[x]->transform()->posZ(x * 10);
 		moteur->addGameObject(a[x]);
 	}	
+
+/*		*/
+#pragma endregion
+
 	
+
+
 	moteur->gameLoop();
+
+
 
 
 #pragma region end game
 
 
 
-#pragma endregion
-
-	delete moteur;
-
 	std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
 	return 0;
+#pragma endregion
+
+
 }
 
+
+
+float Moteur::s_deltaTime_;
+ID3DXFont* Moteur::font;
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
@@ -110,11 +121,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	_CrtMemState memStateInit;
 	_CrtMemCheckpoint(&memStateInit);
 #endif
+	
+	
+	Moteur::inputManager_ = new Input();
+	Moteur::s_deltaTime_ = 0.01f;
+	Moteur::font = nullptr;
 
 	Moteur* moteur;
-
-
-	Utils util;
 
 	moteur = new Moteur(hInstance,
 		hPrevInstance,
@@ -123,7 +136,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	moteur->Init();
 
 	main(moteur);
-
+		
+	delete moteur;
 
 #ifdef _DEBUG
 	_CrtMemState memStateEnd, memStateDiff;

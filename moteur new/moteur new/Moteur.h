@@ -23,7 +23,6 @@ private:
 	Camera* cameraComponent;
 
 	InitText* initText;
-	static ID3DXFont* font;
 
 public:
 
@@ -32,8 +31,6 @@ public:
 		LPWSTR lpCmdLine,
 		int nCmdShow);
 	~Moteur();
-
-	//Input* inputManager() { return inputManager_; }
 
 	ColliderManager* colliderManager() { return colliderManager_; }
 
@@ -69,5 +66,6 @@ public:
 
 	static float s_deltaTime_;
 	static Input* inputManager_;
+	static ID3DXFont* font;
 };
 

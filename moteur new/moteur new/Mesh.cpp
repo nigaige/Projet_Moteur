@@ -8,6 +8,18 @@ Mesh::Mesh(D3DPRIMITIVETYPE primitivMethode)
 Mesh::~Mesh()
 {
     vertex_.clear();
+
+
+    delete Ibuffer_;
+    delete Vbuffer_;
+
+    Utils::DeleteVector(vertex_);
+
+        
+    delete meshMaterials_;
+    delete meshTexture_;
+    delete shader_;
+
 }
 
 void Mesh::addVertex(CUSTOMVERTEX* v)

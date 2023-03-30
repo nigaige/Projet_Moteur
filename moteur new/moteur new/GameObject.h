@@ -5,15 +5,15 @@ class GameObject
 {
 private:
 	GameObject* parent_ = nullptr;
-	std::vector<GameObject*> childList_;
+	RigidBody* rb_ = nullptr;
 	Transform* transform_;
+	std::vector<GameObject*> childList_;
 	std::vector<Component*> componentList;
-	bool toDisplay_ = false;
 	std::vector<Mesh*> MeshList;
 	std::vector<Collider*> ColliderList;
-	RigidBody* rb_ = nullptr;
 
 
+	bool toDisplay_ = false;
 public:
 	GameObject();
 	GameObject(Transform* T);
@@ -67,11 +67,14 @@ public:
 	T* findComponent();
 	
 	Component* findComponent(ComponentType type);
+	std::vector<Component*> findAllComponent(ComponentType type);
 
 	template <typename T>
 	bool isOfType(Component* comp);
 	template <typename T>
 	T* castToType(Component* comp);
+
+
 
 
 
@@ -87,8 +90,8 @@ inline T* GameObject::findComponent()
 	for (Component* comp : componentList)
 	{
 		//TODO IMPROVE CASTING, null ptr
-		if (static_cast<T*>(comp) != nullptr) {
-			return static_cast<T*>(comp);
+		if (dynamic_cast<T*>(comp) != nullptr) {
+			return dynamic_cast<T*>(comp);
 		}
 	}
 
