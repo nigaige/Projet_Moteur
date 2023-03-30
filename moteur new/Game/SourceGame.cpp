@@ -34,7 +34,6 @@ int main(Moteur* moteur)
 
 #pragma region GameInit
 
-	
 	moteur->camera()->transform()->posZ(20.0f);
 	moteur->camera()->transform()->posY(-5.0f);
 	Parser* P = new Parser();
@@ -44,54 +43,11 @@ int main(Moteur* moteur)
 	moteur->setGoList(P->GOlist);
 	moteur->setMeList(P->MElist);
 
-
-
-	/*Mesh* meshCube;
-	meshCube = moteur->ImportingModel("./Mesh/cylinder2.x");
-	Mesh* anchormesh;
-	anchormesh = moteur->ImportingModel("./Mesh/cubeRose.x");
-	Mesh* meshPlayer;
-	meshPlayer = moteur->ImportingModel("./Mesh/BONGUSV2.x");
-
-
-	GameObject* roadCenter = new GameObject();
-	GameObject* rollCenter = new GameObject();
-	GameObject* player = new GameObject();
-
-	player->addComponent(meshPlayer);
-	player->transform()->scale(D3DXVECTOR3(0.1f, 0.1f, 0.1f));
-	player->transform()->posY(-0.5f);
-	player->parent(rollCenter);
-
-	rollCenter->parent(roadCenter);
-	rollCenter->transform()->posY(3.f);
-	player->addComponent(new playerRolling);
-
-	roadCenter->addComponent(new playerRoll);
-
-
-	moteur->addGameObject(roadCenter);
-	moteur->addGameObject(player);
-
-
-	//ROAD
-	
-	GameObject* a[10];
-	for (int x = 0; x < 10; ++x) {
-		MoveForward* roadcomponent = new MoveForward();
-
-		a[x] = new GameObject();
-		a[x]->addComponent(roadcomponent);
-		a[x]->addComponent(meshCube);
-
-		a[x]->transform()->addRoll(M_PI * 0.5);		
-		a[x]->transform()->position((D3DXVECTOR3(-0.5f, -0.f, -0.f)));
-		a[x]->transform()->scale(D3DXVECTOR3(2.f, 2.f, 2.f));
-		a[x]->transform()->scaleY(5);
-		a[x]->transform()->posZ(x * 10);
-		moteur->addGameObject(a[x]);
-	}*/
-	
+	GameObject* Ui = new GameObject();
+	buttonLaunchGame* buttonStart = new buttonLaunchGame(moteur);
+	Ui->addComponent(buttonStart);
+	moteur->addGameObject(Ui);
+	moteur->addUiComponent(buttonStart);
 	moteur->gameLoop();
 
 

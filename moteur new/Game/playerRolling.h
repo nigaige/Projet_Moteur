@@ -1,6 +1,7 @@
 #pragma once
-class playerRolling: public Component
+class PlayerRolling: public Component
 {
 	void update();
+	
 };
 

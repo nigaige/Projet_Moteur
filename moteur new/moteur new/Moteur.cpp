@@ -51,6 +51,8 @@ Moteur::Moteur(HINSTANCE hInstance,
 
 }
 
+
+
 Moteur::~Moteur()
 {
 	Utils::DeleteVector(GOList);
@@ -102,6 +104,12 @@ void Moteur::initD3D()
 	d3ddev->SetRenderState(D3DRS_LIGHTING, TRUE);
 	d3ddev->SetRenderState(D3DRS_ZENABLE, TRUE);
 	d3ddev->SetRenderState(D3DRS_AMBIENT, 0xffffffff);
+
+	initText = new InitText();
+	font = initText->initText(d3ddev);
+	if (FAILED(font))
+		Utils::DebugLogMessage("Failed import font");
+
 }
 
 void Moteur::loadMeshInScene(Mesh* MeshToLoad) {
@@ -241,10 +249,11 @@ void Moteur::render(void)
 			}
 		}
 
-			go->findComponent<Text>()->update();
-		
 	}
-
+	for (Ui* ui : uiElement) 
+	{
+		ui->Draw();
+	}
 	
 	d3ddev->EndScene();
 
@@ -318,6 +327,11 @@ void Moteur::addGameObject(GameObject* go)
 	GOList.push_back(go);
 }
 
+void Moteur::addUiComponent(Ui* ui)
+{
+	uiElement.push_back(ui);
+}
+
 void Moteur::rmGamObject(GameObject* go)
 {
 	for (int i = 0; i < GOList.size(); i++) {
@@ -327,6 +341,16 @@ void Moteur::rmGamObject(GameObject* go)
 		}
 	}
 	delete go;
+}
+void Moteur::rmUiComponent(Ui* ui)
+{
+	for (int i = 0; i < uiElement.size(); i++) {
+		if (uiElement[i] == ui) {
+			uiElement.erase(uiElement.begin() + i, uiElement.begin() + i + 1);
+			return;
+		}
+	}
+	delete ui;
 }
 
 

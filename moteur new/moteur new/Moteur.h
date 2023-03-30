@@ -16,6 +16,7 @@ private:
 	//Mesh* triangle;
 	std::vector<GameObject*> GOList;
 	std::vector<Mesh*> MeList;
+	std::vector<Ui*> uiElement;
 
 	ColliderManager* colliderManager_;
 
@@ -26,6 +27,7 @@ private:
 	static ID3DXFont* font;
 
 public:
+	HWND gethWnd() { return hWnd; }
 
     Moteur(HINSTANCE hInstance,
 		HINSTANCE hPrevInstance,
@@ -48,7 +50,9 @@ public:
 	GameObject* camera();
 
 	void addGameObject(GameObject* go);
+	void addUiComponent(Ui* ui);
 	void rmGamObject(GameObject* go);
+	void rmUiComponent(Ui* ui);
 	void addMesh(Mesh* me);
 	void rmMesh(Mesh* me);
 
@@ -56,6 +60,7 @@ public:
 	void setMeList(std::vector<Mesh*> list);
 
 	static ID3DXFont* getFont() { return font;  };
+	
 
 	//---------------GAMELOOOP
 	void gameLoop();															

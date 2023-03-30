@@ -12,7 +12,7 @@
 #include <chrono>
 #include <map>
 #include <string>
-
+#include <sstream>  
 
 #include <d3d9.h>
 #include <d3dx9.h>
@@ -72,6 +72,7 @@ class Collider;
 class ColliderSphere;
 class ColliderCube;
 class ColliderManager;
+class Ui;
 
 class Parser;
 
@@ -93,6 +94,7 @@ class Parser;
 #include "ColliderSphere.h"
 #include "ColliderCube.h"
 #include "ColliderManager.h"
+#include "Ui.h"
 
 #include "Parser.h"
 
