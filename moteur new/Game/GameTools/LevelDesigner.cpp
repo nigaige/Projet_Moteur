@@ -12,13 +12,13 @@ void LevelDesigner::GenerateLevel()
 {
     GameObject* previousPrefab = nullptr;
 
-   /* for (GameObject* prefab : prefabs)
+   for (GameObject* prefab : prefabs)
     {
         if (previousPrefab != nullptr) 
         {
             prefab->transform()->posZ(previousPrefab->transform()->position().z + 10);
         }
-    }*/
+    }
 }
 
 void LevelDesigner::CreateSection(std::string sectionPath)
@@ -36,19 +36,14 @@ void LevelDesigner::CreateSection(std::string sectionPath)
 
 void LevelDesigner::addGoParent(std::vector<GameObject*> goImportedList)
 {
-
-    for (int i = 0; i < goImportedList.size(); i++)
+    GameObject* prefab = new GameObject();
+    
+    for(GameObject* go : goImportedList)
     {
-        if (goImportedList[i] == goImportedList[0]) 
-        {
-            prefabs.push_back(goImportedList[0]);
-        }
-        else
-        {
-            goImportedList[i]->parent(goImportedList[0]);
-        }
+        go->parent(prefab);
     }
 
+    prefabs.push_back(prefab);
     GoList = goImportedList;
 }
 

@@ -10,6 +10,7 @@ void InitGame::initLevel()
 {
 	levelCreator = new LevelDesigner();
 	levelCreator->CreateSection("./ImportScript/SecondSection.txt");
+	levelCreator->CreateSection("./ImportScript/ThirdSection.txt");
 	
 	for (GameObject* go : levelCreator->GoList)
 	{
