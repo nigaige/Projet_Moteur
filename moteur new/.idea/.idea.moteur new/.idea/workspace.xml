@@ -5,32 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b4bc57b-d997-45c1-9e78-c4d6c5a14624" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Game/GameTools/LevelDesigner.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Game/GameTools/LevelDesigner.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Game/Player.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Game/Player.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.moteur new/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.moteur new/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/Game.vcxproj" beforeDir="false" afterPath="$PROJECT_DIR$/Game/Game.vcxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/ImportScript/ImportWall.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Game/ImportScript/ImportWall.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Game/ImportScript/ImportWall.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Game/InitGame.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Game/InitGame.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/InitGame.h" beforeDir="false" afterPath="$PROJECT_DIR$/Game/InitGame.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/MoveForward.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/MoveForward.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/Shader/red.hlsl" beforeDir="false" afterPath="$PROJECT_DIR$/Game/Shader/red.hlsl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/SourceGame.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Game/SourceGame.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/Utils.h" beforeDir="false" afterPath="$PROJECT_DIR$/Game/Utils.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/buttonLaunchGame.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Game/ButtonLaunchGame.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/buttonLaunchGame.h" beforeDir="false" afterPath="$PROJECT_DIR$/Game/ButtonLaunchGame.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/initMenu.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Game/InitMenu.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/initMenu.h" beforeDir="false" afterPath="$PROJECT_DIR$/Game/InitMenu.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/player.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/player.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/playerRoll.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/playerRoll.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/playerRolling.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/playerRolling.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/wall.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Game/wall.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Game/Player.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Game/Player.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,7 +107,7 @@
       <workItem from="1680215588302" duration="4000" />
       <workItem from="1680215613720" duration="3385000" />
       <workItem from="1680219170413" duration="4482000" />
-      <workItem from="1680223753432" duration="2139000" />
+      <workItem from="1680223753432" duration="6814000" />
     </task>
     <servers />
   </component>

@@ -9,7 +9,7 @@ InitGame::InitGame(Moteur* moteur)
 void InitGame::initLevel()
 {
 	LevelDesigner* levelCreator = new LevelDesigner();
-	levelCreator->CreateSection("./ImportScript/ImportWall.txt");
+	levelCreator->CreateSection("./ImportScript/FirstSection.txt");
 	
 	for (GameObject* go : levelCreator->GoList)
 	{
@@ -34,9 +34,24 @@ void InitGame::initLevel()
 
 void InitGame::initGo()
 {
-	Player* player = new Player();
+	GameObject* player = new GameObject();
 
-	camera_->addComponent(player);
+	Mesh* anchor = new Mesh("./Mesh/Cube.x");
+	moteur_->loadMesh(anchor);
+	
+	Player* playerScript = new Player();
+	
+	player->addComponent(playerScript);
+	player->addComponent(anchor);
+
+
+	player->transform()->posZ(-1.f);
+	moteur_->addGameObject(player);
+	
+	camera_->addComponent(playerScript);
+
+
+	
 
 	/*
 	GameObject* PlayerGo = new GameObject();
@@ -56,11 +71,12 @@ void InitGame::initGo()
 
 void InitGame::init()
 {
-	camera_->transform()->posZ(25.0f);
-	camera_->transform()->posY(-10.0f);
+	camera_->transform()->addRollPitchYaw(0.f, 0.f, 0.f);
+	camera_->transform()->position(D3DXVECTOR3(0.f, -7.f, 20.f));
 	
-	camera_->transform()->addRoll(-0.2);
+	//camera_->transform()->addRoll(-0.2);
 
+	
 	initLevel();
 	initGo();
 
