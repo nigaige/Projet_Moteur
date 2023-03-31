@@ -134,26 +134,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="buttonLaunchGame.cpp" />
+    <ClCompile Include="ButtonLaunchGame.cpp" />
+    <ClCompile Include="GameTools\LevelDesigner.cpp" />
     <ClCompile Include="InitGame.cpp" />
-    <ClCompile Include="initMenu.cpp" />
-    <ClCompile Include="player.cpp" />
-    <ClCompile Include="playerRoll.cpp" />
-    <ClCompile Include="playerRolling.cpp" />
+    <ClCompile Include="InitMenu.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="SourceGame.cpp" />
-    <ClCompile Include="MoveForward.cpp" />
-    <ClCompile Include="wall.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="buttonLaunchGame.h" />
+    <ClInclude Include="ButtonLaunchGame.h" />
+    <ClInclude Include="GameTools\LevelDesigner.h" />
     <ClInclude Include="InitGame.h" />
-    <ClInclude Include="initMenu.h" />
-    <ClInclude Include="player.h" />
-    <ClInclude Include="MoveForward.h" />
-    <ClInclude Include="playerRoll.h" />
-    <ClInclude Include="playerRolling.h" />
+    <ClInclude Include="InitMenu.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Utils.h" />
-    <ClInclude Include="wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

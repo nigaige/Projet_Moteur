@@ -22,13 +22,10 @@ void calltest() { Utils::DebugLogMessage("Reussi"); };
 int main(Moteur* moteur)
 {	
 
-#pragma region Init
-
-
-
+#pragma region InitPlayer(Player();;lPa~~Player();
 
 	GameObject* Ui = new GameObject();
-	buttonLaunchGame* buttonStart = new buttonLaunchGame(moteur);
+	ButtonLaunchGame* buttonStart = new ButtonLaunchGame(moteur);
 	Ui->addComponent(buttonStart);
 	moteur->addGameObject(Ui);
 	moteur->addUiComponent(buttonStart);

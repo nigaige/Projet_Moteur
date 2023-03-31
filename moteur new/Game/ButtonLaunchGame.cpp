@@ -1,6 +1,6 @@
 #include "Utils.h";
 
-buttonLaunchGame::buttonLaunchGame(Moteur* moteur)
+ButtonLaunchGame::ButtonLaunchGame(Moteur* moteur)
 {
 	moteur_ = moteur;
 	
@@ -11,17 +11,15 @@ buttonLaunchGame::buttonLaunchGame(Moteur* moteur)
 
 }
 
-void buttonLaunchGame::LaunchGame()
+void ButtonLaunchGame::LaunchGame()
 {
 	InitGame* initGame = new InitGame(moteur_);
 	initGame->init();	
 	moteur_->rmUiComponent(title);
 	moteur_->rmUiComponent(this);
-
-
 }
 
-void buttonLaunchGame::update()
+void ButtonLaunchGame::update()
 {
 
 	if (GetWindowRect(moteur_->gethWnd(), &windowSize))

@@ -1,22 +1,40 @@
 --Mesh:
 ./Mesh/CylinderRail.x
 
+--Mesh:
+./Mesh/Cube.x
+
+--Shader:
+./Shader/Red.hlsl
+
 --Gameobject:
+
 T:					
-0.0,4.0,1.0;						
-1.0,1.0,1.0;				
-0.0,0.0,1.0;				
+0.0,4.0,5.0;						
+2.0,5.0,2.0;				
+90.0,0.0,0.0;				
+
 C: Mesh
-0
+0;
+
 C: RigidBody
 1,1;
+
 C: Collider
 Cube
 1.0,1.2,0;
 4.0,1.0,2.0;
-1
-C: Collider
-Sphere
-1.0,2.0,3.0;
-4.0;
+1;
+
+--Gameobject:
+T:					
+0.25,8.0,5.0;						
+1.5,4.0,0.5;				
+0.0,0.0,0.0;
+
+C: Mesh
+1;
+
+C: Shader
+0;
 0;

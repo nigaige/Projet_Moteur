@@ -1,5 +1,5 @@
 #pragma once
-class buttonLaunchGame : public Ui
+class ButtonLaunchGame : public Ui
 {
 private:	
 
@@ -12,7 +12,7 @@ private:
 	bool ok = true;
 	Moteur* moteur_ = nullptr;
 public:
-	buttonLaunchGame(Moteur* moteur);
+	ButtonLaunchGame(Moteur* moteur);
 	void LaunchGame();
 	void update();
 
