@@ -8,6 +8,7 @@ private:
 	void genTriangle();
 public:
 	ColliderCube(D3DXVECTOR3* center, D3DXVECTOR3* size);
+	~ColliderCube();
 
 	D3DXVECTOR3* center() { return center_; }
 	float* size() { return size_; }

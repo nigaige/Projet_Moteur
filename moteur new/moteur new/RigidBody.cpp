@@ -5,6 +5,11 @@ RigidBody::RigidBody()
 	type_ = RIGIDBODY;
 }
 
+RigidBody::~RigidBody()
+{
+	delete speed_;
+}
+
 void RigidBody::speed(D3DXVECTOR3* speed)
 {
 	*speed_ = *speed;

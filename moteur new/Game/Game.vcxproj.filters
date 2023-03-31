@@ -33,9 +33,6 @@
     <ClCompile Include="playerRolling.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UtilsGame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="initMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -77,6 +74,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="TESTIMPORT.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="ImportWall.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

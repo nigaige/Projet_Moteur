@@ -11,6 +11,7 @@ private:
 
 public:
 	RigidBody();
+	~RigidBody();
 	bool isKinematic()					{ return isKinematic_; }
 	void isKinematic(bool isKinematic)	{ isKinematic_ = isKinematic; }
 	bool hasGravity()					{ return hasGravity_; }

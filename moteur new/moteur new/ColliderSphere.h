@@ -7,6 +7,7 @@ private:
 public:
 
 	ColliderSphere(D3DXVECTOR3* center, float radius);
+	~ColliderSphere();
 
 	D3DXVECTOR3* center() { return center_; }
 	void center(D3DXVECTOR3 center) { *center_ = center; }

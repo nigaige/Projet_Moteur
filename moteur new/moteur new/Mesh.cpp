@@ -29,6 +29,8 @@ Mesh::~Mesh()
     delete meshMaterials_;
     delete meshTexture_;
 
+
+
 }
 
 void Mesh::addVertex(CUSTOMVERTEX* v)

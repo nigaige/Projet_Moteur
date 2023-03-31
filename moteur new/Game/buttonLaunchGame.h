@@ -13,6 +13,7 @@ private:
 	Moteur* moteur_ = nullptr;
 public:
 	buttonLaunchGame(Moteur* moteur);
+	~buttonLaunchGame();
 	void LaunchGame();
 	void update();
 

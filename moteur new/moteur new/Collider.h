@@ -18,6 +18,7 @@ protected:
 	
 public:
 	Collider();
+	~Collider();
 	void isTrigger(bool isTrigger) { isTrigger_ = isTrigger; }
 	bool isTrigger() { return isTrigger_; }
 	

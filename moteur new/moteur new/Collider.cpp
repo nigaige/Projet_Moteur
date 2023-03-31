@@ -9,6 +9,10 @@ Collider::Collider() {
 	triggerCallback_ = DefaultCallback;
 }
 
+Collider::~Collider()
+{
+}
+
 void Collider::isColliding(Collider* other, D3DXVECTOR3* distance)
 {
 	RigidBody* rb = gameobject_->rb();

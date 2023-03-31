@@ -28,12 +28,17 @@ void ColliderCube::genTriangle()
 ColliderCube::ColliderCube(D3DXVECTOR3* center, D3DXVECTOR3* size)
 {
 	type_ = CUBE;
-	center_ = center;
+	*center_ = *center;
 	size_[0] = size->x;
 	size_[1] = size->y; 
 	size_[2] = size->z;
 	genTriangle();
-};
+}
+ColliderCube::~ColliderCube()
+{
+	delete center_;
+}
+;
 
 
 

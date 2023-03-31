@@ -55,7 +55,8 @@ Moteur::~Moteur()
 	for (GameObject* go : GOList)  delete go;
 	for (Mesh* me : MeList)delete me;
 	for (Shader* sh : SHList)delete sh;
-
+	//for (Ui* ui : uiElement)delete ui;
+	
 	//for (Mesh* me : MeList)DeleteVector<Mesh*>();
 	//MeList.erase();
 
@@ -549,6 +550,9 @@ void Moteur::loadMesh(Mesh* me)
 			}
 		}
 	}
+
+
+	MeList.push_back(me);
 
 	materialBuffer->Release();
 }

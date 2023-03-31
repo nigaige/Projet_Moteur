@@ -81,6 +81,11 @@ void Transform::addRollPitchYaw(float pitch, float roll, float yaw) {
 	getARotation(pitch, roll, yaw);
 }
 
+void Transform::addRollPitchYaw(D3DXVECTOR3 rot)
+{
+	getARotation(Utils::DegToRad(rot.x), Utils::DegToRad(rot.x), Utils::DegToRad(rot.x));
+}
+
 D3DXVECTOR3* Transform::forward()
 {
 	return v_forward_;

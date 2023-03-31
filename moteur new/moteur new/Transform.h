@@ -68,6 +68,7 @@ public:
 	void addRoll(float roll);
 	void addYaw(float yaw);
 	void addRollPitchYaw(float pitch, float roll, float yaw);
+	void addRollPitchYaw(D3DXVECTOR3 );
 	D3DXVECTOR3* forward();
 	D3DXVECTOR3* right();
 	D3DXVECTOR3* up();

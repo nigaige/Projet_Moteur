@@ -11,10 +11,14 @@ buttonLaunchGame::buttonLaunchGame(Moteur* moteur)
 
 }
 
+buttonLaunchGame::~buttonLaunchGame()
+{
+	delete title;
+}
+
 void buttonLaunchGame::LaunchGame()
 {
-	InitGame* initGame = new InitGame(moteur_);
-	initGame->init();	
+	InitGame::init(moteur_);
 	moteur_->rmUiComponent(title);
 	moteur_->rmUiComponent(this);
 
