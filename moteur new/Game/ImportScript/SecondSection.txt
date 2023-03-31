@@ -1,0 +1,88 @@
+--Mesh:
+./Mesh/CylinderRail.x
+
+--Mesh:
+./Mesh/Cube.x
+
+--Shader:
+./Shader/Red.hlsl
+
+--Shader:
+./Shader/Pink.hlsl
+
+--Shader:
+./Shader/Yellow.hlsl
+
+--Shader:
+./Shader/Blue.hlsl
+
+--Gameobject:
+
+T:					
+0.0,0.0,0.0;						
+2.0,10.0,2.0;				
+90.0,0.0,0.0;				
+
+C: Mesh
+0;
+
+C: RigidBody
+1,1;
+
+C: Collider
+Cube
+1.0,1.2,0;
+4.0,1.0,2.0;
+1;
+
+--Gameobject:
+T:					
+0.25,4.0,0.0;						
+1.0,4.0,1.0;				
+0.0,0.0,0.0;
+
+C: Mesh
+1;
+
+C: Shader
+0;
+0;
+
+--Gameobject:
+T:					
+4.0,0.0,4.0;						
+1.0,4.0,0.5;				
+0.0,90.0,0.0;
+
+C: Mesh
+1;
+
+C: Shader
+1;
+0;
+
+--Gameobject:
+T:					
+0.0,-4.0,8.0;						
+1.0,4.0,0.5;				
+0.0,180.0,0.0;
+
+C: Mesh
+1;
+
+C: Shader
+2;
+0;
+
+--Gameobject:
+T:					
+-4.0,0.0,12.0;						
+1.0,4.0,0.5;				
+0.0,270.0,0.0;
+
+C: Mesh
+1;
+
+C: Shader
+3;
+0;

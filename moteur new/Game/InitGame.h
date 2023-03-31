@@ -4,6 +4,7 @@ class InitGame : public Component
 private:
 	Moteur* moteur_;
 	GameObject* camera_;
+	LevelDesigner* levelCreator;
 
 public:
 	InitGame(Moteur* moteur);

@@ -8,8 +8,8 @@ InitGame::InitGame(Moteur* moteur)
 
 void InitGame::initLevel()
 {
-	LevelDesigner* levelCreator = new LevelDesigner();
-	levelCreator->CreateSection("./ImportScript/FirstSection.txt");
+	levelCreator = new LevelDesigner();
+	levelCreator->CreateSection("./ImportScript/SecondSection.txt");
 	
 	for (GameObject* go : levelCreator->GoList)
 	{
@@ -51,11 +51,12 @@ void InitGame::initGo()
 	camera_->addComponent(playerScript);
 
 
+	GameObject* levelManager = new GameObject();
 	
 
 	/*
-	GameObject* PlayerGo = new GameObject();
 	
+	GameObject* PlayerGo = new GameObject();
 	
 	Mesh* chat = new Mesh("./Mesh/BONGUSV2.x");
 	moteur_->loadMesh(chat);
@@ -66,6 +67,7 @@ void InitGame::initGo()
 	PlayerGo->transform()->position(D3DXVECTOR3(0.f, 3.f, 0.f));
 	PlayerGo->transform()->scale(D3DXVECTOR3(3.f, 3.f, 3.f));*/
 	//moteur_->addGameObject(ca);
+
 }
 
 
@@ -84,6 +86,7 @@ void InitGame::init()
 
 void InitGame::update()
 {
+	levelCreator->GenerateLevel();
 }
 
 
