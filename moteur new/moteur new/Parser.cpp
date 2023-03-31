@@ -74,24 +74,87 @@ void Parser::ParseAll()
 				delimiter = ',';
 
 				//position
+				try
+				{
 					getline(File, line);
-					vect = Utils::split(line , delimiter);
-					vectfloat= D3DXVECTOR3(std::stof(vect[0]), std::stof(vect[1]), std::stof(vect[2]));
+					if (line == "")
+						throw std::runtime_error("Error : BAD VECTOR POSITION");
+				}
+				catch (std::runtime_error &err)
+				{
+					Utils::DebugLogMessage(err.what());
+					std::exit(EXIT_FAILURE);
+				}
+				try
+				{
+					vect = Utils::split(line, delimiter);
+					if (vect.size() < 3)
+						throw std::exception();
+					vectfloat = D3DXVECTOR3(std::stof(vect[0]), std::stof(vect[1]), std::stof(vect[2]));
+				}
+				catch (std::exception& err)
+				{
+					Utils::DebugLogMessage("BAD");
+					std::exit(EXIT_FAILURE);
+				}
 					currentGO->transform()->position(vectfloat);
+				//end position	
 				
 				//Scale
+				try
+				{
 					getline(File, line);
+					if (line == "")
+						throw std::runtime_error("Error : BAD VECTOR SCALE");
+				}
+				catch (std::runtime_error& err)
+				{
+					Utils::DebugLogMessage(err.what());
+					std::exit(EXIT_FAILURE);
+				}
+				try
+				{
 					vect = Utils::split(line, delimiter);
-					vectfloat= D3DXVECTOR3(std::stof(vect[0]), std::stof(vect[1]), std::stof(vect[2]));
+					if (vect.size() < 3)
+						throw std::exception();
+					vectfloat = D3DXVECTOR3(std::stof(vect[0]), std::stof(vect[1]), std::stof(vect[2]));
+				}
+				catch (std::exception& err)
+				{
+					Utils::DebugLogMessage("BAD");
+					std::exit(EXIT_FAILURE);
+				}
 					currentGO->transform()->scale(vectfloat);
+				//end scale
 				
 				//rotation
+				try
+				{
 					getline(File, line);
+					if (line == "")
+						throw std::runtime_error("Error : BAD VECTOR ROTATION");
+				}
+				catch (std::runtime_error& err)
+				{
+					Utils::DebugLogMessage(err.what());
+					std::exit(EXIT_FAILURE);
+				}
+				try
+				{
 					vect = Utils::split(line, delimiter);
+					if(vect.size()<3)
+						throw std::exception();
 					vectfloat = D3DXVECTOR3(std::stof(vect[0]), std::stof(vect[1]), std::stof(vect[2]));
+				}
+				catch (std::exception& err)
+				{
+					Utils::DebugLogMessage("BAD");
+					std::exit(EXIT_FAILURE);
+				}
+					
 					currentGO->transform()->setARotation(Utils::DegToRad(vectfloat[0]),Utils::DegToRad(vectfloat[1]), Utils::DegToRad(vectfloat[2])); //todo degtorad ?
-					Utils::DebugLogMessage(&line);
 					break;
+				//end rotation
 
 			case 'C':
 				if (DrawDebug_)
@@ -163,7 +226,10 @@ void Parser::ParseAll()
 						COlist_.push_back(cs);
 						break;
 					}
-					
+					else
+					{
+						std::exit(EXIT_FAILURE);
+					}
 					break;
 				}
 				if (vect[1] == "RigidBody")
@@ -190,6 +256,7 @@ void Parser::ParseAll()
 				{
 					if (DrawDebug_)
 						Utils::DebugLogMessage("	THIS COMPONENT TOKEN IS A SHADER");
+					
 					getline(File, line);
 					int indexShader = std::stoi(line);
 					getline(File, line);
@@ -205,6 +272,10 @@ void Parser::ParseAll()
 			
 				
 
+			if (MElist_.empty())
+			{
+				Utils::DebugLogMessage("!!NO MESH FOUND!!");
+			}
 
 	}
 
