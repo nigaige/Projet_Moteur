@@ -78,9 +78,11 @@ void InitGame::init()
 		moteur_->addGameObject(go);
 	}
 	for (Mesh* me : MeList) {
+		
 		moteur_->loadMesh(me);
 	}
 	for (Shader* sh : shList) {
+		moteur_->addShader(sh);
 		moteur_->LoadShader(sh);
 	}
 	for (Collider* col : CoList)

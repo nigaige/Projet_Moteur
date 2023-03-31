@@ -16,7 +16,10 @@ private:
 	//Mesh* triangle;
 	std::vector<GameObject*> GOList;
 	std::vector<Mesh*> MeList;
+	std::vector<Shader*> SHList;
 	std::vector<Ui*> uiElement;
+	
+	
 
 	ColliderManager* colliderManager_;
 
@@ -52,9 +55,13 @@ public:
 	void rmUiComponent(Ui* ui);
 	void addMesh(Mesh* me);
 	void rmMesh(Mesh* me);
+	void addShader(Shader* sh);
+	void rmShader(Shader* sh);
+
 
 	void setGoList(std::vector<GameObject*> list);
 	void setMeList(std::vector<Mesh*> list);
+	void setSHList(std::vector<Shader*> list);
 
 	static ID3DXFont* getFont() { return font;  };
 	

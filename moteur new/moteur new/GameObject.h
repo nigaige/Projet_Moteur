@@ -6,7 +6,7 @@ class GameObject
 private:
 	GameObject* parent_ = nullptr;
 	RigidBody* rb_ = nullptr;
-	Transform* transform_;
+	Transform* transform_ = nullptr;
 	std::vector<GameObject*> childList_;
 	std::vector<Component*> componentList;
 	std::vector<Mesh*> MeshList;

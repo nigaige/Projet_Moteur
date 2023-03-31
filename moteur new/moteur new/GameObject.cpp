@@ -7,13 +7,14 @@ GameObject::GameObject(){
 
 GameObject::GameObject(Transform* T)
 {
-	*transform_ = *T;
+
+	transform_ = T;
 	transform_->gameObject(this);
 }
 
 GameObject::GameObject(Transform* T, GameObject* parent)
 {
-	*transform_ = *T;
+	transform_ = T;
 	transform_->gameObject(this);
 	parent_ = parent;
 	parent->addChild(this);

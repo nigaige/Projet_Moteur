@@ -7,10 +7,11 @@ Parser::Parser(bool DrawDebug)
 
 Parser::~Parser()
 {
-	for (Shader* sh : SHlist_) delete sh;
-	for (GameObject* go : GOlist_) delete go;
-	for (Mesh* me : MElist_) delete me;
-	for (Collider* col : COlist_) delete col;
+	GOlist_.clear();
+	MElist_.clear();
+
+	COlist_.clear();
+	SHlist_.clear();
 }
 
 

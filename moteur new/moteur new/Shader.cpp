@@ -5,7 +5,10 @@ Shader::Shader(std::string path)
 	path_ = path;
 }
 
-Shader::~Shader() {}
+Shader::~Shader() {
+	
+
+}
 
 void Shader::SetMatrix(D3DXMATRIX* wvpMat)
 {

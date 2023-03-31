@@ -54,6 +54,7 @@ Moteur::~Moteur()
 {
 	for (GameObject* go : GOList)  delete go;
 	for (Mesh* me : MeList)delete me;
+	for (Shader* sh : SHList)delete sh;
 
 	//for (Mesh* me : MeList)DeleteVector<Mesh*>();
 	//MeList.erase();
@@ -388,6 +389,20 @@ void Moteur::rmMesh(Mesh* me)
 	}
 	delete me;
 }
+void Moteur::addShader(Shader* sh)
+{
+	SHList.push_back(sh);
+}
+void Moteur::rmShader(Shader* sh)
+{
+	for (int i = 0; i < SHList.size(); i++) {
+		if (SHList[i] == sh) {
+			SHList.erase(SHList.begin() + i, SHList.begin() + i + 1);
+			return;
+		}
+	}
+	delete sh;
+}
 
 void Moteur::setGoList(std::vector<GameObject*> list)
 {
@@ -396,6 +411,10 @@ void Moteur::setGoList(std::vector<GameObject*> list)
 void Moteur::setMeList(std::vector<Mesh*> list)
 {
 	MeList.insert(MeList.end(), list.begin(), list.end());
+}
+void Moteur::setSHList(std::vector<Shader*> list)
+{
+	SHList.insert(SHList.end(), list.begin(), list.end());
 }
 /// <summary>
 /// Return a pointeur of Shader by .hlsl pathfile
