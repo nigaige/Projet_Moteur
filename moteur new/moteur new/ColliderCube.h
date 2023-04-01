@@ -7,6 +7,7 @@ private:
 	std::vector<triangle> faces_;
 	void genTriangle();
 public:
+	ColliderCube();
 	ColliderCube(D3DXVECTOR3* center, D3DXVECTOR3* size);
 	~ColliderCube();
 

@@ -6,6 +6,16 @@ void ColliderManager::addCollider(Collider* col)
 	colliderList.push_back(col);
 }
 
+ColliderManager::ColliderManager()
+{
+}
+
+ColliderManager::~ColliderManager()
+{
+	for (Collider* col : colliderList) delete col;
+	colliderList.clear();
+}
+
 void ColliderManager::manageCollision()//TODO change to eat a vector when manageing chunk or tag of collider
 {
 	//TODO check doubl kinematic
@@ -59,8 +69,10 @@ D3DXVECTOR3* ColliderManager::isColliding(Collider* c1, Collider* c2)
 		}
 	}
 	else if (c1->type() == CUBE && c2->type() == CUBE) {
-		ColliderCube* cube1 = Utils::castToType<ColliderCube>(c1);
-		ColliderCube* cube2 = Utils::castToType<ColliderCube>(c2);
+		ColliderCube* cube1 = new ColliderCube();
+		*cube1 = *Utils::castToType<ColliderCube>(c1);
+		ColliderCube* cube2 = new ColliderCube();
+		*cube2 = *Utils::castToType<ColliderCube>(c2);
 		//test if cube colliede each other
 		if (collisionCubeCube(cube1,cube2)) {
 			if (cube1->isTrigger() || cube2->isTrigger())return new D3DXVECTOR3();

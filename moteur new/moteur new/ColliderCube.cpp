@@ -25,6 +25,10 @@ void ColliderCube::genTriangle()
 	faces_.push_back({ H,D,C });
 }
 
+ColliderCube::ColliderCube()
+{
+}
+
 ColliderCube::ColliderCube(D3DXVECTOR3* center, D3DXVECTOR3* size)
 {
 	type_ = CUBE;

@@ -34,6 +34,7 @@ GameObject::~GameObject()
 	//remove manually the mesh without destroying them
 	while (true) {
 		if (rmComponent(findComponent<Mesh>())) continue;
+		if (rmComponent(findComponent<Collider>())) continue;
 		break;
 	}
 
@@ -47,6 +48,8 @@ GameObject::~GameObject()
 	for (Component* co : componentList)
 		delete co;
 	for (GameObject* chi : childList_) chi = nullptr;
+	for (Collider* col : ColliderList) col = nullptr;
+	ColliderList.clear();
 
 
 	MeshList.clear();

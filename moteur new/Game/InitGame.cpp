@@ -43,11 +43,13 @@ void InitGame::init(Moteur* moteur)
 		moteur->loadMesh(me);
 	}
 
-
+	/*
 	for (Collider* col : coList)
 	{
 		moteur->colliderManager()->addCollider(col);
 	}
+	*/
+	for (Collider* col : coList) delete col;
 
 
 	delete testParsing;
