@@ -32,8 +32,7 @@ int main(Moteur* moteur)
 	Ui->addComponent(buttonStart);
 	moteur->addGameObject(Ui);
 	moteur->addUiComponent(buttonStart);
-
-
+	
 #pragma endregion
 
 

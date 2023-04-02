@@ -1,28 +1,7 @@
 --Mesh:
-./Mesh/BONGUSV2.x
+./Mesh/CUBEN.x
 --Shader:
 ./Shader/red.hlsl
---Mesh:
-./Mesh/BONGUSV2.x
---Shader:
-./Shader/red.hlsl
---Gameobject:
-T:
-0.0,0.0,0.0;
-1.0,1.0,1.0;			
-0.0,0.0,0.0;	
-C: RigidBody
-1,1;			
-C: Mesh
-0
-C: Shader
-0;
-0;
-C: Collider
-Cube
-1.0,8.2,0.0;
-4.0,1.0,2.0;
-1
 --Gameobject:
 T:
 0.0,0.0,0.0;
@@ -32,6 +11,29 @@ C: RigidBody
 1,1;
 C: Collider
 Cube
-1.0,1.2,0.0;
-1.0,1.0,1.0;
+1.0,1.2,0;
+4.0,1.0,2.0;
 1
+C: Mesh
+0
+C: Shader
+0;
+0;
+--Gameobject:
+T:
+0.0,0.0,0.0;
+1.0,1.0,1.0;			
+0.0,0.0,0.0;	
+C: RigidBody
+1,1;		
+C: Collider
+Cube
+1.0,1.2,0;
+4.0,1.0,2.0;
+1
+C: Mesh
+0
+C: Shader
+0;
+0;
+

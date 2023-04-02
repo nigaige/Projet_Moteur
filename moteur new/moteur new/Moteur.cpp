@@ -91,7 +91,7 @@ void Moteur::Init()
 	initD3D();
 
 	camera_ = new GameObject();
-	cameraComponent = new Camera(45, 1.0f, 100.0f);
+	cameraComponent = new Camera(45, 1.0f, 50.0f);
 	camera_->addComponent(cameraComponent);
 
 	colliderManager_ = new ColliderManager();
@@ -288,6 +288,11 @@ void Moteur::update(void)
 	camera_->update();
 	for (GameObject* go : GOList) {
 		go->update();
+		if (go->parent() != nullptr)
+		{	
+			go->updateTransform();
+		}
+		
 	}
 	colliderManager_->manageCollision();
 }

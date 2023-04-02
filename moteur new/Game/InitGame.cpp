@@ -5,13 +5,16 @@ void InitGame::init(Moteur* moteur)
 {
 	moteur->camera()->transform()->posZ(20.0f);
 	moteur->camera()->transform()->posY(-5.0f);
-
+	
 	Parser* testParsing = new Parser();
 	testParsing->Filename("ImportWall.txt");
-
 	
 
-	std::vector<GameObject*> goList;
+	MoveForward* PlayerMovement = new MoveForward();
+	//playerRoll* PlayerMovementRoll = new playerRoll();
+	//playerRoll* CamRoll = new playerRoll();
+	//moteur->camera()->addComponent(PlayerMovement);
+	std::vector<GameObject*> goList; 
 	std::vector<Mesh*> meList;
 	std::vector<Collider*> coList;
 	std::vector<Shader*> shList;
@@ -26,7 +29,10 @@ void InitGame::init(Moteur* moteur)
 		Utils::DebugLogMessage(err.what());
 		std::exit(EXIT_FAILURE);
 	}
-	
+	//moteur->camera()->parent();
+	goList[0]->addComponent(PlayerMovement);
+	//moteur->camera()->parent(goList[0]);
+	//goList[1]->parent(goList[0]);
 
 	for (Shader* sh : shList) {
 		moteur->addShader(sh);
@@ -35,7 +41,12 @@ void InitGame::init(Moteur* moteur)
 
 
 	for (GameObject* go : goList) {
+		
+		//go->addComponent(PlayerMovement);
+		//go->addComponent(PlayerMovementRoll);
+		//go->parent(moteur->camera());
 		moteur->addGameObject(go);
+
 	}
 
 
@@ -49,7 +60,7 @@ void InitGame::init(Moteur* moteur)
 		moteur->colliderManager()->addCollider(col);
 	}
 	
-
+	
 
 
 	delete testParsing;

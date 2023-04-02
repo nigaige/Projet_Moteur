@@ -37,11 +37,11 @@ Transform::~Transform()
 }
 
 //----------position--------
-D3DXVECTOR3 Transform::position()			{return v_position_;}
-void Transform::position(D3DXVECTOR3 newPos) { v_position_ = newPos; updatePosition(); }
-void Transform::posX(float x)				{ v_position_.x = x; updatePosition(); }
-void Transform::posY(float y)				{ v_position_.y = y; updatePosition(); }
-void Transform::posZ(float z) { v_position_.z = z; updatePosition(); }
+D3DXVECTOR3 Transform::position()				{return v_position_;}
+void Transform::position(D3DXVECTOR3 newPos)	{ v_position_ = newPos; updatePosition(); }
+void Transform::posX(float x)					{ v_position_.x = x; updatePosition(); }
+void Transform::posY(float y)					{ v_position_.y = y; updatePosition(); }
+void Transform::posZ(float z)					{ v_position_.z = z; updatePosition(); }
 void Transform::updatePosition() {
 	D3DXMatrixTranslation(&m_position_, v_position_.x, v_position_.y, v_position_.z);
 	toUpdate();

@@ -69,10 +69,10 @@ D3DXVECTOR3* ColliderManager::isColliding(Collider* c1, Collider* c2)
 		}
 	}
 	else if (c1->type() == CUBE && c2->type() == CUBE) {
-		ColliderCube* cube1 = new ColliderCube();
-		*cube1 = *Utils::castToType<ColliderCube>(c1);
-		ColliderCube* cube2 = new ColliderCube();
-		*cube2 = *Utils::castToType<ColliderCube>(c2);
+		ColliderCube* cube1 = nullptr;
+		cube1 = Utils::castToType<ColliderCube>(c1);
+		ColliderCube* cube2 = nullptr;
+		cube2 = Utils::castToType<ColliderCube>(c2);
 		//test if cube colliede each other
 		if (collisionCubeCube(cube1,cube2)) {
 			if (cube1->isTrigger() || cube2->isTrigger())return new D3DXVECTOR3();
@@ -85,7 +85,7 @@ D3DXVECTOR3* ColliderManager::isColliding(Collider* c1, Collider* c2)
 			D3DXVec3Normalize(&dir, cube1->gameObject()->rb()->speed());
 			dir *= -10;
 			for (triangle tri: cube2->faces()) {
-				D3DXVECTOR3* pintersect = new D3DXVECTOR3();
+				D3DXVECTOR3* pintersect =nullptr;
 				D3DXVECTOR3 point = *cube1->center() + cube1->gameObject()->transform()->position();
 				float* dist = new float(0);
 				if (Utils::raycast(
@@ -97,7 +97,7 @@ D3DXVECTOR3* ColliderManager::isColliding(Collider* c1, Collider* c2)
 					dist,
 					true
 				)) {
-					D3DXVECTOR3* N = new D3DXVECTOR3();
+					D3DXVECTOR3* N = nullptr;
 					D3DXVec3Normalize (N,Utils::triangleNormal(&tri));
 					*N = - *N * D3DXVec3Length (cube1->gameObject()->rb()->speed());
 					return N;
@@ -107,7 +107,7 @@ D3DXVECTOR3* ColliderManager::isColliding(Collider* c1, Collider* c2)
 			D3DXVec3Normalize(&dir, cube2->gameObject()->rb()->speed());
 			dir *= -10;
 			for (triangle tri : cube1->faces()) {
-				D3DXVECTOR3* pintersect = new D3DXVECTOR3();
+				D3DXVECTOR3* pintersect = nullptr;
 				D3DXVECTOR3 point = *cube2->center() + cube2->gameObject()->transform()->position();
 				float* dist = new float(0);
 				if (Utils::raycast(
@@ -119,7 +119,7 @@ D3DXVECTOR3* ColliderManager::isColliding(Collider* c1, Collider* c2)
 					dist,
 					true
 				)) {
-					D3DXVECTOR3* N = new D3DXVECTOR3();
+					D3DXVECTOR3* N = nullptr;
 					D3DXVec3Normalize(N, Utils::triangleNormal(&tri));
 					*N = -*N * D3DXVec3Length(cube2->gameObject()->rb()->speed());
 

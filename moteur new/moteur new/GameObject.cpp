@@ -58,6 +58,8 @@ GameObject::~GameObject()
 
 void GameObject::update()
 {
+	int a = 0;
+
 	if (rb_ != nullptr) {
 		rb_->update();
 	}
@@ -65,6 +67,7 @@ void GameObject::update()
 		if (comp->type() == RIGIDBODY)continue;
 		comp->update();
 	}
+	Utils::DebugLogMessage(transform_->position().x);
 }
 
 void GameObject::fixedUpdate()
