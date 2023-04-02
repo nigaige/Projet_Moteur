@@ -2,6 +2,20 @@
 
 LevelDesigner::LevelDesigner()
 {
+    GameObject* previousPrefab = nullptr;
+
+    for (GameObject* prefab : prefabs)
+    {
+        if (previousPrefab != nullptr) 
+        {
+            prefab->transform()->posZ(30);
+        }else
+        {
+            prefab->transform()->posZ(10);
+        }
+
+        previousPrefab = prefab;
+    }
 }
 
 LevelDesigner::~LevelDesigner()
@@ -10,15 +24,8 @@ LevelDesigner::~LevelDesigner()
 
 void LevelDesigner::GenerateLevel()
 {
-    GameObject* previousPrefab = nullptr;
 
-   for (GameObject* prefab : prefabs)
-    {
-        if (previousPrefab != nullptr) 
-        {
-            prefab->transform()->posZ(previousPrefab->transform()->position().z + 10);
-        }
-    }
+    
 }
 
 void LevelDesigner::CreateSection(std::string sectionPath)

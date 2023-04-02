@@ -8,9 +8,7 @@ private:
 
 public:
 	InitGame(Moteur* moteur);
-	void init();
 	void initLevel();
 	void initGo();
 	void update();
-	
 };

@@ -4,6 +4,12 @@ InitGame::InitGame(Moteur* moteur)
 {
 	moteur_ = moteur;
 	camera_ = moteur_->camera();
+
+	camera_->transform()->addRollPitchYaw(0.f, 0.f, 0.f);
+	camera_->transform()->position(D3DXVECTOR3(0.f, -7.f, 20.f));
+	
+	initLevel();
+	initGo();
 }
 
 void InitGame::initLevel()
@@ -71,19 +77,6 @@ void InitGame::initGo()
 
 }
 
-
-void InitGame::init()
-{
-	camera_->transform()->addRollPitchYaw(0.f, 0.f, 0.f);
-	camera_->transform()->position(D3DXVECTOR3(0.f, -7.f, 20.f));
-	
-	//camera_->transform()->addRoll(-0.2);
-
-	
-	initLevel();
-	initGo();
-
-}
 
 void InitGame::update()
 {

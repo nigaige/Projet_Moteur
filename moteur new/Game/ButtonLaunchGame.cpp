@@ -13,8 +13,13 @@ ButtonLaunchGame::ButtonLaunchGame(Moteur* moteur)
 
 void ButtonLaunchGame::LaunchGame()
 {
-	InitGame* initGame = new InitGame(moteur_);
-	initGame->init();	
+	GameObject* initGame = new GameObject();
+
+	InitGame* initGameInstance = new InitGame(moteur_);
+	
+	initGame->addComponent(initGameInstance);
+	
+	moteur_->addGameObject(initGame);
 	moteur_->rmUiComponent(title);
 	moteur_->rmUiComponent(this);
 }
