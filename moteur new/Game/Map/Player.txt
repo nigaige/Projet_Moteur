@@ -1,0 +1,56 @@
+--Mesh:
+./Mesh/CUBEN.x
+--Mesh:
+./Mesh/cubeRose.x
+--Mesh:
+./Mesh/Cube.x
+--Shader:
+./Shader/red.hlsl
+--Gameobject:
+T:
+0.0,2.0,0.0;
+1.0,1.0,1.0;			
+0.0,0.0,0.0;	
+C: RigidBody
+1,1;
+C: Mesh
+0
+--Gameobject:
+T:					
+0.0,-3.0,0.0;						
+1.0,1.0,1.0;				
+0.0,0.0,0.0;
+C: RigidBody
+1,1;
+
+
+--Gameobject:
+T:					
+0.0,-3.0,0.0;						
+2.0,20.0,2.0;				
+90.0,0.0,0.0;				
+C: Mesh
+1;
+C: RigidBody
+1,1;
+
+--Gameobject:
+T:					
+0.0,0.0,3.0;						
+0.5,3.0,0.1;				
+90.0,0.0,0.0;
+C: Mesh
+2;
+--Gameobject:
+T:					
+-0.15,-3.0,40.0;						
+2.0,20.0,2.0;				
+90.0,0.0,0.0;				
+C: Mesh
+1;
+C: RigidBody
+1,1;
+C: Shader
+0;
+0;
+

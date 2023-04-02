@@ -25,7 +25,7 @@ Camera::~Camera() {
 D3DXMATRIX* Camera::updateCamera() {
 
 	pEye = transform_->position();
-	pAt = *(transform_->forward());
+	pAt = -(*(transform_->forward()));
 
 	D3DXMatrixLookAtLH(&matView_,
 		&pEye,    // the camera position

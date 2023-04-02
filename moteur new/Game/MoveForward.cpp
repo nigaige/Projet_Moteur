@@ -3,8 +3,8 @@
 void MoveForward::update()
 {
 	Utils util;
-	util.DebugLogMessage("ok");
-	//transform()->posZ(transform()->position().z + velocity_);
+	
+	transform()->posZ(transform()->position().z + velocity_);
 	/*
 	if (transform()->position().z < -20.0f)
 	{
@@ -12,18 +12,21 @@ void MoveForward::update()
 	}
 	*/
 	if (Moteur::inputManager_->getKeyState('Z') == States::HOLD) {
-		//transform_->addPitch(-0.1f);
-		transform()->posX(transform()->position().x + velocity_);
+		//transform_->addPitch(0.1f);
 		//transform_->addRoll(0.1f);
+		//transform_->addYaw(0.1f);
+		transform()->posZ(transform()->position().z + velocity_);
 	};
-	if (Moteur::inputManager_->getKeyState('s') == States::HOLD) {
-		//transform_->addPitch(-0.1f);
-		transform()->posX(transform()->position().x - velocity_);
-		//transform_->addRoll(0.1f);
-	};
+
+
+	
 }
 
 
 MoveForward::MoveForward() {
 
+}
+
+MoveForward::~MoveForward()
+{
 }

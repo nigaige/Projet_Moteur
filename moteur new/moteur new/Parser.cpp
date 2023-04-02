@@ -89,7 +89,7 @@ void Parser::processTransform(GameObject* go)
 	if (!getNextLine())return;//Scale
 	go->transform()->scale(parseTransformLine());
 	if (!getNextLine())return;//rotation
-	go->transform()->addRollPitchYaw(parseTransformLine());
+	go->transform()->addRollPitchYaw(Utils::DegToRad(parseTransformLine().x), Utils::DegToRad(parseTransformLine().y), Utils::DegToRad(parseTransformLine().z));
 }
 void Parser::processComponent(GameObject* go, std::vector<Mesh*>* meList, std::vector<Collider*>* coList, std::vector<Shader*>* shList)
 {

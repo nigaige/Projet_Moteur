@@ -91,6 +91,7 @@ void Moteur::Init()
 	initD3D();
 
 	camera_ = new GameObject();
+	//camera_->transform()->addPitch(10.0f);
 	cameraComponent = new Camera(45, 1.0f, 50.0f);
 	camera_->addComponent(cameraComponent);
 
@@ -321,10 +322,10 @@ void Moteur::setUpCamera() {
 	d3ddev->SetFVF(CUSTOMFVF);
 
 	//d3ddev->SetTransform(D3DTS_VIEW, cameraComponent->updateCamera());
-
-	D3DXMATRIX* matView = cameraComponent->gameObject()->worldMatrix();
+	
+	D3DXMATRIX* matView = new D3DXMATRIX();
 	//D3DXMATRIX matView = *cameraComponent->transform()->displayValue();
-
+	D3DXMatrixInverse( matView,NULL,cameraComponent->gameObject()->worldMatrix());
 
 
 	d3ddev->SetTransform(D3DTS_VIEW, matView );

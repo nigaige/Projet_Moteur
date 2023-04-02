@@ -12,6 +12,7 @@
 class playerRoll;
 class playerRolling;
 class MoverForward;
+class movingmap;
 class InitMenu;
 class InitGame;
 class buttonLaunchGame;
@@ -20,6 +21,7 @@ class buttonLaunchGame;
 #include <thread>
 #include "GoTester.h"
 #include "MoveForward.h"
+#include "movingmap.h"
 #include "playerRoll.h"
 #include "playerRolling.h"
 #include "MoveForward.h"

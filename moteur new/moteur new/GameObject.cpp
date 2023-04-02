@@ -67,7 +67,7 @@ void GameObject::update()
 		if (comp->type() == RIGIDBODY)continue;
 		comp->update();
 	}
-	Utils::DebugLogMessage(transform_->position().x);
+	
 }
 
 void GameObject::fixedUpdate()

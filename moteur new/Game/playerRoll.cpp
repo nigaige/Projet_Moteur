@@ -18,3 +18,7 @@ void playerRoll::update()
 playerRoll::playerRoll()
 {
 }
+
+playerRoll::~playerRoll()
+{
+}

@@ -128,6 +128,8 @@ D3DXVECTOR3* ColliderManager::isColliding(Collider* c1, Collider* c2)
 				}
 			}
 		}
+		
+		
 		return nullptr;
 	}
 
@@ -135,6 +137,7 @@ D3DXVECTOR3* ColliderManager::isColliding(Collider* c1, Collider* c2)
 
 
 	return nullptr;
+	
 }
 
 D3DXVECTOR3* ColliderManager::collisionSphereSphere(ColliderSphere* c1, ColliderSphere* c2)
